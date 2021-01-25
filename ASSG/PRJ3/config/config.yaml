@@ -1,0 +1,25 @@
+# PREAMBLE
+#This is the Configuration fIle for the Project.
+#Variable on left (e.g., random_seed_ID), value on right (e.g., 123).
+
+settings:
+  random_seed_ID: 123
+
+
+locations: 
+  model_path: ./data/pre_trained_model/facenet_keras.h5
+  fit_path: ./data/train_data/
+  test_path: ./data/test_data/
+
+
+api:
+  telegram:
+    token: 1555497957:AAEk8D4WZOI5C1cS7Yf8FBEYH8yMKAuaAzY
+    chat_ID: 377561519
+
+
+configuration:
+  # 0.75 = 75%
+  min_accuracy_for_entry: 0.75
+
+  

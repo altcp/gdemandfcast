@@ -1,0 +1,24 @@
+[2021-01-24 23:38:02.021] [exthost] [info] extension host started
+[2021-01-24 23:38:02.107] [exthost] [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch {"startup":true,"extensionId":{"value":"vscode.debug-auto-launch","_lower":"vscode.debug-auto-launch"},"activationEvent":"*"}
+[2021-01-24 23:38:02.108] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/sting/.vscode-server/bin/ea3859d4ba2f3e577a159bc91e3074c5d85c0523/extensions/debug-auto-launch/dist/extension
+[2021-01-24 23:38:02.120] [exthost] [info] ExtensionService#_doActivateExtension vscode.emmet {"startup":true,"extensionId":{"value":"vscode.emmet","_lower":"vscode.emmet"},"activationEvent":"*"}
+[2021-01-24 23:38:02.120] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/sting/.vscode-server/bin/ea3859d4ba2f3e577a159bc91e3074c5d85c0523/extensions/emmet/dist/node/emmetNodeMain
+[2021-01-24 23:38:02.177] [exthost] [info] ExtensionService#_doActivateExtension vscode.git {"startup":true,"extensionId":{"value":"vscode.github","_lower":"vscode.github"},"activationEvent":"*"}
+[2021-01-24 23:38:02.177] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/sting/.vscode-server/bin/ea3859d4ba2f3e577a159bc91e3074c5d85c0523/extensions/git/dist/main
+[2021-01-24 23:38:02.268] [exthost] [info] ExtensionService#_doActivateExtension vscode.merge-conflict {"startup":true,"extensionId":{"value":"vscode.merge-conflict","_lower":"vscode.merge-conflict"},"activationEvent":"*"}
+[2021-01-24 23:38:02.268] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/sting/.vscode-server/bin/ea3859d4ba2f3e577a159bc91e3074c5d85c0523/extensions/merge-conflict/dist/mergeConflictMain
+[2021-01-24 23:38:02.287] [exthost] [info] ExtensionService#_doActivateExtension vscode.search-result {"startup":true,"extensionId":{"value":"vscode.search-result","_lower":"vscode.search-result"},"activationEvent":"*"}
+[2021-01-24 23:38:02.287] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/sting/.vscode-server/bin/ea3859d4ba2f3e577a159bc91e3074c5d85c0523/extensions/search-result/dist/extension.js
+[2021-01-24 23:38:02.676] [exthost] [info] ExtensionService#_doActivateExtension vscode.github {"startup":true,"extensionId":{"value":"vscode.github","_lower":"vscode.github"},"activationEvent":"*"}
+[2021-01-24 23:38:02.676] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/sting/.vscode-server/bin/ea3859d4ba2f3e577a159bc91e3074c5d85c0523/extensions/github/dist/extension.js
+[2021-01-24 23:38:02.711] [exthost] [info] ExtensionService#_doActivateExtension ms-vscode.js-debug {"startup":false,"extensionId":{"value":"ms-vscode.js-debug","_lower":"ms-vscode.js-debug"},"activationEvent":"onCommand:extension.js-debug.clearAutoAttachVariables"}
+[2021-01-24 23:38:02.718] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/sting/.vscode-server/bin/ea3859d4ba2f3e577a159bc91e3074c5d85c0523/extensions/ms-vscode.js-debug/src/extension.js
+[2021-01-24 23:38:03.261] [exthost] [info] eager extensions activated
+[2021-01-24 23:38:07.450] [exthost] [info] ExtensionService#_doActivateExtension ms-toolsai.jupyter {"startup":false,"extensionId":{"value":"ms-toolsai.jupyter","_lower":"ms-toolsai.jupyter"},"activationEvent":"onLanguage:jupyter"}
+[2021-01-24 23:38:07.450] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension
+[2021-01-24 23:38:09.179] [exthost] [info] ExtensionService#_doActivateExtension ms-python.python {"startup":false,"extensionId":{"value":"ms-toolsai.jupyter","_lower":"ms-toolsai.jupyter"},"activationEvent":"api"}
+[2021-01-24 23:38:09.180] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/out/client/extension
+[2021-01-24 23:47:43.900] [exthost] [info] ExtensionService#_doActivateExtension vscode.extension-editing {"startup":false,"extensionId":{"value":"vscode.extension-editing","_lower":"vscode.extension-editing"},"activationEvent":"onLanguage:markdown"}
+[2021-01-24 23:47:43.901] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/sting/.vscode-server/bin/ea3859d4ba2f3e577a159bc91e3074c5d85c0523/extensions/extension-editing/dist/extensionEditingMain
+[2021-01-24 23:47:44.053] [exthost] [info] ExtensionService#_doActivateExtension vscode.markdown-language-features {"startup":false,"extensionId":{"value":"vscode.markdown-language-features","_lower":"vscode.markdown-language-features"},"activationEvent":"onLanguage:markdown"}
+[2021-01-24 23:47:44.053] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/sting/.vscode-server/bin/ea3859d4ba2f3e577a159bc91e3074c5d85c0523/extensions/markdown-language-features/dist/extension

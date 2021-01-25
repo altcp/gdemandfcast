@@ -1,0 +1,21 @@
+[2021-01-25 09:27:05.099] [remoteagent] [info] 
+
+*
+* Visual Studio Code Server
+*
+* Reminder: You may only use this software with Visual Studio family products,
+* as described in the license https://aka.ms/vscode-remote/license
+*
+
+
+[2021-01-25 09:27:05.099] [remoteagent] [info] Extension host agent started.
+[2021-01-25 09:27:05.424] [remoteagent] [info] [::ffff:172.17.173.193][0bb89221][ExtensionHostConnection] New connection established.
+[2021-01-25 09:27:05.426] [remoteagent] [info] [::ffff:172.17.173.193][b05ef1ca][ManagementConnection] New connection established.
+[2021-01-25 09:27:05.485] [remoteagent] [info] Listing 0 persistent terminals, 0 total terminals
+[2021-01-25 09:27:05.823] [remoteagent] [info] [::ffff:172.17.173.193][0bb89221][ExtensionHostConnection] <61> Launched Extension Host Process.
+[2021-01-25 09:27:24.841] [remoteagent] [info] Installing extension: github.vscode-pull-request-github
+[2021-01-25 09:27:47.156] [remoteagent] [info] Downloaded extension: github.vscode-pull-request-github undefined
+[2021-01-25 09:27:47.330] [remoteagent] [info] Extracted extension to /home/sting/.vscode-server/extensions/.github.vscode-pull-request-github-0.22.0: github.vscode-pull-request-github
+[2021-01-25 09:27:47.330] [remoteagent] [info] Renamed to /home/sting/.vscode-server/extensions/github.vscode-pull-request-github-0.22.0
+[2021-01-25 09:27:47.333] [remoteagent] [info] Installation completed. github.vscode-pull-request-github
+[2021-01-25 09:27:47.343] [remoteagent] [info] Extensions installed successfully: github.vscode-pull-request-github

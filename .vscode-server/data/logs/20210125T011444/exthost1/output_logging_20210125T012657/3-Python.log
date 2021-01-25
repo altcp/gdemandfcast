@@ -1,0 +1,203 @@
+User belongs to experiment group 'AlwaysDisplayTestExplorer - control'
+User belongs to experiment group 'ShowPlayIcon - start'
+User belongs to experiment group 'ShowExtensionSurveyPrompt - control'
+User belongs to experiment group 'DebugAdapterFactory - experiment'
+User belongs to experiment group 'PtvsdWheels37 - experiment'
+User belongs to experiment group 'UseTerminalToGetActivatedEnvVars - control'
+User belongs to experiment group 'AA_testing - control'
+User belongs to experiment group 'LocalZMQKernel - experiment'
+User belongs to experiment group 'CollectLSRequestTiming - control'
+User belongs to experiment group 'CollectNodeLSRequestTiming - experiment'
+User belongs to experiment group 'EnableIPyWidgets - experiment'
+User belongs to experiment group 'DeprecatePythonPath - control'
+User belongs to experiment group 'RunByLine - experiment'
+User belongs to experiment group 'CustomEditorSupport - control'
+User belongs to experiment group 'pythonaacf'
+User belongs to experiment group 'pythonSendEntireLineToREPL'
+User belongs to experiment group 'pythonNotDisplayLinterPrompt'
+> conda --version
+> pyenv root
+> python3.7 ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> python3.6 ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> python3 ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> python2 ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> python ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> python ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> conda info --json
+> python ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> python ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> python ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> python ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> python ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> python ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> python ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> python ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> python ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> python ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+Error 2021-01-25 01:27:06: Failed to check if file needs to be fixed [EntryNotFound (FileSystemError): Unable to read file 'vscode-remote://wsl+ubuntu-20.04/home/sting/.config/Code/User/settings.json' (EntryNotFound (FileSystemError): Error: ENOENT: no such file or directory, open '/home/sting/.config/Code/User/settings.json')
+	at _handleError (/home/sting/.vscode-server/bin/ea3859d4ba2f3e577a159bc91e3074c5d85c0523/out/vs/server/remoteExtensionHostProcess.js:769:473)
+	at processTicksAndRejections (internal/process/task_queues.js:94:5)
+	at async y.readText (/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/out/client/extension.js:9:344778)
+	at async p.doesFileNeedToBeFixed (/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/out/client/extension.js:59:500280)
+	at async /home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/out/client/extension.js:59:499407
+	at async Promise.all (index 0)
+	at async p.getFilesToBeFixed (/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/out/client/extension.js:59:499353)
+	at async p.updateTestSettings (/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/out/client/extension.js:59:498980)] {
+  code: 'FileNotFound',
+  name: 'EntryNotFound (FileSystemError)'
+}
+Python interpreter path: /usr/bin/python3
+Starting Jedi Python language engine.
+> conda --version
+Starting Jedi Python language engine.
+> ~/sch/bin/python ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py pip --version
+Starting Jedi Python language engine.
+Python interpreter path: ./sch/bin/python
+> conda info --json
+> conda --version
+> ~/sch/bin/python ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import pip"
+> ~/sch/bin/python ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import pip"
+> ~/sch/bin/python ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+Starting Jedi Python language engine.
+> ~/env/bin/python3 ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py pip --version
+Error 2021-01-25 02:30:46: Failed to get interpreter information for '/home/sting/env/bin/python3' [Error: Command failed: "/home/sting/env/bin/python3" "/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py" "/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/interpreterInfo.py"
+/bin/sh: 1: /home/sting/env/bin/python3: not found
+
+	at ChildProcess.exithandler (child_process.js:295:12)
+	at ChildProcess.emit (events.js:223:5)
+	at maybeClose (internal/child_process.js:1021:16)
+	at Socket.<anonymous> (internal/child_process.js:430:11)
+	at Socket.emit (events.js:223:5)
+	at Pipe.<anonymous> (net.js:664:12)] {
+  killed: false,
+  code: 127,
+  signal: null,
+  cmd: '"/home/sting/env/bin/python3" "/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py" "/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/interpreterInfo.py"'
+}
+> ~/env/bin/python3 ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> ~/env/bin/python3 ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> ~/env/bin/python3 ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> ~/env/bin/python3 ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> ~/env/bin/python3 ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> ~/env/bin/python3 ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> ~/env/bin/python3 ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> ~/env/bin/python3 ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+Starting Jedi Python language engine.
+> ~/ASSGLP11env/bin/python3 ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py pip --version
+Python interpreter path: ./ASSGLP11env/bin/python3
+Starting Jedi Python language engine.
+> ~/ASSGLP11env/bin/python3 ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import pip"
+> ~/ASSGLP11env/bin/python3 ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import pip"
+Error 2021-01-25 02:39:54: Error in installing the module 'ipykernel', Error: Command failed with errors, check the terminal for details. Command: /home/sting/sch/bin/python /home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py pip install -U ipykernel
+Traceback (most recent call last):
+  File "/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/shell_exec.py", line 26, in <module>
+    subprocess.check_call(shell_args, stdout=sys.stdout, stderr=sys.stderr)
+  File "/usr/lib/python3.8/subprocess.py", line 359, in check_call
+    retcode = call(*popenargs, **kwargs)
+  File "/usr/lib/python3.8/subprocess.py", line 340, in call
+    with Popen(*popenargs, **kwargs) as p:
+  File "/usr/lib/python3.8/subprocess.py", line 854, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.8/subprocess.py", line 1702, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: '/home/sting/sch/bin/python'
+
+> ~/sch/bin/python ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> ~/sch/bin/python ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> ~/ASSGLP11env/bin/python3 ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> ~/ASSGLP11env/bin/python3 ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> ~/ASSGLP11env/bin/python3 ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> ~/ASSGLP11env/bin/python3 ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> ~/ASSGLP11env/bin/python3 ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> ~/ASSGLP11env/bin/python3 ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> ~/ASSGLP11env/bin/python3 ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> ~/ASSGLP11env/bin/python3 ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py -c "import sys;print(sys.executable)"
+> ASSG/LP11/env/bin/activate ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py pip --version
+Error 2021-01-25 02:50:27: Failed to get interpreter information for 'ASSG/LP11/env/bin/activate' [Error: Command failed: "ASSG/LP11/env/bin/activate" "/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py" "/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/interpreterInfo.py"
+/bin/sh: 1: ASSG/LP11/env/bin/activate: not found
+
+	at ChildProcess.exithandler (child_process.js:295:12)
+	at ChildProcess.emit (events.js:223:5)
+	at maybeClose (internal/child_process.js:1021:16)
+	at Socket.<anonymous> (internal/child_process.js:430:11)
+	at Socket.emit (events.js:223:5)
+	at Pipe.<anonymous> (net.js:664:12)] {
+  killed: false,
+  code: 127,
+  signal: null,
+  cmd: '"ASSG/LP11/env/bin/activate" "/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py" "/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/interpreterInfo.py"'
+}
+Error 2021-01-25 02:50:27: Failed to get interpreter information for '/home/sting/ASSG/LP11/env/bin/activate' [Error: Command failed: "/home/sting/ASSG/LP11/env/bin/activate" "/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py" "/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/interpreterInfo.py"
+/bin/sh: 1: /home/sting/ASSG/LP11/env/bin/activate: Permission denied
+
+	at ChildProcess.exithandler (child_process.js:295:12)
+	at ChildProcess.emit (events.js:223:5)
+	at maybeClose (internal/child_process.js:1021:16)
+	at Socket.<anonymous> (internal/child_process.js:430:11)
+	at Socket.emit (events.js:223:5)
+	at Pipe.<anonymous> (net.js:664:12)] {
+  killed: false,
+  code: 126,
+  signal: null,
+  cmd: '"/home/sting/ASSG/LP11/env/bin/activate" "/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py" "/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/interpreterInfo.py"'
+}
+Error 2021-01-25 02:50:28: Failed to get interpreter information for '/home/sting/ASSG/LP11/env/bin/activate' [Error: Command failed: "/home/sting/ASSG/LP11/env/bin/activate" "/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py" "/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/interpreterInfo.py"
+/bin/sh: 1: /home/sting/ASSG/LP11/env/bin/activate: Permission denied
+
+	at ChildProcess.exithandler (child_process.js:295:12)
+	at ChildProcess.emit (events.js:223:5)
+	at maybeClose (internal/child_process.js:1021:16)
+	at Socket.<anonymous> (internal/child_process.js:430:11)
+	at Socket.emit (events.js:223:5)
+	at Pipe.<anonymous> (net.js:664:12)] {
+  killed: false,
+  code: 126,
+  signal: null,
+  cmd: '"/home/sting/ASSG/LP11/env/bin/activate" "/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py" "/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/interpreterInfo.py"'
+}
+Error 2021-01-25 02:50:29: Failed to get interpreter information for '/home/sting/ASSG/LP11/env/bin/activate' [Error: Command failed: "/home/sting/ASSG/LP11/env/bin/activate" "/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py" "/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/interpreterInfo.py"
+/bin/sh: 1: /home/sting/ASSG/LP11/env/bin/activate: Permission denied
+
+	at ChildProcess.exithandler (child_process.js:295:12)
+	at ChildProcess.emit (events.js:223:5)
+	at maybeClose (internal/child_process.js:1021:16)
+	at Process.ChildProcess._handle.onexit (internal/child_process.js:283:5)] {
+  killed: false,
+  code: 126,
+  signal: null,
+  cmd: '"/home/sting/ASSG/LP11/env/bin/activate" "/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py" "/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/interpreterInfo.py"'
+}
+Error 2021-01-25 02:50:30: Failed to get interpreter information for '/home/sting/ASSG/LP11/env/bin/activate' [Error: Command failed: "/home/sting/ASSG/LP11/env/bin/activate" "/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py" "/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/interpreterInfo.py"
+/bin/sh: 1: /home/sting/ASSG/LP11/env/bin/activate: Permission denied
+
+	at ChildProcess.exithandler (child_process.js:295:12)
+	at ChildProcess.emit (events.js:223:5)
+	at maybeClose (internal/child_process.js:1021:16)
+	at Socket.<anonymous> (internal/child_process.js:430:11)
+	at Socket.emit (events.js:223:5)
+	at Pipe.<anonymous> (net.js:664:12)] {
+  killed: false,
+  code: 126,
+  signal: null,
+  cmd: '"/home/sting/ASSG/LP11/env/bin/activate" "/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py" "/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/interpreterInfo.py"'
+}
+Starting Jedi Python language engine.
+> ~/ASSG/LP11/env/bin/activate ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py pip --version
+Error 2021-01-25 03:06:00: Failed to get interpreter information for '/home/sting/ASSG/LP11/env/bin/activate' [Error: Command failed: "/home/sting/ASSG/LP11/env/bin/activate" "/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py" "/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/interpreterInfo.py"
+/bin/sh: 1: /home/sting/ASSG/LP11/env/bin/activate: Permission denied
+
+	at ChildProcess.exithandler (child_process.js:295:12)
+	at ChildProcess.emit (events.js:223:5)
+	at maybeClose (internal/child_process.js:1021:16)
+	at Socket.<anonymous> (internal/child_process.js:430:11)
+	at Socket.emit (events.js:223:5)
+	at Pipe.<anonymous> (net.js:664:12)] {
+  killed: false,
+  code: 126,
+  signal: null,
+  cmd: '"/home/sting/ASSG/LP11/env/bin/activate" "/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py" "/home/sting/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/interpreterInfo.py"'
+}
+> ~/ASSG/LP11/env/bin/python3 ~/.vscode-server/extensions/ms-python.python-2021.1.502429796/pythonFiles/pyvsc-run-isolated.py pip --version
+Starting Jedi Python language engine.
+Python interpreter path: ./ASSG/LP11/env/bin/python3
+Starting Jedi Python language engine.

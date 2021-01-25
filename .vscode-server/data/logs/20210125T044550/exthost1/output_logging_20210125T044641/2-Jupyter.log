@@ -1,0 +1,10 @@
+Error 2021-01-25 04:46:43: Jupyter Kernel Spec not found for a local connection
+> ~/.vsch/bin/python ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.kernel_launcher_daemon -v
+> ~/.vsch/bin/python ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import jupyter"
+> ~/.vsch/bin/python ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> ~/.vsch/bin/python ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import notebook"
+> ~/.vsch/bin/python ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.kernel_launcher_daemon -v
+Started kernel Python 3.8.5 64-bit ('.vsch')
+> ~/.vsch/bin/python ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> ~/.vsch/bin/python ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.kernel_launcher_daemon -v
+Error 2021-01-25 04:47:48: Disposing session as kernel process died ExitCode: undefined, Reason: undefined

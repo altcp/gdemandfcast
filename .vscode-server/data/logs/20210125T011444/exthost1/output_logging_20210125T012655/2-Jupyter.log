@@ -1,0 +1,57 @@
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.kernel_launcher_daemon -v
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.kernel_launcher_daemon -v
+Started kernel Python 3
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.kernel_launcher_daemon -v
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.kernel_launcher_daemon -v
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.kernel_launcher_daemon -v
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.kernel_launcher_daemon -v
+Started kernel Python 3
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.kernel_launcher_daemon -v
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.kernel_launcher_daemon -v
+Error 2021-01-25 02:07:27: Kernel died [r [Error]: [IPKernelApp] ERROR | Exception in message handler:
+
+	at t._next (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:758167)
+	at t.__tryOrUnsub (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:32:5463)
+	at t.next (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:32:4632)
+	at t._next (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:32:3736)
+	at t.next (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:32:3407)
+	at t.next (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:32:8976)
+	at /home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:9:107791
+	at /home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:421842
+	at /home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:422060
+	at Immediate._onImmediate (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:423625)
+	at processImmediate (internal/timers.js:439:21)] 
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.kernel_launcher_daemon -v
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.kernel_launcher_daemon -v
+> /bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> /bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> ~/sch/bin/python ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> ~/sch/bin/python ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> ~/sch/bin/python ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> ~/sch/bin/python ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> ~/sch/bin/python ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> ~/ASSGLP11env/bin/python ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+Error 2021-01-25 02:45:44: Kernel died [r [Error]: [IPKernelApp] ERROR | Exception in message handler:
+
+	at t._next (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:758167)
+	at t.__tryOrUnsub (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:32:5463)
+	at t.next (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:32:4632)
+	at t._next (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:32:3736)
+	at t.next (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:32:3407)
+	at t.next (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:32:8976)
+	at /home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:9:107791
+	at /home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:421842
+	at /home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:422060
+	at Immediate._onImmediate (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:423625)
+	at processImmediate (internal/timers.js:439:21)] 
+> ~/ASSGLP11env/bin/python ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> ~/ASSGLP11env/bin/python ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> ~/ASSGLP11env/bin/python ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> /bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> /bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"

@@ -1,0 +1,3 @@
+[console_scripts]
+txt2tags = txt2tags:exec_command_line
+

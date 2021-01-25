@@ -1,0 +1,516 @@
+Looking for git in: git
+Using git 2.25.1 from git
+> git init
+> git rev-parse --git-dir
+Open repository: /home/sting
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+fatal: ambiguous argument 'master': unknown revision or path not in the working tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git config --local branch.master.github-pr-owner-number
+> git check-ignore -v -z --stdin
+> git add -A -- .
+> git -c user.useConfigOnly=true commit --quiet --allow-empty-message --file -
+
+*** Please tell me who you are.
+
+Run
+
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+
+to set your account's default identity.
+Omit --global to set the identity only in this repository.
+
+fatal: no email was given and auto-detection is disabled
+> git config --get-all user.name
+> git check-ignore -v -z --stdin
+> git check-ignore -v -z --stdin
+> git add -A -- .
+> git -c user.useConfigOnly=true commit --quiet --allow-empty-message --file -
+Auto packing the repository in background for optimum performance.
+See "git help gc" for manual housekeeping.
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git config --local branch.master.github-pr-owner-number
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git check-ignore -v -z --stdin
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git add -A -- .
+error: 'APPS/Viral_AI/' does not have a commit checked out
+fatal: adding files failed
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git status -z -u
+> git init
+> git rev-parse --git-dir
+Open repository: /home/sting
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+fatal: ambiguous argument 'master': unknown revision or path not in the working tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git config --local branch.master.github-pr-owner-number
+> git check-ignore -v -z --stdin
+> git check-ignore -v -z --stdin
+> git check-ignore -v -z --stdin
+> git check-ignore -v -z --stdin
+> git clean -f -q -- /home/sting/.cache/jedi/CPython-38-33/593d51111df2a7984c5d14ec09b1fb4e1c5fa86889ca077d5efe8caf989e2ebc-4c8ffcaf0d6fa21636376a06f6b53db32a8d435f930538f1360b5665a033e45c.pkl /home/sting/.cache/jedi/CPython-38-33/593d51111df2a7984c5d14ec09b1fb4e1c5fa86889ca077d5efe8caf989e2ebc-7fb0d9e3704c1a7a9ad128387d2a4186984a4a35150bd335339ac7f0deafc13e.pkl /home/sting/.cache/jedi/CPython-38-33/593d51111df2a7984c5d14ec09b1fb4e1c5fa86889ca077d5efe8caf989e2ebc-11f25c8d117ada53f6f5bb2fab355108bd3e8637b9be929f4ba182424b8755cb.pkl /home/sting/.cache/jedi/CPython-38-33/593d51111df2a7984c5d14ec09b1fb4e1c5fa86889ca077d5efe8caf989e2ebc-70f24d9d71d5afd777060e804e5022e84f26a78d9facad0f01188ded4b54e266.pkl /home/sting/.cache/jedi/CPython-38-33/593d51111df2a7984c5d14ec09b1fb4e1c5fa86889ca077d5efe8caf989e2ebc-593daccc55beca36681b1cd63e5c8f87861a288906865d0bec5d834bbf93e426.pkl /home/sting/.cache/jedi/CPython-38-33/593d51111df2a7984c5d14ec09b1fb4e1c5fa86889ca077d5efe8caf989e2ebc-1297e4122f246544e00decb7794555cc95fc48134650464c4d33eec7cc68317a.pkl /home/sting/.cache/jedi/CPython-38-33/593d51111df2a7984c5d14ec09b1fb4e1c5fa86889ca077d5efe8caf989e2ebc-005176f43e91fb7203ae407d682cef412a8e4298d9b85627b7ebb272a78dd6cd.pkl /home/sting/.cache/jedi/CPython-38-33/593d51111df2a7984c5d14ec09b1fb4e1c5fa86889ca077d5efe8caf989e2ebc-8769ceec51081b6fd60a981ccaacb81636a1c2dd6bdc9137f50ddec4dfb1e983.pkl /home/sting/.cache/jedi/CPython-38-33/593d51111df2a7984c5d14ec09b1fb4e1c5fa86889ca077d5efe8caf989e2ebc-88073fb65d1a2971c1757163711f8178a19708a8a90ddd9b184e6ec7b8765850.pkl /home/sting/.cache/jedi/CPython-38-33/593d51111df2a7984c5d14ec09b1fb4e1c5fa86889ca077d5efe8caf989e2ebc-823746870d07104596211f9477d7aee97d30ed990dfabc30389ff74f837e86bb.pkl /home/sting/.cache/jedi/CPython-38-33/593d51111df2a7984c5d14ec09b1fb4e1c5fa86889ca077d5efe8caf989e2ebc-b7155b0ed6c57de1b02d769d2b661c241f5dbdcf31d8a7708fb99eabd9a0f6ca.pkl /home/sting/.cache/jedi/CPython-38-33/593d51111df2a7984c5d14ec09b1fb4e1c5fa86889ca077d5efe8caf989e2ebc-bab995202910fcd08c9d0a6b8a85b93d6dceded5dcb483e004ad2d84aaa0e48b.pkl /home/sting/.cache/jedi/CPython-38-33/593d51111df2a7984c5d14ec09b1fb4e1c5fa86889ca077d5efe8caf989e2ebc-e8ea8234b931b7feb6aaae5257ab4f9c0758886e5f636f29db5cc489558419c8.pkl /home/sting/.cache/jedi/CPython-38-33/593d51111df2a7984c5d14ec09b1fb4e1c5fa86889ca077d5efe8caf989e2ebc-e632c01c86e111eb80d5162515766ec47f8a7cdca862e9a96dd007bea5919c6f.pkl /home/sting/.cache/jedi/CPython-38-33/593d51111df2a7984c5d14ec09b1fb4e1c5fa86889ca077d5efe8caf989e2ebc-ecbe281e3da3f8725ff10f4f8f493902ac8cd339dbe68a8233b0854040bfbc8e.pkl /home/sting/.cache/jedi/CPython-38-33/593d51111df2a7984c5d14ec09b1fb4e1c5fa86889ca077d5efe8caf989e2ebc-f895f5d54159d470b164ba88bd5e94fea352e6e01f9d5751ec8ca6015f734722.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-0b2061729eb03b37678961f6da0e4b2215c388a2fb505a867d93eb80f839d292.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-2f6fe4b286fff6d3d5550eb21e2f7906198b56316b68d4076815e5b28318765a.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-4c0a76595bfd095d6fb15b395e8ed3796e70c9e1a63667e45d525dbbfbff5b89.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-5d57d5e3640c9403a2e1ee6a06655e44e4bc77c1225e9c0d673f6462cc2b6928.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-6ad16ab1d76f7d0719493cc2690afae32bd2d5fe227e5cf571e1a49d5199ff20.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-6e2c1159e09aa75246ddd472ca7394ef8478118995902b7c8fcf751cec98b23c.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-6f76d01fda1699cd14f9a4bc95ccae065fa91b32a32749fc6dd4dc6a667e16b6.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-6f9805dde6d3a3c4643db85440f505e58b597282480bdc8423af6cdd18efebba.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-7d0eb1c7c599a4967009eea03743a170ac0465b9483fc2114060552d7467a1ff.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-7db45f19fb01332218d527faba3051ce16cb137033fa1ba4dd8edc93c3fb7111.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-7e8a6405a50751814640be7be6f0c9b619cee3d59b28130804dd721b6b3ed81b.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-07e8f61079985cde3fa449871b8df2a25cc140ddc5d786f5a76a4adafe2a0049.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-8aeab0d7bee57e26faca4736daba1664abe2385183b624d79ac4ecb46d9924cf.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-43afb5dd1ec16b27982212bc4f6c80c7cc09249b916630970f6676740bef2d3c.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-68b657a63ee96114b1923ab5eea727929d21851b6bc8df8a63d2d5e3fb1e4727.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-78dd1d746fa72033a858fcfcdf389e938e97c62d165556c260b77d71398a3fa1.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-86f6115a124e0a7eeed449419dc777814e77cae6a11d0fb7e5f5b81b0d566fa3.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-92b0f6bbfd16968e07f7d1f83cd1ac30f3195db26eaf740b012adf4bcc73e3dc.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-92c00fa8028bc8db637abe3087d22aa17c412f65a857f50b8f633b2946621aa6.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-275fbd217705f8c42704962e8b77b6f47f53fbded393d08e41679d87d383cf9a.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-609b8d36a43cf4f3d57164ed0316d1b71448e99554a8f40f3306ae97be4c2bdd.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-636b7200bb63eb0ae3c2b39172864b9f303dfc3f04b2377f3d698bd44e3cddc3.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-677eccbc9f31623dbadf4416ee4dbdd7baa170abc81b4df2d3893236f0526450.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-1309e47f7714bcbc097222bb9b6f95ccfd9e219f6fa71731da3b0930631aca69.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-1320b91b8544da90d8a6ffe810b134c4951a042db7a820350806f897b674da66.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-4904f9947c0dc5d2e2a41dc72200e1a112f6686f1cd3f0aaf74778696377ed2d.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-8938a45b05ecf75868d7371d65b0c4f74a147053335c0ab25e06bd0dace820ec.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-4806535d149f38f532366ba1ea24c91a85b2b2a010749ac613fe9eb68b454cbc.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-aa9eb15d096f827a2c884e62883286d422ff062513d3e11ff39a0c76e5987794.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-adc40432e2409eeca794f3c8a1ad1a76421f467efe25db73056a8023b5aacaa6.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-ae71cea8ad47c1a5083be83f2d8b4a156a6b02b8d7de8109669f0beb9f473155.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-b5a2db02285e7b66cf1230939b65d3dbdc58229c1b480fb7be216af7a8b98c6b.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-bf736125cb3f8256e99be342c86c66ffe310b1dd4ee05ebdcb103e2936007788.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-c5f947744ca9c5ad02548ec634d31730c319161f9ecd345ecfc7c0ce2e7716a2.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-c6837d86f112cd3a7629d12c1610a2db17eb7178d976f57d1f38deecd7a60432.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-ca561ba045b151f5f4aea5043aa2a25c7c53afd620965a8e811579c27a492235.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-cc6ff31c76f1c673d7dd0dc6d8bc93f5a406fffd82b3538cb4e38c976a1322c4.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-d8e7d01cc3c74605fffbf0ab68a5f9d57c59aca02ff6a296fe0a434a2aa1aedb.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-d8e40c59d7acd61f465192aba299b889b2adc9f475abaf78afb9032782de0921.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-d055d5c1497db63788d8a4f8ce652ceff1dd3ce7bced8c17a4885f07fee9dbca.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-d958ae7cd8ad2736038b99b9d0f30c62b8ab2a5bfb004e842c3275b15b67e2b7.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-dd2133968304b70b56dc4a815fe865bf16ec63080e76e459d12fe1422787f84d.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-e8f9b2aaf8462f04c484417a128f7b9b82b0cc553272b8b2ce028601a89e1a2a.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-e77f2fc09415eccce1684b8df18da38f34b568ee9af40ac84156a5e46797e88e.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-efa65e328f755927725783668bd01fc157515970e8a8d3a1014804fc76ee5bce.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-f1e4e1c991033e852d7341a2e33149e241bacbed0acc1ebb1f77e6cbf2bad03b.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-f3526d4edc25b715b011f4d69489b76fccc10845e0adce8eef03d0cd653a7099.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-f328657b025ae23c5cc45830d0d4c66be176b808f0ae88af7edf37adb6cdd2d1.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-fbc1e2e701dcb1830bce89a6669a79f172f9d08510e96965796eba20677ff4b0.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-fbcac7fcd928fea5532c6c727dbf11c1ada4ef438de7f40180b3c5a02c08685f.pkl /home/sting/.cache/jedi/CPython-38-33/a06ac99c842521c63a8cea104b5c09c34f67250c3606da8204d9386f72ce9832-ff87a92d8f0343cb00b5d7a55ba6b0bfb627979caefe0e1f9fde070790eede7f.pkl
+> git clean -f -q -- /home/sting/.cache/matplotlib/fontlist-v330.json
+> git clean -f -q -- /home/sting/.cache/pip/http/0/1/a/b/3/01ab38ac63d82e82f212dd86d62de883eb0d7de6be8db88f70d14a62
+> git clean -f -q -- /home/sting/.cache/pip/http/0/2/e/a/3/02ea3a40bec709fb2e3011abf56d9ff0e8a057e522b64b520bfc74fe
+> git clean -f -q -- /home/sting/.cache/pip/http/0/3/1/3/2/03132e721096a01b3a9b4683089a80eec1e18f98178e7fccada07725
+> git clean -f -q -- /home/sting/.cache/pip/http/0/4/4/5/2/04452fdd540f45013491158424fe83c068e5194fd20f3c7d05ab29cf
+> git clean -f -q -- /home/sting/.cache/pip/http/0/6/7/2/6/06726d442b7e33afe35f1740674b6dee72357a95eef3aca0ef7abf21
+> git clean -f -q -- /home/sting/.cache/pip/http/0/6/a/1/0/06a10a01993b98a46b24126de4370c3ed430c734a40d6ac34065ddcf
+> git clean -f -q -- /home/sting/.cache/pip/http/0/8/a/7/2/08a720d534616d0514b924c18512ac0c1020e9a23fce36fd54e6313b
+> git clean -f -q -- /home/sting/.cache/pip/http/0/a/6/9/0/0a690ae203cfcecc7cd36937c2c67e726a0b8c17695217fa14b6dd6f
+> git clean -f -q -- /home/sting/.cache/pip/http/0/b/e/6/e/0be6ed779dcc98fa03fd3de1c1239a435dcca771d5db249928779ee7
+> git clean -f -q -- /home/sting/.cache/pip/http/1/1/1/5/a/1115a0b767c1f0cd9a958e2b6626732254f5de91c084b9dbd27a4951
+> git clean -f -q -- /home/sting/.cache/pip/http/1/4/e/5/7/14e57173c933ae958808c8e83e0eed4b70a4f9f952a35ab3d5fa7a83
+> git clean -f -q -- /home/sting/.cache/pip/http/1/5/2/4/5/15245da9382083bde5273618c7c19e72eadeba5c550e6a855b8b7648
+> git clean -f -q -- /home/sting/.cache/pip/http/1/6/4/d/6/164d6ad3dd63de16cc1925719702447cb2a1a69d51f8a93ece8b0dd6
+> git clean -f -q -- /home/sting/.cache/pip/http/1/8/0/6/7/18067a78a26810bef51826eed08f0fca57a9a0a63d61102b8e72d967
+> git clean -f -q -- /home/sting/.cache/pip/http/1/9/1/b/6/191b664bb8c53d0cf8ae2c3831ad50730c1ac40a81a5f9012c2310ff
+> git clean -f -q -- /home/sting/.cache/pip/http/1/a/a/f/1/1aaf12502d9d2700532b5c7786558a9bfb4d409422398ffa270ae51d
+> git clean -f -q -- /home/sting/.cache/pip/http/1/c/e/1/6/1ce16c09dd092df867a335050c82b0fcf1138627967bab43db6b92ac
+> git clean -f -q -- /home/sting/.cache/pip/http/1/d/6/d/3/1d6d30546dc9c3ac71271591ed014f5e00421bc55775f7b4e0f7fa45
+> git clean -f -q -- /home/sting/.cache/pip/http/1/e/d/3/b/1ed3b5643305962b22e7585fd8cbfb20ba1eb89d808868f89a73ec43
+> git clean -f -q -- /home/sting/.cache/pip/http/1/f/3/a/0/1f3a010a7cc3ca64eac10d62d9f15870c702fc5a0cf7712c5ae43c10
+> git clean -f -q -- /home/sting/.cache/pip/http/2/1/3/7/f/2137f603f620cd2c8b12df96008a50a6038fc764aaf0d243c22963d6
+> git clean -f -q -- /home/sting/.cache/pip/http/2/1/a/5/4/21a54f6d02f3dded648f189d74b995474e64b681feca0efbbd8a8de7
+> git clean -f -q -- /home/sting/.cache/pip/http/2/2/c/c/7/22cc78489f5e25fff0f7aaa25c9883c57b7ff32d5fd0ce889f0f68c7
+> git clean -f -q -- /home/sting/.cache/pip/http/2/4/9/9/6/249966c7f1e7970eeae0088cdcd48fa18209582a788c44b34dc549ce
+> git clean -f -q -- /home/sting/.cache/pip/http/2/a/f/1/5/2af158b0a03ac00e5868dcc85716ddc048ecc88d4181885eec9c7294
+> git clean -f -q -- /home/sting/.cache/pip/http/2/d/4/6/d/2d46debcaa73e0185f0d7d7ed97339dedc2f04a6f7e73876336349d4
+> git clean -f -q -- /home/sting/.cache/pip/http/2/d/a/f/e/2dafea6c0f1b47eeb64a6589a2b29e655db43127283a1f06acd54ebe
+> git clean -f -q -- /home/sting/.cache/pip/http/3/1/5/b/d/315bd5994915d999cc934902f11d8d89b7bce4fc77ed43b9a66f4aad
+> git clean -f -q -- /home/sting/.cache/pip/http/3/2/0/b/4/320b4952ef5990068ca6de9439e3c591774aacc2a83efdc711c9dfbf
+> git clean -f -q -- /home/sting/.cache/pip/http/3/3/e/d/f/33edfdc631388d50e17fdfc77f6245d6a716f94b1333842b4cce6055
+> git clean -f -q -- /home/sting/.cache/pip/http/3/5/e/c/f/35ecf88872b88c8cea6a3be01df282bea23c356926d3bf49339750fb
+> git clean -f -q -- /home/sting/.cache/pip/http/3/6/1/b/f/361bf053ab706a1212f013301d35a0c4b0af9cd8cc559d24c73d6a6f
+> git clean -f -q -- /home/sting/.cache/pip/http/3/7/4/d/0/374d08b5031d36723e0e4938a386c9d5f49976ada5bd085985f5970f
+> git clean -f -q -- /home/sting/.cache/pip/http/3/7/6/e/4/376e43c12054af0312545d3671391c7ba06b7fb9a99e035fe29e0bc7
+> git clean -f -q -- /home/sting/.cache/pip/http/3/8/6/0/e/3860e4de9ae53c79d2fd61419e9049df314ccc8b640782c02c6e2e2d
+> git clean -f -q -- /home/sting/.cache/pip/http/3/8/e/6/3/38e63545cbab431f32ba0bbc6eb7c8693ff569fe55a3666c126dc43b
+> git clean -f -q -- /home/sting/.cache/pip/http/3/9/7/f/a/397faec9b49c95a58f31ad93e64b809984f63641ac344ca3dae77c95
+> git clean -f -q -- /home/sting/.cache/pip/http/3/b/8/e/d/3b8edbdd2d058fe61232856824b7c482643c975ac5fd400566eda285
+> git clean -f -q -- /home/sting/.cache/pip/http/3/d/0/e/c/3d0ec0194ebdcbeceb84ca255d96bf5899adad5d19db52d25e52e319
+> git clean -f -q -- /home/sting/.cache/pip/http/3/e/4/5/2/3e452bf333df8ab434b237eb8b1e3beee7a01b16817f3cf5b8996639
+> git clean -f -q -- /home/sting/.cache/pip/http/3/e/9/a/4/3e9a4e7f56493e9f06407dbc32afae529f65c7ec2e8742451dcc4271
+> git clean -f -q -- /home/sting/.cache/pip/http/3/f/d/d/2/3fdd2b71a28cf7bb5ce73cb583d37608c207d0c18b05e0b512299e62
+> git clean -f -q -- /home/sting/.cache/pip/http/4/1/a/4/a/41a4a5b4d08d682c256c42188a3386c88748bf23a52b7c7ccc3a01f0
+> git clean -f -q -- /home/sting/.cache/pip/http/4/4/9/a/7/449a71949e33615dd7c15f944d1d04239bd4450ff54360d386bcaad2
+> git clean -f -q -- /home/sting/.cache/pip/http/4/4/e/5/b/44e5b11a6caa92636d8ccfe658d420ba4ed8f67f7f4e835b214255aa
+> git clean -f -q -- /home/sting/.cache/pip/http/4/5/3/a/5/453a51cfad1fbd034012998610d09684e93aa70ed0f3fb5bfbc172a2
+> git clean -f -q -- /home/sting/.cache/pip/http/4/5/9/7/6/45976c194ebb9180bf7410d422bcad653ce13bcb64dda0d07d72b09d
+> git clean -f -q -- /home/sting/.cache/pip/http/4/6/1/a/5/461a552c2a111c81f4a0ce5c83ac2a384eb77a374eafb860fc0b1989
+> git clean -f -q -- /home/sting/.cache/pip/http/4/6/d/d/6/46dd6c7d38d9678c38989b4cd14dca9da87ef21be758c0f56968decd
+> git clean -f -q -- /home/sting/.cache/pip/http/4/9/a/6/5/49a65ef51069b1954617f8b76476ce09dc41c9efac53f4d81e1f5cf3
+> git clean -f -q -- /home/sting/.cache/pip/http/4/a/9/5/8/4a958e02d92a5370a741631c62388747ba5d51d5d7870694efa991c8
+> git clean -f -q -- /home/sting/.cache/pip/http/4/e/c/6/5/4ec656204ae6d4d7cefd7507c4d50078f8cc839bec064ed31da40d36
+> git clean -f -q -- /home/sting/.cache/pip/http/4/e/e/3/1/4ee3138b60ee0c1b5c7c6d39d2830adba9f08a2f0a1a300dfb7d80b0
+> git clean -f -q -- /home/sting/.cache/pip/http/5/2/a/3/3/52a336325f81515bcfa88bec6c3232e05e0d3c6ac8c8a5456abf1c0d
+> git clean -f -q -- /home/sting/.cache/pip/http/5/8/d/8/c/58d8cc925d78be2d3acc20e5049e331e76e72ac917f25aa757fb36a1
+> git clean -f -q -- /home/sting/.cache/pip/http/5/b/5/7/6/5b576ddc69cb2cda42f61333b85f066e4990a5eab5c96e0670cbb445
+> git clean -f -q -- /home/sting/.cache/pip/http/5/e/1/5/6/5e1566c3cd6ebe85e96ca647578431e485dbc275e8e8ec5aaf5ff3e8
+> git clean -f -q -- /home/sting/.cache/pip/http/5/e/2/0/9/5e2099ebd080dbc276cd7be3de20dd085cc9401be652446c802c36a9
+> git clean -f -q -- /home/sting/.cache/pip/http/5/e/7/1/7/5e71798b9f9488f6e8531f51a6e0db5ca81d69ab02489a5202a8de6a
+> git clean -f -q -- /home/sting/.cache/pip/http/6/1/4/f/4/614f46c6d1c16fa5b0800dfd0497e41c5b320e16ee8c9d943d4dd341
+> git clean -f -q -- /home/sting/.cache/pip/http/6/1/a/8/2/61a82324006fa3ef58be635cae87909f88370572a0db4c77ba796799
+> git clean -f -q -- /home/sting/.cache/pip/http/6/1/f/f/d/61ffd9cc8c3434f8285c67be556307c611de9d14e5cb27fbcc649c7f
+> git clean -f -q -- /home/sting/.cache/pip/http/6/6/e/c/7/66ec76a7b6ed4081044f5c7821af293b63c17bc2ac523ff93d5ca7d5
+> git clean -f -q -- /home/sting/.cache/pip/http/6/7/f/5/b/67f5b5747518cbf74987d367c9e086a003d777484ff6398b7b101a95
+> git clean -f -q -- /home/sting/.cache/pip/http/6/8/8/1/6/6881695d9110d18d8c52035757e6acf3f93dfb4bfa0b32afadf592b1
+> git clean -f -q -- /home/sting/.cache/pip/http/6/9/4/e/2/694e2bf3f7b9fc73e1690dea790651bcdc6cc58d6887ec476cdbbc4c
+> git clean -f -q -- /home/sting/.cache/pip/http/6/b/4/3/e/6b43e4b3a831ee464507ba55bb6d68651e7cff81ef7410783047d70d
+> git clean -f -q -- /home/sting/.cache/pip/http/6/d/6/3/4/6d6349e83f886aa5fa046767b19eb3871cac8b16acb1ef2179e5c342
+> git clean -f -q -- /home/sting/.cache/pip/http/7/0/3/9/b/7039bcba7745d19b05b08fe0439c279c34377f1f48f30d413cd0791f
+> git clean -f -q -- /home/sting/.cache/pip/http/7/2/8/a/2/728a2f33f382f4dacf08f6df77aad6f3d889f819ba4fa3efad5ec7e4
+> git clean -f -q -- /home/sting/.cache/pip/http/7/2/a/0/8/72a08e43370fd6840f6b76f0578503607c2907b388e31c09ecdf81de
+> git clean -f -q -- /home/sting/.cache/pip/http/7/2/f/a/0/72fa088b4a7b05f8edf85ae3d8929365d519ab02d9eb73223a5c957c
+> git clean -f -q -- /home/sting/.cache/pip/http/7/3/c/3/a/73c3a780e17f5e947c788a9cb111cdef096f43dbe925001283e27a77
+> git clean -f -q -- /home/sting/.cache/pip/http/7/6/7/6/9/76769a1d3e999f53faab49b37fe6b768a8df93bfb1ef31b99a3a5a29
+> git clean -f -q -- /home/sting/.cache/pip/http/7/9/2/1/a/7921ac3318a5cdb592026cc26a94f7a2c1e1f7d3a1dc1e3857fd49f1
+> git clean -f -q -- /home/sting/.cache/pip/http/7/9/b/3/7/79b37ed904fd9091faa2fc27684fc387f06314a81380bdbd81ff33e1
+> git clean -f -q -- /home/sting/.cache/pip/http/7/a/5/f/7/7a5f717e7b3fb99ec006f4d173aad55224eb063005c662c586ba0518
+> git clean -f -q -- /home/sting/.cache/pip/http/7/a/d/e/9/7ade903fe368450a78b828179f6cfa3c208ba5501b13c3b6b1457f27
+> git clean -f -q -- /home/sting/.cache/pip/http/7/c/4/b/8/7c4b8a19f4f69494c22868b76649cd91120de17447e4ff71fb7a7f10
+> git clean -f -q -- /home/sting/.cache/pip/http/7/d/9/f/c/7d9fc72980162cfdee107d68ed91af7f0d17635944a2be45d02dcc8a
+> git clean -f -q -- /home/sting/.cache/pip/http/7/e/4/7/2/7e472360855da81376e202ad4d8e87e21a0e9de62bd610676bb79e61
+> git clean -f -q -- /home/sting/.cache/pip/http/7/f/a/a/4/7faa4f2d0e6fe96ff0a0ed8a3f310b4b2447217fa16f4f52f892fdc4
+> git clean -f -q -- /home/sting/.cache/pip/http/8/1/3/c/c/813cc7096c25ba43edba14a4ab40832db33af638c43e975795995aec
+> git clean -f -q -- /home/sting/.cache/pip/http/8/2/c/b/6/82cb6a7ab0f2277a7c78261aeaa1f2c561796b9321bfd8c2937c5fa0
+> git clean -f -q -- /home/sting/.cache/pip/http/8/5/0/7/f/8507f63d4969042edde25fb26cb61f9a3755cdde65730c336fb3fa17
+> git clean -f -q -- /home/sting/.cache/pip/http/8/8/5/7/5/885756dbd26b12f0ce040346860f98e8a505a2811209b64c6065caf5
+> git clean -f -q -- /home/sting/.cache/pip/http/8/8/a/9/7/88a97e7180b28f82644376fb2e041e3e934eec41fba89d03741da0b4
+> git clean -f -q -- /home/sting/.cache/pip/http/8/9/3/a/9/893a9178010858cecf72b523725b46ddedbe6c23406a020810080ab3
+> git clean -f -q -- /home/sting/.cache/pip/http/8/a/c/4/d/8ac4d14dc45e27d21da49fb515570b6f875b78707de9b08ce1088d1b
+> git clean -f -q -- /home/sting/.cache/pip/http/8/a/e/c/b/8aecb564490622774b3d418eae14eb0770e2f9cfef9b32e815b8821d
+> git clean -f -q -- /home/sting/.cache/pip/http/8/c/1/f/0/8c1f012418a7a9e0a288663d77e424b033077e5474c6c937a7444cc1
+> git clean -f -q -- /home/sting/.cache/pip/http/8/d/d/e/f/8ddef1cdf7506b6969b0ac3a60a081a0f483db3025780838246f7611
+> git clean -f -q -- /home/sting/.cache/pip/http/8/f/5/8/8/8f58838cd00fff0299c59c9650266a7af1f0bfa3ce7e350d3b03b86c
+> git clean -f -q -- /home/sting/.cache/pip/http/9/0/5/8/2/90582fb236db0ec663a4c7975b9182cdb96bcd1c500d3efbfc253e99
+> git clean -f -q -- /home/sting/.cache/pip/http/9/3/4/2/c/9342ccd26cbebf3b7f292e682bc1a9e8141b62c8c93481f8de30cf71
+> git clean -f -q -- /home/sting/.cache/pip/http/9/4/5/2/4/9452417670b2e75527d793717779fce5d54e5f21adb3344c273876fa
+> git clean -f -q -- /home/sting/.cache/pip/http/9/7/2/3/f/9723f956c2832f0bf7a0b916be4cb31c77752847964e667e66c6bd97
+> git clean -f -q -- /home/sting/.cache/pip/http/9/8/7/d/8/987d82d1d161139818d17d70083cf46decace54b77ecbd9520f1ebcd
+> git clean -f -q -- /home/sting/.cache/pip/http/9/9/7/e/0/997e0cd4c6639853afe711e69042a24924cba1ba50a2d29a31e11681
+> git clean -f -q -- /home/sting/.cache/pip/http/9/b/5/1/6/9b51619e20a708f99372afefd7dbe20a1b5e42ae213f02bf27267976
+> git clean -f -q -- /home/sting/.cache/pip/http/9/d/1/b/5/9d1b5609ebe8e758b25afac0a3ddcc4e7db01242a2daf131637ef728
+> git clean -f -q -- /home/sting/.cache/pip/http/9/e/0/f/4/9e0f4d818efdba8dd6fc80c2906fc5e2361a1589df556aa909eeaedc
+> git clean -f -q -- /home/sting/.cache/pip/http/9/f/8/9/5/9f895d07d63644b3eabff934b177bcbdfdebed5cb58653d6fac353ab
+> git clean -f -q -- /home/sting/.cache/pip/http/9/f/9/3/3/9f93306d7b672475999e1ccb003ed535876b07060341d71f2c054af0
+> git clean -f -q -- /home/sting/.cache/pip/http/a/1/8/e/4/a18e46374064556e771c50644c75bd86ac5ef2b67220d79958bc1bf1
+> git clean -f -q -- /home/sting/.cache/pip/http/a/b/2/6/a/ab26abe04f7cf9f09edb0d38ca84f74827420c3e8f7dc22e79532f85
+> git clean -f -q -- /home/sting/.cache/pip/http/a/e/2/e/0/ae2e09efc610c4c11d740780ca9e77bcf1cefc430c2f02d444c3139a
+> git clean -f -q -- /home/sting/.cache/pip/http/b/1/9/8/e/b198e900f632c12f54c4647539b507495af2c57f8af08760052ec4a2
+> git clean -f -q -- /home/sting/.cache/pip/http/b/6/2/7/8/b62788e48d94d7d071581f67016a1e43b5d28f62a3ce7433fb91fe3e
+> git clean -f -q -- /home/sting/.cache/pip/http/b/6/f/2/f/b6f2f99998f2235742a8b3a3b2798623d50d354eed1c47aa3c651229
+> git clean -f -q -- /home/sting/.cache/pip/http/b/8/b/f/4/b8bf4a44dbb1c5e59b2500975b68a4301d11f85878b612151a649c3d
+> git clean -f -q -- /home/sting/.cache/pip/http/b/d/6/d/1/bd6d15d7234ed82e15fcbfc2d14f87f9ebeb0faf562217223b09159e
+> git clean -f -q -- /home/sting/.cache/pip/http/b/f/2/7/7/bf277bedcc99e3453379c4c0cbd0cb39994f445f21dff38b0a607a95
+> git clean -f -q -- /home/sting/.cache/pip/http/b/f/b/b/b/bfbbb64251bb29d7400e962e6937ccfc7d6cf8628b719dcd859d1c80
+> git clean -f -q -- /home/sting/.cache/pip/http/c/0/4/0/0/c0400f4849a16bb7ec1db13ba6d964327b0869995ab53c54f6668654
+> git clean -f -q -- /home/sting/.cache/pip/http/c/0/a/2/8/c0a2854dff15e18e7cbf0330d92588eccacddf1dc7b78c86d6ff2967
+> git clean -f -q -- /home/sting/.cache/pip/http/c/4/7/7/4/c477436664e82c78c674c5567e2aaf57ac35450b72d984016040030a
+> git clean -f -q -- /home/sting/.cache/pip/http/c/5/4/0/3/c5403a101bbaf526810b4c472004bc3b03b96b7c8118e06c7a081e63
+> git clean -f -q -- /home/sting/.cache/pip/http/c/5/e/2/2/c5e22bda9746d491af1c4b366893348950f3370140e8f29ddbc30407
+> git clean -f -q -- /home/sting/.cache/pip/http/c/6/d/a/4/c6da4e42a35803426c2ddc3fd67c156e0afccabbea63254936d6f983
+> git clean -f -q -- /home/sting/.cache/pip/http/c/7/9/7/1/c79714eeaf5c047f6c5624fccd640e820f5d1ae8ab77c947d067c617
+> git clean -f -q -- /home/sting/.cache/pip/http/c/7/c/0/c/c7c0c5d1a09a7b7c3ac3db98b6db0911cb2504a8c9b495f332466610
+> git clean -f -q -- /home/sting/.cache/pip/http/c/9/1/f/2/c91f2e41337665457740aa256c527d2526390279f8c0d22dbb82a31c
+> git clean -f -q -- /home/sting/.cache/pip/http/c/a/4/0/5/ca40521d6f4ca2bc510659d13a3cff56d7241103db5d1e645bc10f8f
+> git clean -f -q -- /home/sting/.cache/pip/http/c/b/5/2/a/cb52a2d86b549893dbebd3c41cb632b74900e6546f238508e1029e00
+> git clean -f -q -- /home/sting/.cache/pip/http/c/c/1/3/3/cc133da5701a066bc3777b2575e0daa601596f19871db4608ca98b97
+> git clean -f -q -- /home/sting/.cache/pip/http/c/c/9/0/2/cc902747510a1521fdae0cf35c9f9ba95bc0b0b19cddc266bccf83cb
+> git clean -f -q -- /home/sting/.cache/pip/http/c/d/5/d/e/cd5de44b899cbe1869765c21b55cffc53c0c0ffa9d3c6f1fd40a42a2
+> git clean -f -q -- /home/sting/.cache/pip/http/c/e/d/8/1/ced81c0de5aa0a88237b967eb77c52a05f488c56404db108c93fc4a8
+> git clean -f -q -- /home/sting/.cache/pip/http/c/f/0/3/3/cf03377162fd071e75250e4827adf3bc208ef008cb9e4caa71d95660
+> git clean -f -q -- /home/sting/.cache/pip/http/d/0/3/0/c/d030ce7e2c947a5b0295a7e70ae804d5ed08d0ed744f4a457bec51a1
+> git clean -f -q -- /home/sting/.cache/pip/http/d/0/8/2/f/d082fb388c8b882444be5a4252128330b6bf51b330eaa55f826bea0e
+> git clean -f -q -- /home/sting/.cache/pip/http/d/1/1/3/8/d1138c50139746f14c512f1e97d689d66a367ee275dadb34195233a5
+> git clean -f -q -- /home/sting/.cache/pip/http/d/1/4/8/1/d148131676feda3b83355988943658476e598fa3dff07ddf0513e749
+> git clean -f -q -- /home/sting/.cache/pip/http/d/2/2/5/5/d2255f00783b7286163a5eaa1883e6b713954c895a2b209c4908fc09
+> git clean -f -q -- /home/sting/.cache/pip/http/d/5/3/a/1/d53a1f63fb40af79110eedb457cade4a210f52eaf3fc87a4e71a7551
+> git clean -f -q -- /home/sting/.cache/pip/http/d/9/7/1/8/d9718a314c0f2815c1735e7329b9f6572dc6f2d572d0654340bfe35b
+> git clean -f -q -- /home/sting/.cache/pip/http/d/9/f/f/e/d9ffebdb626d3816fcbf1004c9d0f809f13da7f2d0bbe1c5cc515653
+> git clean -f -q -- /home/sting/.cache/pip/http/d/c/d/b/c/dcdbc05f06006da77f1a4954accca82a6d561c1af73116f6459d61f2
+> git clean -f -q -- /home/sting/.cache/pip/http/d/d/1/e/b/dd1eb495fa45c2e8e78dcc14147d98c3b57a91598c6c58a747dc7202
+> git clean -f -q -- /home/sting/.cache/pip/http/d/e/8/7/e/de87eadb651e0add599fefb34cf36a9ced3fef4608f3f5d9bc75fd1d
+> git clean -f -q -- /home/sting/.cache/pip/http/e/0/1/d/9/e01d9ae49e6adc6646c9f2136ef162187b48cf0195db7098f71cd7e3
+> git clean -f -q -- /home/sting/.cache/pip/http/e/0/7/4/5/e0745285a6530dadea729697d461e25795124a34057dfd41d504e820
+> git clean -f -q -- /home/sting/.cache/pip/http/e/1/3/7/4/e1374613b89e5ef99ce404da422d6e391c381cb3e690748f4344db03
+> git clean -f -q -- /home/sting/.cache/pip/http/e/1/a/1/0/e1a102a58d5f97b4d2a7ffd62157f43e68a5808f81e4779f2eb95e89
+> git clean -f -q -- /home/sting/.cache/pip/http/e/4/5/1/e/e451e3d9f947df0a1f9239713f36b95f7be8d366bacac154aa4a879b
+> git clean -f -q -- /home/sting/.cache/pip/http/e/7/b/e/c/e7bec3c855d5bbaa0ec014ebe5701dd23ea5aa4a554ae4bac539389f
+> git clean -f -q -- /home/sting/.cache/pip/http/e/8/6/5/b/e865b717ff85a36cb45d28e0d1b6bac3531684199e90fe459ab5bd07
+> git clean -f -q -- /home/sting/.cache/pip/http/e/8/b/a/7/e8ba792a06609c54bb3f67764540fec0e79947cc8643af52c84eda38
+> git clean -f -q -- /home/sting/.cache/pip/http/e/9/d/c/e/e9dce085b25e5903438c967bf7dd70971ada620c696d033ce9ace2c7
+> git clean -f -q -- /home/sting/.cache/pip/http/e/b/3/8/9/eb389c88e430ea71c8522a109afa9c7d71a56e5e5fa91d947f4a2864
+> git clean -f -q -- /home/sting/.cache/pip/http/e/b/a/7/c/eba7cdab71e7ecfd4883683a64614002e967d73415fb4eacd2298151
+> git clean -f -q -- /home/sting/.cache/pip/http/f/1/3/1/6/f1316923807644dbbc053df2e36d7eac1efae1c3bf48ce10ef488c7e
+> git clean -f -q -- /home/sting/.cache/pip/http/f/2/0/b/d/f20bdd24ff5372f6d0fc4e07beb2e56bb35ccdb7b5b527cd15dc19a7
+> git clean -f -q -- /home/sting/.cache/pip/http/f/3/b/4/4/f3b444531a505c5b927afc6ca2c2d31308874389993077084851c1f3
+> git clean -f -q -- /home/sting/.cache/pip/http/f/5/7/7/8/f577813f4ca515a35041c12b0f4316cdc549f31b0b105426fc1bf4c8
+> git clean -f -q -- /home/sting/.cache/pip/http/f/7/1/b/3/f71b388bdafda13cfd1a5703115b127815dd6961dca8ed40b33102d1
+> git clean -f -q -- /home/sting/.cache/pip/http/f/8/8/d/5/f88d5ec8adc46a5aaa793767420be12dc11319ce92efa7f219cae1d5
+> git clean -f -q -- /home/sting/.cache/pip/http/f/c/8/8/b/fc88b413c68ef3fd08b5d0985d9df2a82c9131e38713421402b9f1f6
+> git clean -f -q -- /home/sting/.cache/pip/http/f/c/c/e/5/fcce509f95e383a9bc43d51ebbe938d6f8156a6687bf43498fc888b7
+> git clean -f -q -- /home/sting/.cache/pip/http/f/f/5/7/0/ff57044fbdd8366a0aafc1423058140ac7d29cfda72f3b6a82557928
+> git clean -f -q -- /home/sting/.cache/pip/wheels/5f/fd/9e/b6cf5890494cb8ef0b5eaff72e5d55a70fb56316007d6dfe73/wrapt-1.12.1-cp38-cp38-linux_x86_64.whl
+> git clean -f -q -- /home/sting/.cache/pip/wheels/fc/39/52/8d6f3cec1cca4ceb44d658427c35711b19d89dbc4914af657f/pandocfilters-1.4.3-py3-none-any.whl
+> git checkout -q
+fatal: You are on a branch yet to be born
+> git status -z -u
+> git init
+> git rev-parse --git-dir
+Open repository: /home/sting
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+fatal: ambiguous argument 'master': unknown revision or path not in the working tree.
+Use '--' to separate paths from revisions, like this:
+'git <command> [<revision>...] -- [<file>...]'
+> git for-each-ref --sort -committerdate --format %(refname) %(objectname) %(*objectname)
+> git remote --verbose
+> git config --get commit.template
+> git config --local branch.master.github-pr-owner-number
+> git check-ignore -v -z --stdin
+> git show --textconv :.wget-hsts
+> git ls-files --stage -- /home/sting/.wget-hsts
+> git check-ignore -v -z --stdin
+> git check-ignore -v -z --stdin
+> git check-ignore -v -z --stdin
+> git log --format=%H%n%aN%n%aE%n%at%n%ct%n%P%n%B -z -n21 -- /home/sting/.wget-hsts
+fatal: your current branch 'master' does not have any commits yet
+> git check-ignore -v -z --stdin
+> git check-ignore -v -z --stdin
+> git add -A -- .

@@ -1,0 +1,96 @@
+Metadata-Version: 2.1
+Name: lab
+Version: 6.2
+Summary: Benchmark your code
+Home-page: https://github.com/aibasel/lab
+Author: Jendrik Seipp
+Author-email: jendrikseipp@gmail.com
+License: GPL3+
+Keywords: benchmarks cluster grid
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Topic :: Scientific/Engineering
+Requires-Python: >=3.6
+Description-Content-Type: text/x-rst
+Requires-Dist: matplotlib
+Requires-Dist: simplejson
+Requires-Dist: txt2tags (>=3.6)
+
+Lab and Downward Lab
+====================
+
+**Lab** is a Python package for evaluating solvers on benchmark sets.
+Experiments can run on a single machine or on a computer cluster. The
+package also contains code for parsing results and creating reports.
+
+The **Downward Lab** Python package facilitates running experiments for
+the `Fast Downward <http://www.fast-downward.org>`_ planning system. It
+uses the generic experimentation package **Lab**. Currently, Lab and
+Downward Lab are distributed together.
+
+**Code**: https://github.com/aibasel/lab
+
+**Documentation**: https://lab.readthedocs.io
+
+**Cite**: please cite Downward Lab by using
+
+::
+
+    @Misc{seipp-et-al-zenodo2017,
+      author =       "Jendrik Seipp and Florian Pommerening and
+                      Silvan Sievers and Malte Helmert",
+      title =        "{Downward} {Lab}",
+      publisher =    "Zenodo",
+      year =         "2017",
+      howpublished = "\url{https://doi.org/10.5281/zenodo.790461}"
+    }
+
+
+Install Lab
+-----------
+
+Lab requires Python 3.6+ and Linux (e.g., Ubuntu). We recommend installing
+Lab in a `Python virtual environment
+<https://docs.python.org/3/tutorial/venv.html>`_. This has the advantage
+that there are no modifications to the system-wide configuration, and that
+you can create multiple environments with different Lab versions (e.g.,
+for different papers) without conflicts::
+
+    # Install required packages, including virtualenv.
+    sudo apt install python3 python3-venv
+
+    # Create a new directory for your experiments.
+    mkdir experiments-for-my-paper
+    cd experiments-for-my-paper
+
+    # If PYTHONPATH is set, unset it to obtain a clean environment.
+    unset PYTHONPATH
+
+    # Create and activate a Python 3 virtual environment for Lab.
+    python3 -m venv --prompt my-paper .venv
+    source .venv/bin/activate
+
+    # Install Lab in the virtual environment.
+    pip install -U pip wheel
+    pip install lab  # or preferably a specific version with lab==x.y
+
+    # Store installed packages and exact versions for reproducibility.
+    # Ignore pkg-resources package (https://github.com/pypa/pip/issues/4022).
+    pip freeze | grep -v "pkg-resources" > requirements.txt
+
+Please note that before running an experiment script you need to
+activate the virtual environment with::
+
+    source .venv/bin/activate
+
+We recommend clearing the ``PYTHONPATH`` variable before activating the
+virtual environment.
+
+
