@@ -29,3 +29,7 @@
 [2021-01-25 09:44:38.183] [exthost] [warning] [Decorations] CAPPING events from decorations provider vscode.git 5000
 [2021-01-25 09:47:54.340] [exthost] [warning] [Decorations] CAPPING events from decorations provider vscode.git 5000
 [2021-01-25 09:50:18.133] [exthost] [warning] [Decorations] CAPPING events from decorations provider vscode.git 5001
+[2021-01-25 10:08:00.152] [exthost] [info] ExtensionService#_doActivateExtension vscode.npm {"startup":false,"extensionId":{"value":"vscode.npm","_lower":"vscode.npm"},"activationEvent":"onLanguage:json"}
+[2021-01-25 10:08:00.152] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/sting/.vscode-server/bin/ea3859d4ba2f3e577a159bc91e3074c5d85c0523/extensions/npm/dist/npmMain
+[2021-01-25 10:08:02.668] [exthost] [info] ExtensionService#_doActivateExtension donjayamanne.githistory {"startup":false,"extensionId":{"value":"donjayamanne.githistory","_lower":"donjayamanne.githistory"},"activationEvent":"*"}
+[2021-01-25 10:08:02.668] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/sting/.vscode-server/extensions/donjayamanne.githistory-0.6.14/dist/src/extension

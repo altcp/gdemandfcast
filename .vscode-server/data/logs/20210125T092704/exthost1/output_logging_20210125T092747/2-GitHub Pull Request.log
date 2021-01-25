@@ -55,3 +55,10 @@
 [Info] No GitHub remotes found
 [Info] Review> no matching pull request metadata found for current branch master
 [Info] Review> no matching pull request metadata found on GitHub for current branch master
+[Info] Review> Queuing additional validate state
+[Info] Review> Validating state...
+[Info] No remote with name 'origin' found.
+[Info] No remote with name 'upstream' found.
+[Info] No GitHub remotes found
+[Info] Review> no matching pull request metadata found for current branch master
+[Info] Review> no matching pull request metadata found on GitHub for current branch master
