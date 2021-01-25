@@ -37,3 +37,6 @@
 [2021-01-25 10:08:10.118] [remoteagent] [info] Renamed to /home/sting/.vscode-server/extensions/felipecaputo.git-project-manager-1.7.1
 [2021-01-25 10:08:10.119] [remoteagent] [info] Installation completed. felipecaputo.git-project-manager
 [2021-01-25 10:08:10.124] [remoteagent] [info] Extensions installed successfully: felipecaputo.git-project-manager
+[2021-01-25 10:37:16.441] [remoteagent] [info] [::ffff:172.17.173.193][b05ef1ca][ManagementConnection] The client has disconnected gracefully, so the connection will be disposed.
+[2021-01-25 10:37:17.517] [remoteagent] [info] [::ffff:172.17.173.193][0bb89221][ExtensionHostConnection] <61> Extension Host Process exited with code: 0, signal: null.
+[2021-01-25 10:37:17.518] [remoteagent] [info] Last EH closed, waiting before shutting down

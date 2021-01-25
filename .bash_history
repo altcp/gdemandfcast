@@ -184,3 +184,62 @@ pip list
 pip install matplotlib
 pip list
 source /home/sting/.vsch/bin/activate
+git config --global user.email "alvin.tan@ttrtea.com"
+git config
+git config --global
+git config --global user.email
+git config --global user.name
+git commit --a
+git add --all
+git commit
+git status
+ls
+cd APPS
+ls
+cd Viral_AI
+ls
+git init
+git status
+git add --a
+git status
+ls
+git status
+ls
+cd config
+ls
+nano config.yml
+ls
+git status
+git add --a
+git status 
+git commit
+ls
+cd
+rm -rf .git
+ls
+cd APPS
+ls
+cd Viral_AI
+ls
+rm -rf .git
+git
+ls
+cd
+rm -rf .git
+git config
+ls
+rm nltk_data
+git config --global user.name "altcp"
+git config --global user.email "noreply@ttrtea.com"
+ls
+d
+ls
+cd apps
+ls
+cd Viral_AI
+ls
+cd
+cd apps
+ls
+cd viral
+ls
