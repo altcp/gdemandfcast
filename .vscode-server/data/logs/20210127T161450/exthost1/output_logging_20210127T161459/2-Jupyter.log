@@ -1,0 +1,177 @@
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import jupyter"
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import jupyter"
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import notebook"
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import notebook"
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py jupyter kernelspec --version
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py jupyter kernelspec --version
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.jupyter_daemon -v
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.jupyter_daemon -v
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.jupyter_daemon -v
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.jupyter_daemon -v
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.jupyter_daemon -v
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.jupyter_daemon -v
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.kernel_launcher_daemon -v
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.kernel_launcher_daemon -v
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.kernel_launcher_daemon -v
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.kernel_launcher_daemon -v
+Started kernel Python 3
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.kernel_launcher_daemon -v
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.kernel_launcher_daemon -v
+Started kernel Python 3
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.kernel_launcher_daemon -v
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.kernel_launcher_daemon -v
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.kernel_launcher_daemon -v
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py vscode_datascience_helpers.daemon --daemon-module=vscode_datascience_helpers.kernel_launcher_daemon -v
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+> /usr/bin/python3 ~/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/pythonFiles/pyvsc-run-isolated.py -c "import ipykernel"
+Error 2021-01-27 16:15:33: Failed to connect raw kernel session: Error: Connection is closed.
+Error 2021-01-27 16:15:33: Failed to determine if a notebook is active for the current editor [S [Error]: Connection is closed.
+	at ne (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:424645)
+	at Object.sendRequest (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:426636)
+	at c.sendRequest (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:9:105379)
+	at c.start (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:757705)
+	at u.launch (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:664582)
+	at async m.launchAsObservable (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:639383)
+	at async m.launch (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:635924)] {
+  code: 1
+}
+Error 2021-01-27 16:15:33: Failed to determine if a notebook is active for the current editor [S [Error]: Connection is closed.
+	at ne (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:424645)
+	at Object.sendRequest (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:426636)
+	at c.sendRequest (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:9:105379)
+	at c.start (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:757705)
+	at u.launch (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:664582)
+	at async m.launchAsObservable (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:639383)
+	at async m.launch (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:635924)] {
+  code: 1
+}
+Error 2021-01-27 16:15:33: Failed to determine if a notebook is active for the current editor [S [Error]: Connection is closed.
+	at ne (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:424645)
+	at Object.sendRequest (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:426636)
+	at c.sendRequest (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:9:105379)
+	at c.start (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:757705)
+	at u.launch (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:664582)
+	at async m.launchAsObservable (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:639383)
+	at async m.launch (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:635924)] {
+  code: 1
+}
+Error 2021-01-27 16:15:33: Failed to determine if a notebook is active for the current editor [S [Error]: Connection is closed.
+	at ne (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:424645)
+	at Object.sendRequest (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:426636)
+	at c.sendRequest (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:9:105379)
+	at c.start (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:757705)
+	at u.launch (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:664582)
+	at async m.launchAsObservable (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:639383)
+	at async m.launch (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:635924)] {
+  code: 1
+}
+Error 2021-01-27 16:15:33: Failed to determine if a notebook is active for the current editor [S [Error]: Connection is closed.
+	at ne (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:424645)
+	at Object.sendRequest (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:426636)
+	at c.sendRequest (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:9:105379)
+	at c.start (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:757705)
+	at u.launch (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:664582)
+	at async m.launchAsObservable (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:639383)
+	at async m.launch (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:635924)] {
+  code: 1
+}
+Error 2021-01-27 16:15:33: Failed to determine if a notebook is active for the current editor [S [Error]: Connection is closed.
+	at ne (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:424645)
+	at Object.sendRequest (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:426636)
+	at c.sendRequest (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:9:105379)
+	at c.start (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:757705)
+	at u.launch (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:664582)
+	at async m.launchAsObservable (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:639383)
+	at async m.launch (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:635924)] {
+  code: 1
+}
+Error 2021-01-27 16:15:33: Failed to determine if a notebook is active for the current editor [S [Error]: Connection is closed.
+	at ne (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:424645)
+	at Object.sendRequest (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:426636)
+	at c.sendRequest (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:9:105379)
+	at c.start (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:757705)
+	at u.launch (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:664582)
+	at async m.launchAsObservable (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:639383)
+	at async m.launch (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:635924)] {
+  code: 1
+}
+Error 2021-01-27 16:15:33: Failed to determine if a notebook is active for the current editor [S [Error]: Connection is closed.
+	at ne (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:424645)
+	at Object.sendRequest (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:426636)
+	at c.sendRequest (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:9:105379)
+	at c.start (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:757705)
+	at u.launch (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:664582)
+	at async m.launchAsObservable (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:639383)
+	at async m.launch (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:635924)] {
+  code: 1
+}
+Error 2021-01-27 16:15:33: Failed to determine if a notebook is active for the current editor [S [Error]: Connection is closed.
+	at ne (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:424645)
+	at Object.sendRequest (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:426636)
+	at c.sendRequest (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:9:105379)
+	at c.start (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:757705)
+	at u.launch (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:664582)
+	at async m.launchAsObservable (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:639383)
+	at async m.launch (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:635924)] {
+  code: 1
+}
+Error 2021-01-27 16:15:33: Failed to determine if a notebook is active for the current editor [S [Error]: Connection is closed.
+	at ne (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:424645)
+	at Object.sendRequest (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:426636)
+	at c.sendRequest (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:9:105379)
+	at c.start (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:757705)
+	at u.launch (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:664582)
+	at async m.launchAsObservable (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:639383)
+	at async m.launch (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:635924)] {
+  code: 1
+}
+Error 2021-01-27 16:15:33: Failed to determine if a notebook is active for the current editor [S [Error]: Connection is closed.
+	at ne (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:424645)
+	at Object.sendRequest (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:426636)
+	at c.sendRequest (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:9:105379)
+	at c.start (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:757705)
+	at u.launch (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:664582)
+	at async m.launchAsObservable (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:639383)
+	at async m.launch (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:635924)] {
+  code: 1
+}
+Error 2021-01-27 16:15:33: Failed to determine if a notebook is active for the current editor [S [Error]: Connection is closed.
+	at ne (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:424645)
+	at Object.sendRequest (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:426636)
+	at c.sendRequest (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:9:105379)
+	at c.start (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:757705)
+	at u.launch (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:664582)
+	at async m.launchAsObservable (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:639383)
+	at async m.launch (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:635924)] {
+  code: 1
+}
+Error 2021-01-27 16:15:33: Failed to determine if a notebook is active for the current editor [S [Error]: Connection is closed.
+	at ne (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:424645)
+	at Object.sendRequest (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:426636)
+	at c.sendRequest (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:9:105379)
+	at c.start (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:757705)
+	at u.launch (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:664582)
+	at async m.launchAsObservable (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:639383)
+	at async m.launch (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:635924)] {
+  code: 1
+}
+Error 2021-01-27 16:15:33: DataScience Error [S [Error]: Connection is closed.
+	at ne (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:424645)
+	at Object.sendRequest (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:426636)
+	at c.sendRequest (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:9:105379)
+	at c.start (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:47:757705)
+	at u.launch (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:664582)
+	at async m.launchAsObservable (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:639383)
+	at async m.launch (/home/sting/.vscode-server/extensions/ms-toolsai.jupyter-2020.12.414227025/out/client/extension.js:49:635924)] {
+  code: 1
+}

@@ -243,3 +243,133 @@ cd apps
 ls
 cd viral
 ls
+cd apps
+ls
+cd apps
+ls
+cd next_day_equity_outlook
+ls
+git init
+git add --a
+git status
+git commit -m "first commit"
+git branch M main
+git branch -M main
+git remote add origin https://github.com/altcp/next_day_equity_outlook.git
+git push -u origin main
+git status
+machine github.com
+ls
+cd 
+ls
+git config --global credential.helper store
+git config --global credential.github.com.useHttpPath true
+ls
+cd apps
+ls
+cd next_day_equity_outlook
+ls
+git status
+git push -u origin main
+;ls
+ls
+cd apps
+ls
+
+ls
+git status
+git commit -a
+git status
+git push -u origin main
+git status
+git commit -a
+git push -u origin main
+git commit -a
+git push -u origin main
+git commit -a
+git push -u origin main
+git status
+git commit -a
+git push -u origin main
+git status
+jupyter lab
+source .vsch/bin/activate
+git status
+git commit -a
+git status
+git add -a
+git add --a
+git status
+git push -u origin main
+git status
+git commit -a
+git status
+git push -u origin main
+git status
+git commit -a
+git status
+git push -u origin main
+git status
+git commit -a
+git status
+git push -u origin main
+git status
+git commit -a
+git status
+git push -u origin main
+ls
+cd apps
+ls
+cd next_day_equity_outlook
+ls
+git status
+git commit -a
+git push -u origin main
+git add -a
+git add --a
+git status
+git commit -a
+git push -u origin main
+git status
+ls
+cd apps
+ls
+cd next_day_equity_outlook
+ls
+git status
+git commit -a
+git status
+git push -u origin main
+ls
+cd apps
+ls
+
+ls
+git status
+git add --a
+git status
+git commit
+git commit -a
+git commit --a
+git commit
+git status
+git push -u origin main
+git status
+git commit
+git add --a
+git commit
+git status
+git push -u origin main
+ls
+cd apps
+ls
+cd next_day_equity_outlook
+ls
+git stauts
+git status
+git add -a
+git add --a
+git status
+git commit
+git status
+git push -u origin main
