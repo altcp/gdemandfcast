@@ -26,8 +26,8 @@ A Generic Python Package for Demand Forecasting at Lower Frequencies
 Features
 --------
 
-Easy Frequency and Horizion Selection.
-Easy Demand Forecasting.
+* Easy Frequency and Horizion Selection.
+* Easy Demand Forecasting.
 
 
 
