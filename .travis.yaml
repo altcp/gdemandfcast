@@ -14,9 +14,9 @@ script: tox
 deploy:
   provider: pypi
   distributions: sdist bdist_wheel
-  user: altcp
-  password:
-    secure: Sing@pore#2025
+  user: __token__
+  password: 
+    secure: pypi-AgEIcHlwaS5vcmcCJDE2NzAwMTBkLWI5ZmEtNGQ2YS1hYmUzLWM1NzczNmVjOTY1NQACJXsicGVybWlzc2lvbnMiOiAidXNlciIsICJ2ZXJzaW9uIjogMX0AAAYguDDpBfI-vmGlhN9OvoS1ibKbx-orINSwyFjQdidXTek
   on:
     tags: true
     repo: altcp/gdemandfcast
