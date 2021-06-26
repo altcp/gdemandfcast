@@ -16,7 +16,7 @@ deploy:
   distributions: sdist bdist_wheel
   user: __token__
   password: 
-    secure: pypi-AgEIcHlwaS5vcmcCJDE2NzAwMTBkLWI5ZmEtNGQ2YS1hYmUzLWM1NzczNmVjOTY1NQACJXsicGVybWlzc2lvbnMiOiAidXNlciIsICJ2ZXJzaW9uIjogMX0AAAYguDDpBfI-vmGlhN9OvoS1ibKbx-orINSwyFjQdidXTek
+    secure: HAHAH
   on:
     tags: true
     repo: altcp/gdemandfcast
