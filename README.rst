@@ -16,7 +16,7 @@ gdemandfcast
 
 
 
-A Generic Python Package for Demand Forecasting at Lower Frequencies
+A Generic Python Package for Demand Forecasting.
 
 
 * Free software: GNU General Public License v3
@@ -34,7 +34,7 @@ Features
 Credits
 -------
 
-This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
+* Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
