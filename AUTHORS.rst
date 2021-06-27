@@ -5,7 +5,7 @@ Credits
 Development Lead
 ----------------
 
-* Tan Chiang Pern <colab.tcp@gmail.com>
+* Tan Chiang Pern Alvin <colab.tcp@gmail.com>
 
 Contributors
 ------------

@@ -47,8 +47,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'gdemandfcast'
-copyright = "2021, Tan Chiang Pern"
-author = "Tan Chiang Pern"
+copyright = "2021, Tan Chiang Pern Alvin"
+author = "Tan Chiang Pern Alvin"
 
 # The version info for the project you're documenting, acts as replacement
 # for |version| and |release|, also used in various other places throughout
@@ -129,7 +129,7 @@ latex_elements = {
 latex_documents = [
     (master_doc, 'gdemandfcast.tex',
      'gdemandfcast Documentation',
-     'Tan Chiang Pern', 'manual'),
+     'Tan Chiang Pern Alvin', 'manual'),
 ]
 
 

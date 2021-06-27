@@ -14,6 +14,10 @@ gdemandfcast
         :alt: Documentation Status
 
 
+.. image:: https://pyup.io/repos/github/altcp/gdemandfcast/shield.svg
+     :target: https://pyup.io/repos/github/altcp/gdemandfcast/
+     :alt: Updates
+
 
 
 A Generic Python Package for Demand Forecasting.
@@ -28,8 +32,6 @@ Features
 
 * Easy Frequency and Horizion Selection.
 * Easy Demand Forecasting.
-
-
 
 Credits
 -------

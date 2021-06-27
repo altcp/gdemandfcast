@@ -15,7 +15,7 @@ requirements = ['Click>=7.0', ]
 test_requirements = ['pytest>=3', ]
 
 setup(
-    author="Tan Chiang Pern",
+    author="Tan Chiang Pern Alvin",
     author_email='colab.tcp@gmail.com',
     python_requires='>=3.6',
     classifiers=[
@@ -23,9 +23,12 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
         'Natural Language :: English',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
     ],
-    description="A Generic Python Package for Demand Forecasting at Lower Frequencies",
+    description="A Generic Python Package for Demand Forecasting.",
     entry_points={
         'console_scripts': [
             'gdemandfcast=gdemandfcast.cli:main',
