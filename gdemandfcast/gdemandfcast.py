@@ -3,7 +3,7 @@
 
 # In[ ]:
 
-
+import gc
 import arch as am
 import pmdarima as pm
 import tensorflow as tf
@@ -120,7 +120,7 @@ class mlmodels:
         
         if(self.use_tensorflow != True):
     
-            #GC   
+            gc.collect() 
             kernel = gp.kernels.ConstantKernel(1.0, (1e-1, 1e3)) * gp.kernels.RBF(10.0, (1e-1, 1e3))
             pipe = Pipeline(steps=[('STD', StandardScaler()), ('GPR', gp.GaussianProcessRegressor())])
             param_grid={
@@ -144,7 +144,7 @@ class mlmodels:
     
     def mlp_model(self):
     
-        #GC   
+        gc.collect()
         pipe = Pipeline(steps=[('STD', StandardScaler()), ('MLP', MLPRegressor())])
         param_grid={
             
@@ -165,7 +165,7 @@ class mlmodels:
     
     def svr_model(self):
         
-        #GC   
+        gc.collect()
         pipe = Pipeline(steps=[('STD', StandardScaler()), ('SVR', SVR())])
         param_grid={
             
