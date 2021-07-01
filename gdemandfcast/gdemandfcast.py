@@ -5,6 +5,7 @@
 
 import gc
 import arch as am
+import pandas as pd
 import pmdarima as pm
 import tensorflow as tf
 import kerastuner as kt
@@ -17,7 +18,6 @@ from sklearn.pipeline import Pipeline
 from sklearn.svm import SVR
 
 from pmdarima.arima import ndiffs
-from kerastuner import BayesianOptimization
 
 
 # In[ ]:
@@ -108,12 +108,13 @@ class armamodels:
 
 class mlmodels:
     
-    def __init__(self, X, y, cv=5, scoring='r2', num_of_cpu=-2, use_tensorflow=False):
+    def __init__(self, X, y, cv=5, scoring='r2', num_of_cpu=-2, seed=232, use_tensorflow=False):
         self.x = X
         self.y = y
         self.cv = cv
         self.scoring = scoring
         self.jobs = num_of_cpu
+        self.seed = seed
         self.use_tensorflow = use_tensorflow
     
     
@@ -377,7 +378,33 @@ class ModelTuner(kt.Tuner):
 
 # In[ ]:
 
+class preprocessing:
 
+    def __init__(self, df, target='Y', p=3, create_testset=False):
+        self.df = df
+        self.target = target
+        self.p = p
+        self.create_testset = create_testset
+
+    def run_prep(self):
+
+        df1 = pd.DataFrame()
+        if (self.create_testset == False):
+            P = self.p + 1
+        else:
+            P = self.p
+
+        for i in range(P):
+            if (i == 0):
+                if (P > self.p):
+                    df1['Y'] = self.df[self.target]
+                else:
+                    df1['X0'] = self.df[self.target]
+            else:
+                column_name = 'X' + str(i)
+                df1[column_name] = self.df[self.target].shift(i)
+
+        return df1
 
 
 
