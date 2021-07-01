@@ -10,7 +10,8 @@ import tensorflow as tf
 import kerastuner as kt
 import sklearn.gaussian_process as gp
 
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
+from sklearn.model_selection import GridSearchCV
+from sklearn.preprocessing import StandardScaler
 from sklearn.neural_network import MLPRegressor
 from sklearn.pipeline import Pipeline
 from sklearn.svm import SVR
