@@ -20,7 +20,7 @@ gdemandfcast
 
 
 
-A Generic Python Package for Demand Forecasting.
+A Generic Python Package for Time Series Forecasting.
 
 
 * Free software: GNU General Public License v3
