@@ -30,8 +30,8 @@ A Generic Python Package for Demand Forecasting.
 Features
 --------
 
-* Easy Frequency and Horizion Selection.
-* Easy Demand Forecasting.
+* Frequency and Horizion Selection.
+* Time Series Forecasting.
 
 Credits
 -------
