@@ -334,7 +334,7 @@ class dlmodels:
 
 class ModelTuner(kt.Tuner):
 
-    def run_trial(self, trial, x_train, y_train):
+    def run_trial(self, trial, x_train, y_train, batch_size):
         hp = trial.hyperparameters
         model = self.hypermodel.build(trial.hyperparameters)
         epoch_loss_metric = tf.keras.metrics.Mean()
@@ -356,7 +356,6 @@ class ModelTuner(kt.Tuner):
             
         
         #Calculate number of batches and define number of epochs per Trial
-        batch_size = test_size
         num_of_batches = math.floor(len(x_train) / batch_size)
         epochs = 10
         
