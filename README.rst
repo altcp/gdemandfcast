@@ -30,7 +30,7 @@ A Generic Python Package for Time Series Forecasting.
 Features
 --------
 
-* Frequency and Horizion Selection.
+* Preprocessing of Time Lags.  
 * Time Series Forecasting.
 
 Credits
