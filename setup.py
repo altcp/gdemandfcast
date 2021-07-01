@@ -10,7 +10,7 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = ['Click>=7.0', ]
+requirements = ['Click>=7.0', 'arch>=4.15', 'pmdarima>=1.8.2', 'scikit-learn>=0.24.2', 'keras-tuner>=1.0.1', 'tensorflow>=2.4.1' ]
 
 test_requirements = ['pytest>=3', ]
 
