@@ -4,7 +4,9 @@
 # In[ ]:
 
 import gc
+import math
 import arch as am
+import numpy as np
 import pandas as pd
 import pmdarima as pm
 import tensorflow as tf
@@ -19,7 +21,6 @@ from sklearn.svm import SVR
 
 from pmdarima.arima import ndiffs
 
-
 # In[ ]:
 
 
@@ -27,7 +28,6 @@ from pmdarima.arima import ndiffs
 
 
 # In[ ]:
-
 
 class archmodels:
     
@@ -59,7 +59,6 @@ class archmodels:
                     
         return e_sigma_squared
 
-
 # In[ ]:
 
 
@@ -67,7 +66,6 @@ class archmodels:
 
 
 # In[ ]:
-
 
 class armamodels:
     
@@ -96,7 +94,6 @@ class armamodels:
         
         return e_mu
 
-
 # In[ ]:
 
 
@@ -104,7 +101,6 @@ class armamodels:
 
 
 # In[ ]:
-
 
 class mlmodels:
     
@@ -130,7 +126,7 @@ class mlmodels:
                 'GPR__kernel':[kernel],
                 'GPR__n_restarts_optimizer': [3, 5, 7],
                 'GPR__alpha':[0.03, 0.05, 0.07],
-                'GPR__random_state': [seed]
+                'GPR__random_state': [self.seed]
             }
 
             search = GridSearchCV(pipe, param_grid, cv=self.cv, scoring=self.scoring, n_jobs=self.jobs)
@@ -156,7 +152,7 @@ class mlmodels:
             'MLP__alpha': [0.0005, 0.001, 0.005, 0.01, 0.05],
             'MLP__learning_rate': ['constant','adaptive'],
             'MLP__early_stopping': [True],
-            'MLP__random_state': [seed]
+            'MLP__random_state': [self.seed]
         }
 
         search = GridSearchCV(pipe, param_grid, cv=self.cv, scoring=self.scoring, n_jobs=self.jobs)
@@ -181,7 +177,6 @@ class mlmodels:
      
         return search
 
-
 # In[ ]:
 
 
@@ -189,15 +184,15 @@ class mlmodels:
 
 
 # In[ ]:
-
 
 class dlmodels:
     
-    def __init__(self, min_units=4, max_units=10, step_units=1, units=7):
+    def __init__(self, feature_size, min_units=4, max_units=10, step_units=1, units=7):
         self.min_units = min_units
         self.max_units = max_units
         self.step_units = step_units
         self.units = units
+        self.feature_size = feature_size
 
         
     def bi_gru_lstm(self, hp):
@@ -205,15 +200,15 @@ class dlmodels:
         model = tf.keras.Sequential()
 
         #GRU
-        model.add(tf.keras.layers.Bidirectional(tf.keras.layers.GRU(units=hp.Int('neurons_gru', self.min_units, self.max_units, self.step_units, default=units), 
-                                                                    input_shape=(feature_size, 1), activation='relu', 
+        model.add(tf.keras.layers.Bidirectional(tf.keras.layers.GRU(units=hp.Int('neurons_gru', self.min_units, self.max_units, self.step_units, default=self.units), 
+                                                                    input_shape=(self.feature_size, 1), activation='relu', 
                                                                     recurrent_dropout=hp.Float('rcc_dropout_gru', min_value=0.0, max_value=0.4, step=0.2, default=0.2),
                                                                     return_sequences=True)))
         model.add(tf.keras.layers.BatchNormalization())
     
 
         #LSTM
-        model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', self.min_units, self.max_units, self.step_units, default=units), 
+        model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', self.min_units, self.max_units, self.step_units, default=self.units), 
                                                                      activation='relu', recurrent_dropout=hp.Float('rcc_dropout_lstm', min_value=0.0, max_value=0.4, 
                                                                      step=0.2, default=0.2), return_sequences=False)))
         model.add(tf.keras.layers.BatchNormalization())
@@ -232,7 +227,6 @@ class dlmodels:
                                                          clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0)), 
                                                          loss='mse', metrics=['mae'])
         return model
-    
     
     
     def gru_lstm(self, hp):
@@ -240,8 +234,8 @@ class dlmodels:
         model = tf.keras.Sequential()
 
         #GRU
-        model.add(tf.keras.layers.GRU(units=hp.Int('neurons_gru', self.min_units, self.max_units, self.step_units, default=units), 
-                                      input_shape=(feature_size, 1), activation='relu', 
+        model.add(tf.keras.layers.GRU(units=hp.Int('neurons_gru', self.min_units, self.max_units, self.step_units, default=self.units), 
+                                      input_shape=(self.feature_size, 1), activation='relu', 
                                       recurrent_dropout=hp.Float('rcc_dropout_gru', min_value=0.0, max_value=0.4, step=0.2, default=0.2),
                                       return_sequences=True))
         
@@ -249,7 +243,7 @@ class dlmodels:
     
 
         #LSTM
-        model.add(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', self.min_units, self.max_units, self.step_units, default=units), 
+        model.add(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', self.min_units, self.max_units, self.step_units, default=self.units), 
                                        activation='relu', recurrent_dropout=hp.Float('rcc_dropout_lstm', min_value=0.0, max_value=0.4, 
                                                                                      step=0.2, default=0.2), return_sequences=False))
         model.add(tf.keras.layers.BatchNormalization())
@@ -270,13 +264,12 @@ class dlmodels:
         return model
     
     
-    
     def bi_lstm(self, hp):
     
         model = tf.keras.Sequential()
 
         #LSTM
-        model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', self.min_units, self.max_units, self.step_units, default=units), 
+        model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', self.min_units, self.max_units, self.step_units, default=self.units), 
                                                                      activation='relu', recurrent_dropout=hp.Float('rcc_dropout_lstm', min_value=0.0, max_value=0.4, 
                                                                      step=0.2, default=0.2), return_sequences=False)))
         
@@ -298,13 +291,12 @@ class dlmodels:
         return model
     
 
-    
     def lstm(self, hp):
     
         model = tf.keras.Sequential()
 
         #LSTM
-        model.add(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', self.min_units, self.max_units, self.step_units, default=units), 
+        model.add(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', self.min_units, self.max_units, self.step_units, default=self.units), 
                                        activation='relu', recurrent_dropout=hp.Float('rcc_dropout_lstm', min_value=0.0, max_value=0.4, 
                                                                                      step=0.2, default=0.2), return_sequences=False))
         
@@ -324,7 +316,6 @@ class dlmodels:
                                                          loss='mse', metrics=['mae'])
         return model
 
-
 # In[ ]:
 
 
@@ -332,7 +323,6 @@ class dlmodels:
 
 
 # In[ ]:
-
 
 class ModelTuner(kt.Tuner):
 
@@ -343,24 +333,32 @@ class ModelTuner(kt.Tuner):
         optimizer=tf.keras.optimizers.Adam(lr=hp.Float('opt_learn_rate', min_value=1e-4, max_value=1e-2, sampling='LOG', default=1e-3),
                                                      clipnorm=hp.Float('opt_clipnorm', min_value=0.001, max_value=1.11, step=0.10, default=1.0),
                                                      clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0))
-        
+
         @tf.function
-        def run_train_step(real_x, real_y):
+        def run_train_step(real_x, real_y, use_huber):
             with tf.GradientTape() as tape:
                 pred_y = model(real_x)
-                loss=tf.keras.losses.MSE(real_y, pred_y)
-                
+
+                if (use_huber == True):
+                    loss=tf.keras.losses.MSE(real_y, pred_y)
+                else:
+                    dev = []
+                    dev = abs(real_y - pred_y)
+                    q3, q1 = np.percentile(dev, [75, 25])
+                    iqr = q3 -q1
+                    delta = q3 + (1.5 * iqr)
+                    t = tf.norm((real_y -pred_y), ord=1) / len(real_y)
+                    loss = ((delta * t) - (0.5 * (delta**2)))
+
                 gradients = tape.gradient(loss, model.trainable_variables)
             
             optimizer.apply_gradients(zip(gradients, model.trainable_variables))
             epoch_loss_metric.update_state(loss)
             return loss
             
-        
         #Calculate number of batches and define number of epochs per Trial
         num_of_batches = math.floor(len(x_train) / batch_size)
         epochs = 10
-        
         
         #Run the Trial
         for epoch in range(epochs):
@@ -375,20 +373,26 @@ class ModelTuner(kt.Tuner):
         self.on_epoch_end(trial, model, epoch, logs={'loss': epoch_loss})
         epoch_loss_metric.reset_states()
 
-
 # In[ ]:
 
 class preprocessing:
 
-    def __init__(self, df, target='Y', p=3, create_testset=False):
+    def __init__(self, df, target='Y', p=3, create_testset=False , from_excel=False, location=" "):
         self.df = df
         self.target = target
         self.p = p
         self.create_testset = create_testset
+        self.from_excel = from_excel
+        self.location = location
 
     def run_prep(self):
+        
+        if (self.from_excel == False):
+            df1 = pd.DataFrame()
+        else:
+            df1 = pd.DataFrame()
+            #Soon.
 
-        df1 = pd.DataFrame()
         if (self.create_testset == False):
             P = self.p + 1
         else:
@@ -405,9 +409,6 @@ class preprocessing:
                 df1[column_name] = self.df[self.target].shift(i)
 
         return df1
-
-
-
 # In[ ]:
 
 
