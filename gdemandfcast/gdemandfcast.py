@@ -339,7 +339,7 @@ class ModelTuner(kt.Tuner):
             with tf.GradientTape() as tape:
                 pred_y = model(real_x)
 
-                if (use_huber == True):
+                if (use_huber == False):
                     loss=tf.keras.losses.MSE(real_y, pred_y)
                 else:
                     dev = []
@@ -377,17 +377,16 @@ class ModelTuner(kt.Tuner):
 
 class preprocessing:
 
-    def __init__(self, df, target='Y', p=3, create_testset=False , from_excel=False, location=" "):
+    def __init__(self, df, target='Y', p=3, create_testset=False , from_excel=" "):
         self.df = df
         self.target = target
         self.p = p
         self.create_testset = create_testset
         self.from_excel = from_excel
-        self.location = location
 
     def run_prep(self):
         
-        if (self.from_excel == False):
+        if (self.from_excel == " "):
             df1 = pd.DataFrame()
         else:
             df1 = pd.DataFrame()
