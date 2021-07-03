@@ -19,6 +19,7 @@ from sklearn.neural_network import MLPRegressor
 from sklearn.pipeline import Pipeline
 from sklearn.svm import SVR
 
+from scipy import stats
 from pmdarima.arima import ndiffs
 
 # In[ ]:
@@ -335,19 +336,23 @@ class ModelTuner(kt.Tuner):
                                                      clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0))
 
         @tf.function
-        def run_train_step(real_x, real_y, use_huber):
+        def run_train_step(real_x, real_y, alpha=0.05):
             with tf.GradientTape() as tape:
                 pred_y = model(real_x)
 
-                if (use_huber == False):
+                data = []
+                data = real_y - pred_y
+                shapiro_test = stats.shapiro(data)
+
+                if (shapiro_test.pvalue > alpha):
                     loss=tf.keras.losses.MSE(real_y, pred_y)
                 else:
                     dev = []
                     dev = abs(real_y - pred_y)
                     q3, q1 = np.percentile(dev, [75, 25])
-                    iqr = q3 -q1
+                    iqr = q3 - q1
                     delta = q3 + (1.5 * iqr)
-                    t = tf.norm((real_y -pred_y), ord=1) / len(real_y)
+                    t = tf.norm((real_y - pred_y), ord=1) / len(real_y)
                     loss = ((delta * t) - (0.5 * (delta**2)))
 
                 gradients = tape.gradient(loss, model.trainable_variables)
@@ -377,12 +382,13 @@ class ModelTuner(kt.Tuner):
 
 class preprocessing:
 
-    def __init__(self, df, target='Y', p=3, create_testset=False , from_excel=" "):
+    def __init__(self, df, target='Y', p=3, create_testset=False , from_excel=" ", sheet_name=0):
         self.df = df
         self.target = target
         self.p = p
         self.create_testset = create_testset
         self.from_excel = from_excel
+        self.sheet_name = sheet_name
 
     def run_prep(self):
         
@@ -390,7 +396,8 @@ class preprocessing:
             df1 = pd.DataFrame()
         else:
             df1 = pd.DataFrame()
-            #Soon.
+            df1 = pd.read_excel(self.from_excel, self.sheet_name)
+
 
         if (self.create_testset == False):
             P = self.p + 1
