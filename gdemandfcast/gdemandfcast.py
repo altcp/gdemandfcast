@@ -3,17 +3,23 @@
 
 # In[ ]:
 
+import os
 import gc
 import math
+import keras
+import random
+import xgboost
+import warnings
 import arch as am
 import numpy as np
 import pandas as pd
 import pmdarima as pm
 import tensorflow as tf
 import kerastuner as kt
+import matplotlib.pyplot as plt
 import sklearn.gaussian_process as gp
 
-from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.neural_network import MLPRegressor
 from sklearn.pipeline import Pipeline
@@ -21,6 +27,15 @@ from sklearn.svm import SVR
 
 from scipy import stats
 from pmdarima.arima import ndiffs
+
+from kerastuner import BayesianOptimization
+from keras.preprocessing import sequence
+from keras.models import Sequential
+from keras.layers import Dense, Embedding
+from keras.layers import SimpleRNN, LSTM
+from keras import initializers
+
+warnings.filterwarnings("ignore")
 
 # In[ ]:
 
@@ -70,7 +85,7 @@ class archmodels:
 
 class armamodels:
     
-    def __init__(self, y, D, P, Q, seed, seasonal=True, alpha=0.05):
+    def __init__(self, y, D=8, P=8, Q=8, seed=232, seasonal=True, alpha=0.05):
         self.y = y
         self.D = D
         self.P = P
@@ -105,40 +120,36 @@ class armamodels:
 
 class mlmodels:
     
-    def __init__(self, X, y, cv=5, scoring='r2', num_of_cpu=-2, seed=232, use_tensorflow=False):
+    def __init__(self, X, y, cv=5, scoring='r2', num_of_cpu=-2, seed=232, validate=False):
         self.x = X
         self.y = y
         self.cv = cv
         self.scoring = scoring
         self.jobs = num_of_cpu
         self.seed = seed
-        self.use_tensorflow = use_tensorflow
+        self.validate = validate
     
     
     def gpr_model(self):
         
-        if(self.use_tensorflow != True):
-    
-            gc.collect() 
-            kernel = gp.kernels.ConstantKernel(1.0, (1e-1, 1e3)) * gp.kernels.RBF(10.0, (1e-1, 1e3))
-            pipe = Pipeline(steps=[('STD', StandardScaler()), ('GPR', gp.GaussianProcessRegressor())])
-            param_grid={
+        gc.collect() 
+        kernel = gp.kernels.ConstantKernel(1.0, (1e-1, 1e3)) * gp.kernels.RBF(10.0, (1e-1, 1e3))
+        pipe = Pipeline(steps=[('STD', StandardScaler()), ('GPR', gp.GaussianProcessRegressor())])
+        param_grid={
 
-                'GPR__kernel':[kernel],
-                'GPR__n_restarts_optimizer': [3, 5, 7],
-                'GPR__alpha':[0.03, 0.05, 0.07],
-                'GPR__random_state': [self.seed]
-            }
+            'GPR__kernel':[kernel],
+            'GPR__n_restarts_optimizer': [3, 5, 7],
+            'GPR__alpha':[0.03, 0.05, 0.07],
+            'GPR__random_state': [self.seed]
+        }
 
-            search = GridSearchCV(pipe, param_grid, cv=self.cv, scoring=self.scoring, n_jobs=self.jobs)
-            search.fit(self.x, self.y)
+        search = GridSearchCV(pipe, param_grid, cv=self.cv, scoring=self.scoring, n_jobs=self.jobs)
+        search.fit(self.x, self.y)
         
+        if (self.validate == False):
+            return search
         else:
-            
-            print("ERR. Probabilistic Modeling.")
-            
-     
-        return search
+            return search.best_score_
     
     
     def mlp_model(self):
@@ -159,7 +170,35 @@ class mlmodels:
         search = GridSearchCV(pipe, param_grid, cv=self.cv, scoring=self.scoring, n_jobs=self.jobs)
         search.fit(self.x, self.y)
      
-        return search
+        if (self.validate == False):
+            return search
+        else:
+            return search.best_score_
+
+
+    def xgb_model(self):
+  
+        gc.collect()
+        pipe = Pipeline(steps=[('STD', StandardScaler()), ('XGB', XGBRegressor(objective='reg:squarederror'))])
+        param_grid={
+            
+            'XGB__n_estimators': [100, 300, 500],
+            'XGB__max_depth': [3, 6, 9],
+            'XGB__verbosity': [0],
+            'XGB__alpha': [0, 0.003, 0.005, 0.01, 0.03],
+            'XGB__eta': [0.05, 0.1, 0.3, 0.5, 0.7, 1],
+            'XGB__subsample': [0.5, 0.7, 1],
+            'XGB__gamma': [0, 3, 6, 9],
+            'XGB__random_state': [self.seed]
+        }
+
+        search = GridSearchCV(pipe, param_grid, cv=self.cv, scoring=self.scoring, n_jobs=self.jobs)
+        search.fit(self.x, self.y)
+     
+        if (self.validate == False):
+            return search
+        else:
+            return search.best_score_
     
     
     def svr_model(self):
@@ -176,8 +215,12 @@ class mlmodels:
         search = GridSearchCV(pipe, param_grid, cv=self.cv, scoring=self.scoring, n_jobs=self.jobs)
         search.fit(self.x, self.y)
      
-        return search
+        if (self.validate == False):
+            return search
+        else:
+            return search.best_score_
 
+            
 # In[ ]:
 
 
@@ -382,22 +425,22 @@ class ModelTuner(kt.Tuner):
 
 class preprocessing:
 
-    def __init__(self, df, target='Y', p=3, create_testset=False , from_excel=" ", sheet_name=0):
+    def __init__(self, df, target='Y', p=7, create_testset=False , from_excel=" ", sheet_name=0, fname="Weekly"):
         self.df = df
         self.target = target
-        self.p = p
+        self.p = p #Size of Bucket (i.e., Week = 7 or 5)
         self.create_testset = create_testset
         self.from_excel = from_excel
         self.sheet_name = sheet_name
+        self.fname = fname
 
-    def run_prep(self):
+    def run_univariate(self):
         
         if (self.from_excel == " "):
             df1 = pd.DataFrame()
         else:
             df1 = pd.DataFrame()
             df1 = pd.read_excel(self.from_excel, self.sheet_name)
-
 
         if (self.create_testset == False):
             P = self.p + 1
@@ -415,20 +458,143 @@ class preprocessing:
                 df1[column_name] = self.df[self.target].shift(i)
 
         return df1
-# In[ ]:
 
+    def create_frequency(self):
 
+        df1 = pd.DataFrame()
+        df1 = self.df.groupby(np.arrange(len(self.df))//self.p).sum()
+        df1.index = self.df.loc[1::self.p, self.fname]
 
-
-
-# In[ ]:
-
-
-
-
+        return df1
 
 # In[ ]:
 
+class validation:
 
+    def __init__(self, i, X, y, scoring, cv, val=True):
+        self.i = i
+        self.X = X
+        self.y = y
+        self.scoring = scoring
+        self.cv = cv
+        self.val  = val
+
+    def ml(self):
+        return {
+            1 : mlmodels(self.X, self.y, self.cv, self.scoring, 3, 232, self.val).svr_model(),
+            2 : mlmodels(self.X, self.y, self.cv, self.scoring, 3, 232, self.val).mlp_model(),
+            3 : mlmodels(self.X, self.y, self.cv, self.scoring, 3, 232, self.val).xgb_model(),
+            4 : mlmodels(self.X, self.y, self.cv, self.scoring, 3, 232, self.val).gpr_model()
+        } [self.i] 
+
+
+    def dl(self):
+        return {
+            1 : optimization(1, self.X, self.y, self.cv, 232, self.val).run(),
+            2 : optimization(2, self.X, self.y, self.cv, 232, self.val).run(),
+            3 : optimization(3, self.X, self.y, self.cv, 232, self.val).run(),
+            4 : optimization(4, self.X, self.y, self.cv, 232, self.val).run()
+        } [self.i] 
+
+
+# In[ ]:
+
+class prediction:
+
+    def __init__(self, i, X, y, T, scoring='mean_absolute_error', cv=5):
+        self.i = i
+        self.X = X
+        self.y = y
+        self.T = T
+        self.scoring = scoring
+        self.cv = cv
+
+
+    def ml(self):
+        return {
+            1 : validation(1, self.X, self.y, self.cv, self.scoring, 3, 232, False).ml().predict(self.T), #svr
+            2 : validation(2, self.X, self.y, self.cv, self.scoring, 3, 232, False).ml().predict(self.T), #mlp
+            3 : validation(3, self.X, self.y, self.cv, self.scoring, 3, 232, False).ml().predict(self.T), #xgb
+            4 : validation(4, self.X, self.y, self.cv, self.scoring, 3, 232, False).ml().predict(self.T)  #gpr
+        } [self.i] 
+
+    
+    def dl(self):
+        return {
+            1 : validation(1, self.X, self.y, self.cv, 'min', 3, 232, False).dl().predict(self.T), #lstm
+            2 : validation(2, self.X, self.y, self.cv, 'min', 3, 232, False).dl().predict(self.T), #bi_lstm
+            3 : validation(3, self.X, self.y, self.cv, 'min', 3, 232, False).dl().predict(self.T), #gru_lstm
+            4 : validation(4, self.X, self.y, self.cv, 'min', 3, 232, False).dl().predict(self.T)  #bi_gru_lstm
+        } [self.i]
+        
+
+# In[ ]:
+
+class optimization:
+
+    def __init__(self, i, X, y, cv=5, scoring='min', cpusize=3, seed=232, validation=False, batchsize=32, epoch=30):
+        self.i = i
+        self.X = X
+        self.y = y
+        self.cv = cv
+        self.scoring = scoring
+        self.cpusize = cpusize
+        self.seed = seed
+        self.vaidation = validation
+        self.batchsize = batchsize
+        self.epoch = epoch
+
+
+    def run(self):
+        i = self.i
+        X = self.X
+        y = self.y
+        spilt = round((1/self.cv), 2)
+        scoring = self.scoring
+        cpusize = self.cpusize
+        batchsize = self.batchsize
+        epoch = self.epoch
+        seed = self.seed
+
+        train_x, test_x, train_y, test_y = train_test_split(X, y, test_size=spilt, random_state=seed)
+
+        def get_tuner(i):
+            return {
+                1: ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=dlmodels().lstm(), project_name='gdf_lstm'),
+                2: ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=dlmodels().bi_lstm(), project_name='gdf_bi_lstm'),
+                3: ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=dlmodels().gru_lstm(), project_name='gdf_gru_lstm'),
+                4: ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=dlmodels().bi_gru_lstm(), project_name='gdf_bi_gru_lstm')
+            } [self.i]
+    
+        get_tuner(i).search(X, y)
+        best_hps = get_tuner(i).get_best_hyperparameters()[0]
+        model = get_tuner(i).hypermodel.build(best_hps)
+
+        call_back = [
+            tf.keras.callbacks.ReduceLROnPlateau(monitor="loss", factor=0.5, patience=3, verbose=0),
+            tf.keras.callbacks.EarlyStopping(monitor="loss", patience=3, verbose=0)
+        ]
+    
+        history = model.fit(X, y, validation_data=(test_x, test_y), callbacks=call_back, epochs=epoch, batch_size=batchsize, verbose=0)
+        scores = model.evaluate(test_x, test_y, verbose=0)
+
+        if (self.validation == True):
+            return history, round((scores[1]*100), 2)
+        else:
+            return model
+
+
+class visualization:
+
+    def __init__(self, history):
+        self.history = history
+
+
+    def disp_fit(self):
+
+        plt.plot(self.history.history['loss'])
+        plt.plot(self.history.history['val_loss'])
+        plt.legend(['training loss', 'validation loss'])
+        plt.show()
 
 
