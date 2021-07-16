@@ -375,6 +375,7 @@ class ModelTuner(kt.Tuner):
                 data = real_y - pred_y
                 shapiro_test = stats.shapiro(data)
 
+                #Distribution Aware
                 if (shapiro_test.pvalue > alpha):
                     loss=tf.keras.losses.MSE(real_y, pred_y)
                 else:
