@@ -2,6 +2,7 @@
 # coding: utf-8
 
 # In[ ]:
+
 import gc
 import math
 import xgboost
@@ -17,6 +18,7 @@ import numpy as np
 import tensorflow as tf
 import sklearn.gaussian_process as gp
 
+from tensorflow import keras
 from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.neural_network import MLPRegressor
