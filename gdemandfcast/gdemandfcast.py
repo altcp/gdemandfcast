@@ -93,7 +93,6 @@ class armamodels:
         arima_model = pm.auto_arima(self.y, d=num_of_diffs, start_p=0, start_q=0, start_P=0, max_p=self.P, max_q=self.Q, trace=False, 
                                     seasonal=self.seasonal, error_action='ignore', random_state=self.seed, suppress_warnings=True)
         
-        
         e_mu = arima_model.predict(n_periods=1)
         e_mu = e_mu[0]
         
@@ -417,7 +416,7 @@ class preprocessing:
     def __init__(self, df, target='Y', p=7, create_testset=False , from_excel=" ", sheet_name=0, fname="Weekly"):
         self.df = df
         self.target = target
-        self.p = p #Size of Bucket (i.e., Week = 7 or 5)
+        self.p = p #Size of Bucket (e.g., Week = 7 or 5, Lag)
         self.create_testset = create_testset
         self.from_excel = from_excel
         self.sheet_name = sheet_name
@@ -545,16 +544,28 @@ class optimization:
         epoch = self.epoch
         seed = self.seed
 
+
         train_x, test_x, train_y, test_y = train_test_split(X, y, test_size=spilt, random_state=seed)
 
-        def get_tuner(i):
+
+        def get_tuner(m):
             return {
                 1: ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=dlmodels().lstm(), project_name='gdf_lstm'),
                 2: ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=dlmodels().bi_lstm(), project_name='gdf_bi_lstm'),
                 3: ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=dlmodels().gru_lstm(), project_name='gdf_gru_lstm'),
                 4: ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=dlmodels().bi_gru_lstm(), project_name='gdf_bi_gru_lstm')
             } [self.i]
+
+        
+        def get_name(m):
+            return {
+                1: "GDF-LTSM",
+                2: "GDF-BI_LSTM",
+                3: "GDF-GRU_LSTM",
+                4: "GDF-BI-GRU_LSTM"
+            } [self.i]
     
+
         get_tuner(i).search(X, y)
         best_hps = get_tuner(i).get_best_hyperparameters()[0]
         model = get_tuner(i).hypermodel.build(best_hps)
@@ -568,22 +579,29 @@ class optimization:
         scores = model.evaluate(test_x, test_y, verbose=0)
 
         if (self.validation == True):
-            return history, round((scores[1]*100), 2)
+            visualization(history, round((scores[1]*100), 2), get_name(self.i)).disp_fit()
+            return None
         else:
             return model
 
 
 class visualization:
 
-    def __init__(self, history):
+    def __init__(self, history, score, name):
         self.history = history
+        self.score = score
+        self.name = name
 
 
     def disp_fit(self):
+
+        print(" ")
+        print(" ")
+        msg = f"{self.name} achieved a tunned accuracy of {self.score} percent using Shapiro Gradient Descent Optimization."  
+        print(msg)
 
         plt.plot(self.history.history['loss'])
         plt.plot(self.history.history['val_loss'])
         plt.legend(['training loss', 'validation loss'])
         plt.show()
-
 
