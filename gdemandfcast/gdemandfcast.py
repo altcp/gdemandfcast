@@ -587,7 +587,7 @@ class optimization:
 
 class visualization:
 
-    def __init__(self, history, score, name=, df=pd.DataFrame(), bins=3, x_target='X', y_target='y'):
+    def __init__(self, history, score, name, df=pd.DataFrame(), bins=3, x_target='X', y_target='y'):
         self.history = history
         self.score = score
         self.name = name
