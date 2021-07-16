@@ -10,7 +10,7 @@ import arch as am
 
 import pandas as pd
 import pmdarima as pm
-import keras_tuner as kt
+import keras-tuner as kt
 import matplotlib.pyplot as plt
 
 import numpy as np
