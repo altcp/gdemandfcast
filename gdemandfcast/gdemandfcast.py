@@ -2,21 +2,19 @@
 # coding: utf-8
 
 # In[ ]:
-
-import os
 import gc
 import math
-import keras
-import random
 import xgboost
 import warnings
 import arch as am
-import numpy as np
+
 import pandas as pd
 import pmdarima as pm
-import tensorflow as tf
-import kerastuner as kt
+import keras_tuner as kt
 import matplotlib.pyplot as plt
+
+import numpy as np
+import tensorflow as tf
 import sklearn.gaussian_process as gp
 
 from sklearn.model_selection import GridSearchCV, train_test_split
@@ -24,16 +22,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.neural_network import MLPRegressor
 from sklearn.pipeline import Pipeline
 from sklearn.svm import SVR
-
 from scipy import stats
-from pmdarima.arima import ndiffs
-
-from kerastuner import BayesianOptimization
-from keras.preprocessing import sequence
-from keras.models import Sequential
-from keras.layers import Dense, Embedding
-from keras.layers import SimpleRNN, LSTM
-from keras import initializers
 
 warnings.filterwarnings("ignore")
 
@@ -97,8 +86,8 @@ class armamodels:
     
     def run_model(self):
         
-        kpss_test = ndiffs(self.y, alpha=self.alpha, test='kpss', max_d=self.D)
-        adf_test = ndiffs(self.y, alpha=self.alpha, test='adf', max_d=self.D)
+        kpss_test = pm.arima.ndiffs(self.y, alpha=self.alpha, test='kpss', max_d=self.D)
+        adf_test = pm.arima.ndiffs(self.y, alpha=self.alpha, test='adf', max_d=self.D)
         num_of_diffs = max(kpss_test, adf_test)
     
         arima_model = pm.auto_arima(self.y, d=num_of_diffs, start_p=0, start_q=0, start_P=0, max_p=self.P, max_q=self.Q, trace=False, 
