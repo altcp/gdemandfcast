@@ -587,17 +587,23 @@ class optimization:
 
 class visualization:
 
-    def __init__(self, history, score, name):
+    def __init__(self, history, score, name=, df=pd.DataFrame(), bins=3, x_target='X', y_target='y'):
         self.history = history
         self.score = score
         self.name = name
-
+        self.df = df
+        self.bins = bins
+        self.x_mean = df[x_target].mean()
+        self.y_mean = df[y_target].mean()
+        self.x_std = df[x_target].std()
+        self.y_std = df[y_target].std()
+    
 
     def disp_fit(self):
 
         print(" ")
         print(" ")
-        msg = f"{self.name} achieved a tunned accuracy of {self.score} percent using Shapiro Gradient Descent Optimization."  
+        msg = f"{self.name} achieved a tunned accuracy of {self.score} percent using Distribution Aware Gradient Descent Optimization."  
         print(msg)
 
         plt.plot(self.history.history['loss'])
@@ -605,3 +611,25 @@ class visualization:
         plt.legend(['training loss', 'validation loss'])
         plt.show()
 
+        return None
+
+    
+    def disp_hist(self):
+
+        hist = self.df.hist(bins = self.bins)
+        plt.plot(hist)
+
+        return None
+
+
+    def disp_stack_bar(self):
+
+        fig, ax = plt.subplot()
+        ax.bar(self.labels, self.x_means, 0.33, yerr=self.x_std, label=self.x_name)
+        ax.bar(self.labels, self.y_means, 0.33, yerr=self.y_std, label=self.y_name)
+
+        ax.set_title(self.title)
+        ax.legend()
+        plt.show()
+
+        return None
