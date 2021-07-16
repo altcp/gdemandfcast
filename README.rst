@@ -30,7 +30,7 @@ A Generic Python Package for Time Series Forecasting.
 Features
 --------
 
-* Distribution Aware Auto Differentiation
+* Distribution Aware Auto Differentiation applied on Gradient Descent
 * Preprocessing of Walk Forward Validation
 * Preprocessing of Time Lags.  
 * Time Series Forecasting.
