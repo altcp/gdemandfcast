@@ -17,12 +17,11 @@ test_requirements = ['pytest>=3', ]
 setup(
     author="Tan Chiang Pern Alvin",
     author_email='colab.tcp@gmail.com',
-    python_requires='>=3.7',
+    python_requires='>=3.8.5',
     classifiers=[
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
         'Natural Language :: English',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.8.5',
     ],
     description="A Generic Python Package for Demand Forecasting.",
     entry_points={
