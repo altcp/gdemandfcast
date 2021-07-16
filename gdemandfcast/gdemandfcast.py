@@ -590,16 +590,18 @@ class optimization:
 
 class visualization:
 
-    def __init__(self, history, score, name, df=pd.DataFrame(), bins=3, x_target='X', y_target='y'):
+    def __init__(self, history, score, x_name, y_name, labels, df=pd.DataFrame(), bins=3, x_means='x_mu', y_means='y_mu', x_std="x_std", y_std="y_std"):
         self.history = history
         self.score = score
-        self.name = name
+        self.x_name = x_name
+        self.y_name = y_name
+        self.labels =labels
         self.df = df
         self.bins = bins
-        self.x_mean = df[x_target].mean()
-        self.y_mean = df[y_target].mean()
-        self.x_std = df[x_target].std()
-        self.y_std = df[y_target].std()
+        self.x_means = df[x_means]
+        self.y_means = df[y_means]
+        self.x_std = df[x_std]
+        self.y_std = df[y_std]
     
 
     def disp_fit(self):
