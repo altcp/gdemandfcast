@@ -35,6 +35,14 @@ Features
 * Preprocessing of Time Lags.  
 * Time Series Forecasting.
 
+
+Why
+-------
+
+* https://www.clinfo.eu/mean-median/
+* https://www.health.harvard.edu/blog/the-11-most-expensive-medications-201202094228
+
+
 Credits
 -------
 
