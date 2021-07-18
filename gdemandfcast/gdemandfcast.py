@@ -371,23 +371,31 @@ class ModelTuner(kt.Tuner):
         @tf.function
         def run_train_step(real_x, real_y, alpha=0.05):
             with tf.GradientTape() as tape:
+
                 pred_y = model(real_x)
 
                 data = []
                 data = real_y - pred_y
                 shapiro_test = stats.shapiro(data)
+                lilliefors_test = stats.diagnostic.lilliefors(data)
+
+                dev = []
+                dev = abs(real_y - pred_y)
+                q3, q1 = np.percentile(dev, [75, 25])
+                iqr = q3 - q1
+                d = q3 + (1.5 * iqr)
+
+                huber = tf.keras.losses.Huber(delta=d)
+                mse = tf.keras.losses.MSE()
 
                 #Distribution Aware
                 if (shapiro_test.pvalue > alpha):
-                    loss=tf.keras.losses.MSE(real_y, pred_y)
+                    if (lilliefors_test.pvalue < alpha):
+                        loss = huber(real_y, pred_y)
+                    else:
+                        loss = mse(real_y, pred_y)
                 else:
-                    dev = []
-                    dev = abs(real_y - pred_y)
-                    q3, q1 = np.percentile(dev, [75, 25])
-                    iqr = q3 - q1
-                    d = q3 + (1.5 * iqr)
-                    h = tf.keras.losses.Huber(delta=d)
-                    loss = h(real_y, pred_y)
+                    loss = huber(real_y, pred_y)
 
                 gradients = tape.gradient(loss, model.trainable_variables)
             
