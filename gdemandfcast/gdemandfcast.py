@@ -385,9 +385,9 @@ class ModelTuner(kt.Tuner):
                     dev = abs(real_y - pred_y)
                     q3, q1 = np.percentile(dev, [75, 25])
                     iqr = q3 - q1
-                    delta = q3 + (1.5 * iqr)
-                    t = tf.norm((real_y - pred_y), ord=1) / len(real_y)
-                    loss = ((delta * t) - (0.5 * (delta**2)))
+                    d = q3 + (1.5 * iqr)
+                    h = tf.keras.losses.Huber(delta=d)
+                    loss = h(real_y, pred_y)
 
                 gradients = tape.gradient(loss, model.trainable_variables)
             
