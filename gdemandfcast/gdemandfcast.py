@@ -646,3 +646,42 @@ class visualization:
         plt.show()
 
         return None
+
+
+class selection:
+
+    def __init__(self, X, y):
+        self.X = X
+        self.y = y
+
+
+    def ml_run(self):
+        X = self.X
+        y = self.y
+
+        best_score = 0
+
+        for i in range(1, 5, 1):
+            gc.collect()
+            score = validation(i, X, y).ml()
+            if(score > best_score):
+                best_score = score
+                best_model = i
+
+        return best_score, best_model
+
+
+    def dl_run(self):
+        X = self.X
+        y = self.y
+
+        best_score = 0
+
+        for i in range(1, 5, 1):
+            gc.collect()
+            score = validation(i, X, y).dl()
+            if(score > best_score):
+                best_score = score
+                best_model = i
+        
+        return best_score, best_model
