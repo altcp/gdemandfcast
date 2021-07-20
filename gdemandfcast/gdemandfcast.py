@@ -509,19 +509,19 @@ class prediction:
 
     def ml(self):
         return {
-            1 : validation(1, self.X, self.y, self.cv, self.scoring, 3, 232, False).ml().predict(self.T), #svr
-            2 : validation(2, self.X, self.y, self.cv, self.scoring, 3, 232, False).ml().predict(self.T), #mlp
-            3 : validation(3, self.X, self.y, self.cv, self.scoring, 3, 232, False).ml().predict(self.T), #xgb
-            4 : validation(4, self.X, self.y, self.cv, self.scoring, 3, 232, False).ml().predict(self.T)  #gpr
+            1 : validation(1, self.X, self.y, self.cv, self.scoring, 3, 232, False).ml(), #svr
+            2 : validation(2, self.X, self.y, self.cv, self.scoring, 3, 232, False).ml(), #mlp
+            3 : validation(3, self.X, self.y, self.cv, self.scoring, 3, 232, False).ml(), #xgb
+            4 : validation(4, self.X, self.y, self.cv, self.scoring, 3, 232, False).ml() #gpr
         } [self.i] 
 
     
     def dl(self):
         return {
-            1 : validation(1, self.X, self.y, self.cv, 'min', 3, 232, False).dl().predict(self.T), #lstm
-            2 : validation(2, self.X, self.y, self.cv, 'min', 3, 232, False).dl().predict(self.T), #bi_lstm
-            3 : validation(3, self.X, self.y, self.cv, 'min', 3, 232, False).dl().predict(self.T), #gru_lstm
-            4 : validation(4, self.X, self.y, self.cv, 'min', 3, 232, False).dl().predict(self.T)  #bi_gru_lstm
+            1 : validation(1, self.X, self.y, self.cv, 'min', 3, 232, False).dl(), #lstm
+            2 : validation(2, self.X, self.y, self.cv, 'min', 3, 232, False).dl(), #bi_lstm
+            3 : validation(3, self.X, self.y, self.cv, 'min', 3, 232, False).dl(), #gru_lstm
+            4 : validation(4, self.X, self.y, self.cv, 'min', 3, 232, False).dl()  #bi_gru_lstm
         } [self.i]
         
 
@@ -683,3 +683,27 @@ class selection:
                 best_model = i
         
         return best_score, best_model
+
+
+
+class fitting:
+
+    def __init__(self, X, y, T, verbose=0):
+        self.X = X
+        self.y = y
+        self.T = T
+        self.verbose = verbose
+
+
+    def auto(self):
+        ml_score, ml_model = selection(self.X, self.y).ml_run()
+        dl_score, dl_model = selection(self.X, self.y).dl_run()
+
+        if (ml_score < dl_score):
+            print("ML Model Selected: " + str(ml_model))
+            yhat = prediction(ml_model, self.X, self.y, self.T).ml().predict(self.T)
+        else:
+            print("DL Model Selected: " + str(dl_model))
+            yhat = prediction(dl_model, self.X, self.y, self.T).dl().predict(self.T)
+
+        return yhat
