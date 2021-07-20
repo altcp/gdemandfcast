@@ -123,14 +123,12 @@ class mlmodels:
     def gpr_model(self):
         
         gc.collect() 
-        kernel = gp.kernels.ConstantKernel(1.0, (1e-1, 1e3)) * gp.kernels.RBF(10.0, (1e-1, 1e3))
         pipe = Pipeline(steps=[('STD', StandardScaler()), ('GPR', gp.GaussianProcessRegressor())])
         param_grid={
 
-            'GPR__kernel':[kernel],
             'GPR__n_restarts_optimizer': [3, 5, 7],
-            'GPR__alpha':[0.03, 0.05, 0.07],
-            'GPR__random_state': [self.seed]
+            'GPR__alpha':[0.03, 0.05, 0.07]
+
         }
 
         search = GridSearchCV(pipe, param_grid, cv=self.cv, scoring=self.scoring, n_jobs=self.jobs)
