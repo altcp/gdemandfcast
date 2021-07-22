@@ -386,7 +386,7 @@ class preprocessing:
 
 class validation:
 
-    def __init__(self, i, X, y, scoring='mean_absolute_error', cv=5, val=True):
+    def __init__(self, i, X, y, scoring='neg_mean_absolute_error', cv=5, val=True):
         self.i = i
         self.X = X
         self.y = y
@@ -416,7 +416,7 @@ class validation:
 
 class prediction:
 
-    def __init__(self, i, X, y, T, scoring='mean_absolute_error', cv=5):
+    def __init__(self, i, X, y, T, scoring='neg_mean_absolute_error', cv=5):
         self.i = i
         self.X = X
         self.y = y
