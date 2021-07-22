@@ -365,7 +365,7 @@ class optimization:
                     #An output layer that makes a single value prediction. 
                     model.add(tf.keras.layers.Dense(1)) 
                     #Tune the optimizer's learning rate.
-                    model.compile(optimizer=tf.keras.optimizers.Adam(lr=hp.Float('opt_learn_rate', min_value=1e-4, max_value=1e-2, sampling='LOG', default=1e-3),
+                    model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=hp.Float('opt_learn_rate', min_value=1e-4, max_value=1e-2, sampling='LOG', default=1e-3),
                     clipnorm=hp.Float('opt_clipnorm', min_value=0.001, max_value=1.11, step=0.10, default=1.0), 
                     clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0)), loss='mse', metrics=['mae'])
                     return model
@@ -387,7 +387,7 @@ class optimization:
                     #An output layer that makes a single value prediction. 
                     model.add(tf.keras.layers.Dense(1)) 
                     #Tune the optimizer's learning rate.
-                    model.compile(optimizer=tf.keras.optimizers.Adam(lr=hp.Float('opt_learn_rate', min_value=1e-4, max_value=1e-2, sampling='LOG', default=1e-3), 
+                    model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=hp.Float('opt_learn_rate', min_value=1e-4, max_value=1e-2, sampling='LOG', default=1e-3), 
                     clipnorm=hp.Float('opt_clipnorm', min_value=0.001, max_value=1.11, step=0.10, default=1.0),
                     clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0)), loss='mse', metrics=['mae'])
                     return model
@@ -412,7 +412,7 @@ class optimization:
                     #An output layer that makes a single value prediction. 
                     model.add(tf.keras.layers.Dense(1)) 
                     #Tune the optimizer's learning rate.
-                    model.compile(optimizer=tf.keras.optimizers.Adam(lr=hp.Float('opt_learn_rate', min_value=1e-4, max_value=1e-2, sampling='LOG', default=1e-3), 
+                    model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=hp.Float('opt_learn_rate', min_value=1e-4, max_value=1e-2, sampling='LOG', default=1e-3), 
                     clipnorm=hp.Float('opt_clipnorm', min_value=0.001, max_value=1.11, step=0.10, default=1.0), 
                     clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0)), loss='mse', metrics=['mae'])
                     return model
@@ -434,7 +434,7 @@ class optimization:
                     model.add(tf.keras.layers.Dense(1)) 
      
                     #Tune the optimizer's learning rate.
-                    model.compile(optimizer=tf.keras.optimizers.Adam(lr=hp.Float('opt_learn_rate', min_value=1e-4, max_value=1e-2, sampling='LOG', default=1e-3),
+                    model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=hp.Float('opt_learn_rate', min_value=1e-4, max_value=1e-2, sampling='LOG', default=1e-3),
                     clipnorm=hp.Float('opt_clipnorm', min_value=0.001, max_value=1.11, step=0.10, default=1.0),
                     clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0)), loss='mse', metrics=['mae'])
                     return model
@@ -627,7 +627,8 @@ class execute:
 
 class ModelTuner(kt.Tuner):
 
-    def run_trial(self, trial, x_train, y_train, batch_size):
+    def run_trial(self, trial, x_train, y_train):
+        batch_size = 32
         hp = trial.hyperparameters
         model = self.hypermodel.build(trial.hyperparameters)
         epoch_loss_metric = tf.keras.metrics.Mean()
