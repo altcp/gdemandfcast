@@ -114,7 +114,6 @@ class mlmodels:
         pipe = Pipeline(steps=[('STD', StandardScaler()), ('GPR', gp.GaussianProcessRegressor())])
         param_grid={
 
-            'GPR__n_restarts_optimizer': [3, 5, 7],
             'GPR__alpha':[0.03, 0.05, 0.07]
 
         }
@@ -134,10 +133,10 @@ class mlmodels:
         pipe = Pipeline(steps=[('STD', StandardScaler()), ('MLP', MLPRegressor())])
         param_grid={
             
-            'MLP__hidden_layer_sizes': [(9,6,3),(3,3,3),(12,4),(30,),(10,)],
+            'MLP__hidden_layer_sizes': [(12,4), (10,)],
             'MLP__activation': ['tanh', 'relu'],
             'MLP__solver': ['sgd', 'adam'],
-            'MLP__alpha': [0.0005, 0.001, 0.005, 0.01, 0.05],
+            'MLP__alpha': [0.001, 0.005, 0.01],
             'MLP__learning_rate': ['constant','adaptive'],
             'MLP__early_stopping': [True],
             'MLP__random_state': [self.seed]
@@ -157,15 +156,9 @@ class mlmodels:
         gc.collect()
         pipe = Pipeline(steps=[('STD', StandardScaler()), ('XGB', XGBRegressor(objective='reg:squarederror'))])
         param_grid={
+
+            'XGB__max_depth': [3, 7],
             
-            'XGB__n_estimators': [100, 300, 500],
-            'XGB__max_depth': [3, 6, 9],
-            'XGB__verbosity': [0],
-            'XGB__alpha': [0, 0.003, 0.005, 0.01, 0.03],
-            'XGB__eta': [0.05, 0.1, 0.3, 0.5, 0.7, 1],
-            'XGB__subsample': [0.5, 0.7, 1],
-            'XGB__gamma': [0, 3, 6, 9],
-            'XGB__random_state': [self.seed]
         }
 
         search = GridSearchCV(pipe, param_grid, cv=self.cv, scoring=self.scoring, n_jobs=self.jobs)
