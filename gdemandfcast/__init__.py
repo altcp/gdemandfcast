@@ -2,6 +2,5 @@
 
 __author__ = """Tan Chiang Pern Alvin"""
 __email__ = 'colab.tcp@gmail.com'
-__version__ = '0.2.5'
-__all__ = ["archmodels", "armamodels", "mlmodels", "dlmodels", "preprocessing", "validation", "prediction", 
-"optimization", "visualization", "selection", "fitting", "execute"]
+__version__ = '0.2.6'
+__all__ = ["archmodels", "armamodels", "mlmodels", "dlmodels", "preprocessing", "validation", "prediction", "optimization", "visualization", "selection", "fitting", "execute"]

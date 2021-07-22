@@ -3,8 +3,6 @@
 
 import gc
 import math
-import xgboost
-import warnings
 import arch as am
 
 import pandas as pd
@@ -17,6 +15,7 @@ import tensorflow as tf
 import sklearn.gaussian_process as gp
 
 from tensorflow import keras
+from xgboost import XGBRegressor
 from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.neural_network import MLPRegressor
