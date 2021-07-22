@@ -5,4 +5,4 @@ __email__ = 'colab.tcp@gmail.com'
 __version__ = '0.2.2'
 __all__ = ["gdtsarch", "armamodels", "mlmodels", "dlmodels", "preprocessing", "validation", "prediction", "optimization", "visualization", "selection", "fitting"]
 
-from main import *
+from classes import *
