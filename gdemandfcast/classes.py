@@ -387,22 +387,31 @@ class validation:
         self.val  = val
 
     def ml(self):
-        return {
-            1 : mlmodels(self.X, self.y, self.cv, self.scoring, 3, 232, self.val).svr_model(),
-            2 : mlmodels(self.X, self.y, self.cv, self.scoring, 3, 232, self.val).mlp_model(),
-            3 : mlmodels(self.X, self.y, self.cv, self.scoring, 3, 232, self.val).xgb_model(),
-            4 : mlmodels(self.X, self.y, self.cv, self.scoring, 3, 232, self.val).gpr_model()
-        } [self.i] 
+
+        if (self.i == 1):
+            score = mlmodels(self.X, self.y, self.cv, self.scoring, 3, 232, self.val).svr_model()
+        elif (self.i == 2):
+            score = mlmodels(self.X, self.y, self.cv, self.scoring, 3, 232, self.val).mlp_model()
+        elif (self.i == 3):
+            score = mlmodels(self.X, self.y, self.cv, self.scoring, 3, 232, self.val).xgb_model()
+        else:
+            score = mlmodels(self.X, self.y, self.cv, self.scoring, 3, 232, self.val).gpr_model()
+        
+        return score
 
 
     def dl(self):
-        return {
-            1 : optimization(1, self.X, self.y, self.cv, 232, self.val).run(),
-            2 : optimization(2, self.X, self.y, self.cv, 232, self.val).run(),
-            3 : optimization(3, self.X, self.y, self.cv, 232, self.val).run(),
-            4 : optimization(4, self.X, self.y, self.cv, 232, self.val).run()
-        } [self.i] 
+        
+        if (self.i == 1):
+            score = optimization(1, self.X, self.y, self.cv, 232, self.val).run()
+        elif (self.i == 2):
+            score = optimization(2, self.X, self.y, self.cv, 232, self.val).run()
+        elif (self.i == 3): 
+            score = optimization(3, self.X, self.y, self.cv, 232, self.val).run()
+        else:   
+            score = optimization(4, self.X, self.y, self.cv, 232, self.val).run()
 
+        return score
 
 # In[ ]:
 
@@ -418,21 +427,31 @@ class prediction:
 
 
     def ml(self):
-        return {
-            1 : validation(1, self.X, self.y, self.cv, self.scoring, 3, 232, False).ml(), #svr
-            2 : validation(2, self.X, self.y, self.cv, self.scoring, 3, 232, False).ml(), #mlp
-            3 : validation(3, self.X, self.y, self.cv, self.scoring, 3, 232, False).ml(), #xgb
-            4 : validation(4, self.X, self.y, self.cv, self.scoring, 3, 232, False).ml() #gpr
-        } [self.i] 
+
+        if (self.i == 1):
+            model = validation(1, self.X, self.y, self.cv, self.scoring, 3, 232, False).ml(), #svr
+        elif (self.i == 2):
+            model = validation(2, self.X, self.y, self.cv, self.scoring, 3, 232, False).ml(), #mlp
+        elif (self.i == 3):
+            model = validation(3, self.X, self.y, self.cv, self.scoring, 3, 232, False).ml(), #xgb
+        else:
+            model = validation(4, self.X, self.y, self.cv, self.scoring, 3, 232, False).ml() #gpr
+        
+        return model
 
     
     def dl(self):
-        return {
-            1 : validation(1, self.X, self.y, self.cv, 'min', 3, 232, False).dl(), #lstm
-            2 : validation(2, self.X, self.y, self.cv, 'min', 3, 232, False).dl(), #bi_lstm
-            3 : validation(3, self.X, self.y, self.cv, 'min', 3, 232, False).dl(), #gru_lstm
-            4 : validation(4, self.X, self.y, self.cv, 'min', 3, 232, False).dl()  #bi_gru_lstm
-        } [self.i]
+        
+        if (self.i == 1):
+            model = validation(1, self.X, self.y, self.cv, 'min', 3, 232, False).dl(), #lstm
+        elif (self.i == 2):
+            model = validation(2, self.X, self.y, self.cv, 'min', 3, 232, False).dl(), #bi_lstm
+        elif(self.i == 3):
+            model = validation(3, self.X, self.y, self.cv, 'min', 3, 232, False).dl(), #gru_lstm
+        else:
+            model = validation(4, self.X, self.y, self.cv, 'min', 3, 232, False).dl()  #bi_gru_lstm
+        
+        return model
         
 
 # In[ ]:
@@ -468,21 +487,31 @@ class optimization:
 
 
         def get_tuner(m):
-            return {
-                1: ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=dlmodels().lstm(), project_name='gdf_lstm'),
-                2: ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=dlmodels().bi_lstm(), project_name='gdf_bi_lstm'),
-                3: ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=dlmodels().gru_lstm(), project_name='gdf_gru_lstm'),
-                4: ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=dlmodels().bi_gru_lstm(), project_name='gdf_bi_gru_lstm')
-            } [self.i]
+
+            if (m == 1):
+                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=dlmodels().lstm(), project_name='gdf_lstm'),
+            elif(m == 2):
+                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=dlmodels().bi_lstm(), project_name='gdf_bi_lstm'),
+            elif(m == 3):
+                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=dlmodels().gru_lstm(), project_name='gdf_gru_lstm'),
+            else:
+                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=dlmodels().bi_gru_lstm(), project_name='gdf_bi_gru_lstm')
+            
+            return tunner
 
         
         def get_name(m):
-            return {
-                1: "GDF-LTSM",
-                2: "GDF-BI_LSTM",
-                3: "GDF-GRU_LSTM",
-                4: "GDF-BI-GRU_LSTM"
-            } [self.i]
+            
+            if (m == 1):
+                name = "GDF-LTSM"
+            elif (m == 2):
+                name = "GDF-BI_LSTM"
+            elif (m == 3):
+                name = "GDF-GRU_LSTM"
+            else:
+                name = "GDF-BI-GRU_LSTM"
+            
+            return name
     
 
         get_tuner(i).search(X, y)
@@ -499,6 +528,8 @@ class optimization:
 
         if (self.validation == True):
             visualization(history, round((scores[1]*100), 2), get_name(self.i)).disp_fit()
+            print(" ")
+            print(" ")
             return None
         else:
             return model
