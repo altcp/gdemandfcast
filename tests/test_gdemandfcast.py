@@ -6,7 +6,7 @@ import pytest
 
 from click.testing import CliRunner
 
-from gdemandfcast import main
+from gdemandfcast import classes
 from gdemandfcast import cli
 
 
