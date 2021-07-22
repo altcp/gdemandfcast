@@ -362,10 +362,7 @@ class optimization:
                     model.add(tf.keras.layers.BatchNormalization())
                     #An output layer that makes a single value prediction. 
                     model.add(tf.keras.layers.Dense(1)) 
-                    #Tune the optimizer's learning rate.
-                    model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=hp.Float('opt_learn_rate', min_value=1e-4, max_value=1e-2, sampling='LOG', default=1e-3),
-                    clipnorm=hp.Float('opt_clipnorm', min_value=0.001, max_value=1.11, step=0.10, default=1.0), 
-                    clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0)), loss=tf.keras.losses.MSE())
+                    model.compile(optimizer=tf.keras.optimizers.Adam())
                     return model
 
                 tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=tf.keras.losses.MSE(), max_trials=cpusize, seed=seed), hypermodel=bi_gru_lstm, project_name='gdf_bi_gru_ltsm')
@@ -383,10 +380,7 @@ class optimization:
                     model.add(tf.keras.layers.BatchNormalization())
                     #An output layer that makes a single value prediction. 
                     model.add(tf.keras.layers.Dense(1)) 
-                    #Tune the optimizer's learning rate.
-                    model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=hp.Float('opt_learn_rate', min_value=1e-4, max_value=1e-2, sampling='LOG', default=1e-3),
-                    clipnorm=hp.Float('opt_clipnorm', min_value=0.001, max_value=1.11, step=0.10, default=1.0), 
-                    clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0)), loss=tf.keras.losses.MSE())
+                    model.compile(optimizer=tf.keras.optimizers.Adam())
                     return model
 
                 tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=tf.keras.losses.MSE(), max_trials=cpusize, seed=seed), hypermodel=bi_lstm, project_name='gdf_bi_lstm')
@@ -406,10 +400,7 @@ class optimization:
                     model.add(tf.keras.layers.BatchNormalization())
                     #An output layer that makes a single value prediction. 
                     model.add(tf.keras.layers.Dense(1)) 
-                    #Tune the optimizer's learning rate.
-                    model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=hp.Float('opt_learn_rate', min_value=1e-4, max_value=1e-2, sampling='LOG', default=1e-3),
-                    clipnorm=hp.Float('opt_clipnorm', min_value=0.001, max_value=1.11, step=0.10, default=1.0), 
-                    clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0)), loss=tf.keras.losses.MSE())
+                    model.compile(optimizer=tf.keras.optimizers.Adam())
                     return model
 
                 tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=tf.keras.losses.MSE(), max_trials=cpusize, seed=seed), hypermodel=gru_lstm, project_name='gdf_gru_lstm')
@@ -426,11 +417,7 @@ class optimization:
                     model.add(tf.keras.layers.BatchNormalization())
                     #An output layer that makes a single value prediction. 
                     model.add(tf.keras.layers.Dense(1)) 
-     
-                    #Tune the optimizer's learning rate.
-                    model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=hp.Float('opt_learn_rate', min_value=1e-4, max_value=1e-2, sampling='LOG', default=1e-3),
-                    clipnorm=hp.Float('opt_clipnorm', min_value=0.001, max_value=1.11, step=0.10, default=1.0), 
-                    clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0)), loss=tf.keras.losses.MSE())
+                    model.compile(optimizer=tf.keras.optimizers.Adam())
                     return model
 
                 tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=tf.keras.losses.MSE(), max_trials=cpusize, seed=seed), hypermodel=lstm, project_name='gdf_lstm')
