@@ -200,16 +200,17 @@ class mlmodels:
 
 class dlmodels:
     
-    def __init__(self, feature_size, min_units=4, max_units=10, step_units=1, units=7):
+    def __init__(self, feature_size, hp, min_units=4, max_units=10, step_units=1, units=7):
         self.min_units = min_units
         self.max_units = max_units
         self.step_units = step_units
         self.units = units
         self.feature_size = feature_size
+        self.hp = hp
 
         
-    def bi_gru_lstm(self, hp):
-    
+    def bi_gru_lstm(self):
+        hp = self.hp
         model = tf.keras.Sequential()
 
         #GRU
@@ -242,8 +243,8 @@ class dlmodels:
         return model
     
     
-    def gru_lstm(self, hp):
-    
+    def gru_lstm(self):
+        hp = self.hp
         model = tf.keras.Sequential()
 
         #GRU
@@ -277,8 +278,8 @@ class dlmodels:
         return model
     
     
-    def bi_lstm(self, hp):
-    
+    def bi_lstm(self):
+        hp = self.hp
         model = tf.keras.Sequential()
 
         #LSTM
@@ -304,8 +305,8 @@ class dlmodels:
         return model
     
 
-    def lstm(self, hp):
-    
+    def lstm(self):
+        hp = self.hp
         model = tf.keras.Sequential()
 
         #LSTM
@@ -489,13 +490,17 @@ class optimization:
         def get_tuner(m):
 
             if (m == 1):
-                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=dlmodels(size).lstm(), project_name='gdf_lstm'),
+                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed),
+                 hypermodel=dlmodels(size).lstm(), project_name='gdf_lstm'),
             elif(m == 2):
-                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=dlmodels(size).bi_lstm(), project_name='gdf_bi_lstm'),
+                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed),
+                 hypermodel=dlmodels(size).bi_lstm(), project_name='gdf_bi_lstm'),
             elif(m == 3):
-                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=dlmodels(size).gru_lstm(), project_name='gdf_gru_lstm'),
+                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed),
+                 hypermodel=dlmodels(size).gru_lstm(), project_name='gdf_gru_lstm'),
             else:
-                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=dlmodels(size).bi_gru_lstm(), project_name='gdf_bi_gru_lstm')
+                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed),
+                 hypermodel=dlmodels(size).bi_gru_lstm(), project_name='gdf_bi_gru_lstm')
             
             return tunner
 
