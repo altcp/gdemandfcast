@@ -26,7 +26,7 @@ from scipy import stats
 
 
 
-class gdtsarch:
+class archmodels:
     
     def __init__(self, y, vol='Garch', dist='Normal', mu='Constant', p=1, o=0, q=1, power=2.0, n=20):
         self.vol = vol
@@ -43,7 +43,7 @@ class gdtsarch:
     def run_model(self):
         
         if (len(self.y) > self.n):
-            model = am.arch_model(y=self.y, mean=self.mu, vol=self.vol, dist=self.dist, p=self.p, o=self.o, q=self.q, power=self.power, rescale=True)
+            model = am.arch_model(y=self.y, mean=self.mu, vol=self.vol, dist=self.dist, p=self.p, o=self.o, q=self.q, power=self.power, rescale=True, reindex=False)
             fitted = model.fit(disp='off', show_warning=False)
             summary = fitted.forecast(horizon=1)
             e_sigma_squared = summary.variance.iloc[-1].values
