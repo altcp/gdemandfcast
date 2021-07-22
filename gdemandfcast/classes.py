@@ -417,7 +417,7 @@ class optimization:
                     clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0)), loss='mse', metrics=['mae'])
                     return model
 
-                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=gru_lstm(), project_name='gdf_gru_lstm')
+                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=gru_lstm, project_name='gdf_gru_lstm')
 
             else:
 
@@ -439,7 +439,7 @@ class optimization:
                     clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0)), loss='mse', metrics=['mae'])
                     return model
 
-                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=lstm(), project_name='gdf_lstm')
+                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=lstm, project_name='gdf_lstm')
             
 
             return tunner
