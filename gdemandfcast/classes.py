@@ -365,10 +365,10 @@ class optimization:
                     #Tune the optimizer's learning rate.
                     model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=hp.Float('opt_learn_rate', min_value=1e-4, max_value=1e-2, sampling='LOG', default=1e-3),
                     clipnorm=hp.Float('opt_clipnorm', min_value=0.001, max_value=1.11, step=0.10, default=1.0), 
-                    clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0)), loss='mse', metrics=['mae'])
+                    clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0)), loss=tf.keras.losses.MSE())
                     return model
 
-                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective='mse', max_trials=cpusize, seed=seed), hypermodel=bi_gru_lstm, project_name='gdf_bi_gru_ltsm')
+                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=tf.keras.losses.MSE(), max_trials=cpusize, seed=seed), hypermodel=bi_gru_lstm, project_name='gdf_bi_gru_ltsm')
 
 
             elif(m == 2):
@@ -384,12 +384,12 @@ class optimization:
                     #An output layer that makes a single value prediction. 
                     model.add(tf.keras.layers.Dense(1)) 
                     #Tune the optimizer's learning rate.
-                    model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=hp.Float('opt_learn_rate', min_value=1e-4, max_value=1e-2, sampling='LOG', default=1e-3), 
-                    clipnorm=hp.Float('opt_clipnorm', min_value=0.001, max_value=1.11, step=0.10, default=1.0),
-                    clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0)), loss='mse', metrics=['mae'])
+                    model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=hp.Float('opt_learn_rate', min_value=1e-4, max_value=1e-2, sampling='LOG', default=1e-3),
+                    clipnorm=hp.Float('opt_clipnorm', min_value=0.001, max_value=1.11, step=0.10, default=1.0), 
+                    clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0)), loss=tf.keras.losses.MSE())
                     return model
 
-                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective='mse', max_trials=cpusize, seed=seed), hypermodel=bi_lstm, project_name='gdf_bi_lstm')
+                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=tf.keras.losses.MSE(), max_trials=cpusize, seed=seed), hypermodel=bi_lstm, project_name='gdf_bi_lstm')
 
             elif(m == 3):
                 
@@ -407,12 +407,12 @@ class optimization:
                     #An output layer that makes a single value prediction. 
                     model.add(tf.keras.layers.Dense(1)) 
                     #Tune the optimizer's learning rate.
-                    model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=hp.Float('opt_learn_rate', min_value=1e-4, max_value=1e-2, sampling='LOG', default=1e-3), 
+                    model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=hp.Float('opt_learn_rate', min_value=1e-4, max_value=1e-2, sampling='LOG', default=1e-3),
                     clipnorm=hp.Float('opt_clipnorm', min_value=0.001, max_value=1.11, step=0.10, default=1.0), 
-                    clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0)), loss='mse', metrics=['mae'])
+                    clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0)), loss=tf.keras.losses.MSE())
                     return model
 
-                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective='mse', max_trials=cpusize, seed=seed), hypermodel=gru_lstm, project_name='gdf_gru_lstm')
+                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=tf.keras.losses.MSE(), max_trials=cpusize, seed=seed), hypermodel=gru_lstm, project_name='gdf_gru_lstm')
 
             else:
 
@@ -429,11 +429,11 @@ class optimization:
      
                     #Tune the optimizer's learning rate.
                     model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=hp.Float('opt_learn_rate', min_value=1e-4, max_value=1e-2, sampling='LOG', default=1e-3),
-                    clipnorm=hp.Float('opt_clipnorm', min_value=0.001, max_value=1.11, step=0.10, default=1.0),
-                    clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0)), loss='mse', metrics=['mae'])
+                    clipnorm=hp.Float('opt_clipnorm', min_value=0.001, max_value=1.11, step=0.10, default=1.0), 
+                    clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0)), loss=tf.keras.losses.MSE())
                     return model
 
-                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective='mse', max_trials=cpusize, seed=seed), hypermodel=lstm, project_name='gdf_lstm')
+                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=tf.keras.losses.MSE(), max_trials=cpusize, seed=seed), hypermodel=lstm, project_name='gdf_lstm')
             
 
             return tunner
