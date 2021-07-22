@@ -365,7 +365,7 @@ class optimization:
                     model.compile(optimizer=tf.keras.optimizers.Adam())
                     return model
 
-                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=tf.keras.losses.MSE(), max_trials=cpusize, seed=seed), hypermodel=bi_gru_lstm, project_name='gdf_bi_gru_ltsm')
+                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective='val_loss', max_trials=cpusize, seed=seed), hypermodel=bi_gru_lstm, project_name='gdf_bi_gru_ltsm')
 
 
             elif(m == 2):
@@ -383,7 +383,7 @@ class optimization:
                     model.compile(optimizer=tf.keras.optimizers.Adam())
                     return model
 
-                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=tf.keras.losses.MSE(), max_trials=cpusize, seed=seed), hypermodel=bi_lstm, project_name='gdf_bi_lstm')
+                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective='val_loss', max_trials=cpusize, seed=seed), hypermodel=bi_lstm, project_name='gdf_bi_lstm')
 
             elif(m == 3):
                 
@@ -403,7 +403,7 @@ class optimization:
                     model.compile(optimizer=tf.keras.optimizers.Adam())
                     return model
 
-                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=tf.keras.losses.MSE(), max_trials=cpusize, seed=seed), hypermodel=gru_lstm, project_name='gdf_gru_lstm')
+                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective='val_loss', max_trials=cpusize, seed=seed), hypermodel=gru_lstm, project_name='gdf_gru_lstm')
 
             else:
 
@@ -420,7 +420,7 @@ class optimization:
                     model.compile(optimizer=tf.keras.optimizers.Adam())
                     return model
 
-                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=tf.keras.losses.MSE(), max_trials=cpusize, seed=seed), hypermodel=lstm, project_name='gdf_lstm')
+                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective='val_loss', max_trials=cpusize, seed=seed), hypermodel=lstm, project_name='gdf_lstm')
             
 
             return tunner
