@@ -352,72 +352,6 @@ class dlmodels:
 
 
 
-
-
-# In[ ]:
-
-class ModelTuner(kt.Tuner):
-
-    def run_trial(self, trial, x_train, y_train, batch_size):
-        hp = trial.hyperparameters
-        model = self.hypermodel.build(trial.hyperparameters)
-        epoch_loss_metric = tf.keras.metrics.Mean()
-        optimizer=tf.keras.optimizers.Adam(lr=hp.Float('opt_learn_rate', min_value=1e-4, max_value=1e-2, sampling='LOG', default=1e-3),
-                                                     clipnorm=hp.Float('opt_clipnorm', min_value=0.001, max_value=1.11, step=0.10, default=1.0),
-                                                     clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0))
-
-        @tf.function
-        def run_train_step(real_x, real_y, alpha=0.05):
-            with tf.GradientTape() as tape:
-
-                pred_y = model(real_x)
-
-                data = []
-                data = real_y - pred_y
-                shapiro_test = stats.shapiro(data)
-                lilliefors_test = stats.diagnostic.lilliefors(data)
-
-                dev = []
-                dev = abs(real_y - pred_y)
-                q3, q1 = np.percentile(dev, [75, 25])
-                iqr = q3 - q1
-                d = q3 + (1.5 * iqr)
-
-                huber = tf.keras.losses.Huber(delta=d)
-                mse = tf.keras.losses.MSE()
-
-                #Distribution Aware
-                if (shapiro_test.pvalue > alpha):
-                    if (lilliefors_test.pvalue < alpha):
-                        loss = huber(real_y, pred_y)
-                    else:
-                        loss = mse(real_y, pred_y)
-                else:
-                    loss = huber(real_y, pred_y)
-
-                gradients = tape.gradient(loss, model.trainable_variables)
-            
-            optimizer.apply_gradients(zip(gradients, model.trainable_variables))
-            epoch_loss_metric.update_state(loss)
-            return loss
-            
-        #Calculate number of batches and define number of epochs per Trial
-        num_of_batches = math.floor(len(x_train) / batch_size)
-        epochs = 10
-        
-        #Run the Trial
-        for epoch in range(epochs):
-            self.on_epoch_begin(trial, model, epoch, logs={})
-            for batch in range(num_of_batches):
-                n = batch*batch_size
-                self.on_batch_begin(trial, model, batch, logs={})
-                batch_loss = run_train_step(x_train[n:n+batch_size], y_train[n:n+batch_size])
-                self.on_batch_end(trial, model, batch, logs={'loss': batch_loss})
-                
-        epoch_loss = epoch_loss_metric.result().numpy()
-        self.on_epoch_end(trial, model, epoch, logs={'loss': epoch_loss})
-        epoch_loss_metric.reset_states()
-
 # In[ ]:
 
 class preprocessing:
@@ -707,3 +641,69 @@ class fitting:
             yhat = prediction(dl_model, self.X, self.y, self.T).dl().predict(self.T)
 
         return yhat
+
+
+class ModelTuner(kt.Tuner):
+
+    def run_trial(self, trial, x_train, y_train, batch_size):
+        hp = trial.hyperparameters
+        model = self.hypermodel.build(trial.hyperparameters)
+        epoch_loss_metric = tf.keras.metrics.Mean()
+        optimizer=tf.keras.optimizers.Adam(lr=hp.Float('opt_learn_rate', min_value=1e-4, max_value=1e-2, sampling='LOG', default=1e-3),
+                                                     clipnorm=hp.Float('opt_clipnorm', min_value=0.001, max_value=1.11, step=0.10, default=1.0),
+                                                     clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0))
+
+        @tf.function
+        def run_train_step(real_x, real_y, alpha=0.05):
+            with tf.GradientTape() as tape:
+
+                pred_y = model(real_x)
+
+                data = []
+                data = real_y - pred_y
+                shapiro_test = stats.shapiro(data)
+                lilliefors_test = stats.diagnostic.lilliefors(data)
+
+                dev = []
+                dev = abs(real_y - pred_y)
+                q3, q1 = np.percentile(dev, [75, 25])
+                iqr = q3 - q1
+                d = q3 + (1.5 * iqr)
+
+                huber = tf.keras.losses.Huber(delta=d)
+                mse = tf.keras.losses.MSE()
+
+                #Distribution Aware
+                if (shapiro_test.pvalue > alpha):
+                    if (lilliefors_test.pvalue < alpha):
+                        loss = huber(real_y, pred_y)
+                    else:
+                        loss = mse(real_y, pred_y)
+                else:
+                    loss = huber(real_y, pred_y)
+
+                gradients = tape.gradient(loss, model.trainable_variables)
+            
+            optimizer.apply_gradients(zip(gradients, model.trainable_variables))
+            epoch_loss_metric.update_state(loss)
+            return loss
+            
+        #Calculate number of batches and define number of epochs per Trial
+        num_of_batches = math.floor(len(x_train) / batch_size)
+        epochs = 10
+        
+        #Run the Trial
+        for epoch in range(epochs):
+            self.on_epoch_begin(trial, model, epoch, logs={})
+            for batch in range(num_of_batches):
+                n = batch*batch_size
+                self.on_batch_begin(trial, model, batch, logs={})
+                batch_loss = run_train_step(x_train[n:n+batch_size], y_train[n:n+batch_size])
+                self.on_batch_end(trial, model, batch, logs={'loss': batch_loss})
+                
+        epoch_loss = epoch_loss_metric.result().numpy()
+        self.on_epoch_end(trial, model, epoch, logs={'loss': epoch_loss})
+        epoch_loss_metric.reset_states()
+
+
+        
