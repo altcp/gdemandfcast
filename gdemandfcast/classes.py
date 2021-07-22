@@ -345,22 +345,16 @@ class dlmodels:
 
 class preprocessing:
 
-    def __init__(self, df, target='Y', p=7, create_testset=False , from_excel=" ", sheet_name=0, fname="Weekly"):
+    def __init__(self, df, target='Y', p=7, create_testset=False):
         self.df = df
         self.target = target
         self.p = p #Size of Bucket (e.g., Week = 7 or 5, Lag)
         self.create_testset = create_testset
-        self.from_excel = from_excel
-        self.sheet_name = sheet_name
-        self.fname = fname
+
 
     def run_univariate(self):
-        
-        if (self.from_excel == " "):
-            df1 = pd.DataFrame()
-        else:
-            df1 = pd.DataFrame()
-            df1 = pd.read_excel(self.from_excel, self.sheet_name)
+                
+        df1 = pd.DataFrame()
 
         if (self.create_testset == False):
             P = self.p + 1
@@ -379,6 +373,7 @@ class preprocessing:
 
         return df1
 
+
     def create_frequency(self):
 
         df1 = pd.DataFrame()
@@ -391,7 +386,7 @@ class preprocessing:
 
 class validation:
 
-    def __init__(self, i, X, y, scoring, cv, val=True):
+    def __init__(self, i, X, y, scoring='mean_absolute_error', cv=5, val=True):
         self.i = i
         self.X = X
         self.y = y
@@ -630,6 +625,33 @@ class fitting:
             yhat = prediction(dl_model, self.X, self.y, self.T).dl().predict(self.T)
 
         return yhat
+
+
+
+class execute:
+    
+    def __init__(self, train, test, lags=3):
+        self.train = train
+        self.test = test
+        self.lags = lags
+
+    def frm(self):
+    
+        train1 = pd.read_excel(self.train)
+        test1 = pd.read_excel(self.test)
+        train2 = train1.fillna(0)
+        test2 = test1.fillna(0)
+
+        for col in train2.columns:
+            target = col
+            df2 = preprocessing(train2, target, self.lags, False).run_univariate().dropna().reset_index(drop=True)
+            t = preprocessing(test2, target, self.lags, True).run_univariate().dropna().reset_index(drop=True)
+            y = df2['Y']
+            X = df2.loc[:, df2.columns != 'Y']
+            predictions = fitting(X, y, t).auto()
+        
+        return predictions
+
 
 
 class ModelTuner(kt.Tuner):
