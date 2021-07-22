@@ -484,18 +484,18 @@ class optimization:
 
 
         train_x, test_x, train_y, test_y = train_test_split(X, y, test_size=spilt, random_state=seed)
-
+        size = len(X.columns)
 
         def get_tuner(m):
 
             if (m == 1):
-                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=dlmodels().lstm(), project_name='gdf_lstm'),
+                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=dlmodels(size).lstm(), project_name='gdf_lstm'),
             elif(m == 2):
-                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=dlmodels().bi_lstm(), project_name='gdf_bi_lstm'),
+                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=dlmodels(size).bi_lstm(), project_name='gdf_bi_lstm'),
             elif(m == 3):
-                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=dlmodels().gru_lstm(), project_name='gdf_gru_lstm'),
+                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=dlmodels(size).gru_lstm(), project_name='gdf_gru_lstm'),
             else:
-                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=dlmodels().bi_gru_lstm(), project_name='gdf_bi_gru_lstm')
+                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=dlmodels(size).bi_gru_lstm(), project_name='gdf_bi_gru_lstm')
             
             return tunner
 
