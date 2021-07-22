@@ -1,40 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
-
-import gc
-import math
-import xgboost
-import warnings
-import arch as am
-
-import pandas as pd
-import pmdarima as pm
-import keras_tuner as kt
-import matplotlib.pyplot as plt
-
-import numpy as np
-import tensorflow as tf
-import sklearn.gaussian_process as gp
-
-from tensorflow import keras
-from sklearn.model_selection import GridSearchCV, train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.neural_network import MLPRegressor
-from sklearn.pipeline import Pipeline
-from sklearn.svm import SVR
-from scipy import stats
-
-warnings.filterwarnings("ignore")
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
 
 class gdtsarch:
     
@@ -706,4 +672,28 @@ class ModelTuner(kt.Tuner):
         epoch_loss_metric.reset_states()
 
 
-        
+
+import gc
+import math
+import xgboost
+import warnings
+import arch as am
+
+import pandas as pd
+import pmdarima as pm
+import keras_tuner as kt
+import matplotlib.pyplot as plt
+
+import numpy as np
+import tensorflow as tf
+import sklearn.gaussian_process as gp
+
+from tensorflow import keras
+from sklearn.model_selection import GridSearchCV, train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neural_network import MLPRegressor
+from sklearn.pipeline import Pipeline
+from sklearn.svm import SVR
+from scipy import stats
+
+warnings.filterwarnings("ignore")
