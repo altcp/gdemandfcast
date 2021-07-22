@@ -36,7 +36,7 @@ warnings.filterwarnings("ignore")
 
 # In[ ]:
 
-class archmodels:
+class gdtsarch:
     
     def __init__(self, y, vol='Garch', dist='Normal', mu='Constant', p=1, o=0, q=1, power=2.0, n=20):
         self.vol = vol
