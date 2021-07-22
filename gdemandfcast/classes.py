@@ -352,12 +352,10 @@ class optimization:
                 def bi_gru_lstm(hp):
                     model = tf.keras.Sequential()
                     #GRU
-                    model.add(tf.keras.layers.Bidirectional(tf.keras.layers.GRU(units=hp.Int('neurons_gru', 4, 10, 1, default=7), 
-                    input_shape=(size, 1), activation='relu', recurrent_dropout=hp.Float('rcc_dropout_gru', min_value=0.0, max_value=0.4, step=0.2, default=0.2), return_sequences=True)))
+                    model.add(tf.keras.layers.Bidirectional(tf.keras.layers.GRU(units=hp.Int('neurons_gru', 4, 10, 1, default=7), input_shape=(size, 1), activation='relu', recurrent_dropout=hp.Float('rcc_dropout_gru', min_value=0.0, max_value=0.4, step=0.2, default=0.2), return_sequences=True)))
                     model.add(tf.keras.layers.BatchNormalization())
                     #LSTM
-                    model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7), 
-                    activation='relu', recurrent_dropout=hp.Float('rcc_dropout_lstm', min_value=0.0, max_value=0.4, step=0.2, default=0.2), return_sequences=False)))
+                    model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7), activation='relu', recurrent_dropout=hp.Float('rcc_dropout_lstm', min_value=0.0, max_value=0.4, step=0.2, default=0.2), return_sequences=False)))
                     model.add(tf.keras.layers.BatchNormalization())
                     #DENSE
                     model.add(tf.keras.layers.Dense(units=hp.Int('neurons_dense', 4, 10, 1, default=7), activation='relu'))
@@ -378,8 +376,7 @@ class optimization:
                 def bi_lstm(hp):
                     model = tf.keras.Sequential()
                     #LSTM
-                    model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7), 
-                    input_shape=(size, 1), activation='relu', recurrent_dropout=hp.Float('rcc_dropout_lstm', min_value=0.0, max_value=0.4, step=0.2, default=0.2), return_sequences=False)))
+                    model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7), input_shape=(size, 1), activation='relu', recurrent_dropout=hp.Float('rcc_dropout_lstm', min_value=0.0, max_value=0.4, step=0.2, default=0.2), return_sequences=False)))
                     model.add(tf.keras.layers.BatchNormalization())
                     #DENSE
                     model.add(tf.keras.layers.Dense(units=hp.Int('neurons_dense', 4, 10, 1, default=7), activation='relu'))
@@ -399,12 +396,10 @@ class optimization:
                 def gru_lstm(hp):
                     model = tf.keras.Sequential()
                     #GRU
-                    model.add(tf.keras.layers.GRU(units=hp.Int('neurons_gru', 4, 10, 1, default=7), 
-                    input_shape=(size, 1), activation='relu', recurrent_dropout=hp.Float('rcc_dropout_gru', min_value=0.0, max_value=0.4, step=0.2, default=0.2), return_sequences=True))
+                    model.add(tf.keras.layers.GRU(units=hp.Int('neurons_gru', 4, 10, 1, default=7), input_shape=(size, 1), activation='relu', recurrent_dropout=hp.Float('rcc_dropout_gru', min_value=0.0, max_value=0.4, step=0.2, default=0.2), return_sequences=True))
                     model.add(tf.keras.layers.BatchNormalization())
                     #LSTM
-                    model.add(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7), 
-                    activation='relu', recurrent_dropout=hp.Float('rcc_dropout_lstm', min_value=0.0, max_value=0.4, step=0.2, default=0.2), return_sequences=False))
+                    model.add(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7), activation='relu', recurrent_dropout=hp.Float('rcc_dropout_lstm', min_value=0.0, max_value=0.4, step=0.2, default=0.2), return_sequences=False))
                     model.add(tf.keras.layers.BatchNormalization())
                     #DENSE
                     model.add(tf.keras.layers.Dense(units=hp.Int('neurons_dense', 4, 10, 1, default=7), activation='relu'))
@@ -424,8 +419,7 @@ class optimization:
                 def lstm(hp):
                     model = tf.keras.Sequential()
                     #LSTM
-                    model.add(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7), 
-                    input_shape=(size, 1), activation='relu', recurrent_dropout=hp.Float('rcc_dropout_lstm', min_value=0.0, max_value=0.4, step=0.2, default=0.2), return_sequences=False))
+                    model.add(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7), input_shape=(size, 1), activation='relu', recurrent_dropout=hp.Float('rcc_dropout_lstm', min_value=0.0, max_value=0.4, step=0.2, default=0.2), return_sequences=False))
                     model.add(tf.keras.layers.BatchNormalization())
                     #DENSE
                     model.add(tf.keras.layers.Dense(units=hp.Int('neurons_dense', 4, 10, 1, default=7), activation='relu'))
@@ -632,9 +626,9 @@ class ModelTuner(kt.Tuner):
         hp = trial.hyperparameters
         model = self.hypermodel.build(trial.hyperparameters)
         epoch_loss_metric = tf.keras.metrics.Mean()
-        optimizer=tf.keras.optimizers.Adam(lr=hp.Float('opt_learn_rate', min_value=1e-4, max_value=1e-2, sampling='LOG', default=1e-3),
-                                                     clipnorm=hp.Float('opt_clipnorm', min_value=0.001, max_value=1.11, step=0.10, default=1.0),
-                                                     clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0))
+        optimizer=tf.keras.optimizers.Adam(learning_rate=hp.Float('opt_learn_rate', min_value=1e-4, max_value=1e-2, sampling='LOG', default=1e-3),
+        clipnorm=hp.Float('opt_clipnorm', min_value=0.001, max_value=1.11, step=0.10, default=1.0),
+        clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0))
 
         @tf.function
         def run_train_step(real_x, real_y, alpha=0.05):
