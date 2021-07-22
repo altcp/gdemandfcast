@@ -47,7 +47,6 @@ class gdtsarch:
     def run_model(self):
         
         if (len(self.y) > self.n):
-                
             model = am.arch_model(y=self.y, mean=self.mu, vol=self.vol, dist=self.dist, p=self.p, o=self.o, q=self.q, power=self.power, rescale=True)
             fitted = model.fit(disp='off', show_warning=False)
             summary = fitted.forecast(horizon=1)
