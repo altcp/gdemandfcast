@@ -599,11 +599,12 @@ class selection:
         y = self.y
 
         best_score = 0
+        best_model = 1
 
         for i in range(1, 5, 1):
             gc.collect()
             score = validation(i, X, y).ml()
-            if(score > best_score):
+            if (score > best_score):
                 best_score = score
                 best_model = i
 
@@ -615,11 +616,12 @@ class selection:
         y = self.y
 
         best_score = 0
+        best_model = 1
 
         for i in range(1, 5, 1):
             gc.collect()
             score = validation(i, X, y).dl()
-            if(score > best_score):
+            if (score > best_score):
                 best_score = score
                 best_model = i
         
