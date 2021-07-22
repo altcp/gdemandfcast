@@ -193,147 +193,6 @@ class mlmodels:
 # In[ ]:
 
 
-
-
-
-# In[ ]:
-
-class dlmodels:
-    
-    def __init__(self, feature_size, hp, min_units=4, max_units=10, step_units=1, units=7):
-        self.min_units = min_units
-        self.max_units = max_units
-        self.step_units = step_units
-        self.units = units
-        self.feature_size = feature_size
-        self.hp = hp
-
-        
-    def bi_gru_lstm(self):
-        hp = self.hp
-        model = tf.keras.Sequential()
-
-        #GRU
-        model.add(tf.keras.layers.Bidirectional(tf.keras.layers.GRU(units=hp.Int('neurons_gru', self.min_units, self.max_units, self.step_units, default=self.units), 
-                                                                    input_shape=(self.feature_size, 1), activation='relu', 
-                                                                    recurrent_dropout=hp.Float('rcc_dropout_gru', min_value=0.0, max_value=0.4, step=0.2, default=0.2),
-                                                                    return_sequences=True)))
-        model.add(tf.keras.layers.BatchNormalization())
-    
-
-        #LSTM
-        model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', self.min_units, self.max_units, self.step_units, default=self.units), 
-                                                                     activation='relu', recurrent_dropout=hp.Float('rcc_dropout_lstm', min_value=0.0, max_value=0.4, 
-                                                                     step=0.2, default=0.2), return_sequences=False)))
-        model.add(tf.keras.layers.BatchNormalization())
-
-    
-        #DENSE
-        model.add(tf.keras.layers.Dense(units=hp.Int('neurons_dense', self.min_units, self.max_units, self.step_units, default=self.units), activation='relu'))
-        model.add(tf.keras.layers.BatchNormalization())
-    
-        #An output layer that makes a single value prediction. 
-        model.add(tf.keras.layers.Dense(1)) 
-     
-        #Tune the optimizer's learning rate.
-        model.compile(optimizer=tf.keras.optimizers.Adam(lr=hp.Float('opt_learn_rate', min_value=1e-4, max_value=1e-2, sampling='LOG', default=1e-3),
-                                                         clipnorm=hp.Float('opt_clipnorm', min_value=0.001, max_value=1.11, step=0.10, default=1.0),
-                                                         clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0)), 
-                                                         loss='mse', metrics=['mae'])
-        return model
-    
-    
-    def gru_lstm(self):
-        hp = self.hp
-        model = tf.keras.Sequential()
-
-        #GRU
-        model.add(tf.keras.layers.GRU(units=hp.Int('neurons_gru', self.min_units, self.max_units, self.step_units, default=self.units), 
-                                      input_shape=(self.feature_size, 1), activation='relu', 
-                                      recurrent_dropout=hp.Float('rcc_dropout_gru', min_value=0.0, max_value=0.4, step=0.2, default=0.2),
-                                      return_sequences=True))
-        
-        model.add(tf.keras.layers.BatchNormalization())
-    
-
-        #LSTM
-        model.add(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', self.min_units, self.max_units, self.step_units, default=self.units), 
-                                       activation='relu', recurrent_dropout=hp.Float('rcc_dropout_lstm', min_value=0.0, max_value=0.4, 
-                                                                                     step=0.2, default=0.2), return_sequences=False))
-        model.add(tf.keras.layers.BatchNormalization())
-
-    
-        #DENSE
-        model.add(tf.keras.layers.Dense(units=hp.Int('neurons_dense', self.min_units, self.max_units, self.step_units, default=self.units), activation='relu'))
-        model.add(tf.keras.layers.BatchNormalization())
-    
-        #An output layer that makes a single value prediction. 
-        model.add(tf.keras.layers.Dense(1)) 
-     
-        #Tune the optimizer's learning rate.
-        model.compile(optimizer=tf.keras.optimizers.Adam(lr=hp.Float('opt_learn_rate', min_value=1e-4, max_value=1e-2, sampling='LOG', default=1e-3),
-                                                         clipnorm=hp.Float('opt_clipnorm', min_value=0.001, max_value=1.11, step=0.10, default=1.0),
-                                                         clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0)), 
-                                                         loss='mse', metrics=['mae'])
-        return model
-    
-    
-    def bi_lstm(self):
-        hp = self.hp
-        model = tf.keras.Sequential()
-
-        #LSTM
-        model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', self.min_units, self.max_units, self.step_units, default=self.units), 
-                                                                     activation='relu', recurrent_dropout=hp.Float('rcc_dropout_lstm', min_value=0.0, max_value=0.4, 
-                                                                     step=0.2, default=0.2), return_sequences=False)))
-        
-        model.add(tf.keras.layers.BatchNormalization())
-
-    
-        #DENSE
-        model.add(tf.keras.layers.Dense(units=hp.Int('neurons_dense', self.min_units, self.max_units, self.step_units, default=self.units), activation='relu'))
-        model.add(tf.keras.layers.BatchNormalization())
-    
-        #An output layer that makes a single value prediction. 
-        model.add(tf.keras.layers.Dense(1)) 
-     
-        #Tune the optimizer's learning rate.
-        model.compile(optimizer=tf.keras.optimizers.Adam(lr=hp.Float('opt_learn_rate', min_value=1e-4, max_value=1e-2, sampling='LOG', default=1e-3),
-                                                         clipnorm=hp.Float('opt_clipnorm', min_value=0.001, max_value=1.11, step=0.10, default=1.0),
-                                                         clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0)), 
-                                                         loss='mse', metrics=['mae'])
-        return model
-    
-
-    def lstm(self):
-        hp = self.hp
-        model = tf.keras.Sequential()
-
-        #LSTM
-        model.add(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', self.min_units, self.max_units, self.step_units, default=self.units), 
-                                       activation='relu', recurrent_dropout=hp.Float('rcc_dropout_lstm', min_value=0.0, max_value=0.4, 
-                                                                                     step=0.2, default=0.2), return_sequences=False))
-        
-        model.add(tf.keras.layers.BatchNormalization())
-
-        #DENSE
-        model.add(tf.keras.layers.Dense(units=hp.Int('neurons_dense', self.min_units, self.max_units, self.step_units, default=self.units), activation='relu'))
-        model.add(tf.keras.layers.BatchNormalization())
-    
-        #An output layer that makes a single value prediction. 
-        model.add(tf.keras.layers.Dense(1)) 
-     
-        #Tune the optimizer's learning rate.
-        model.compile(optimizer=tf.keras.optimizers.Adam(lr=hp.Float('opt_learn_rate', min_value=1e-4, max_value=1e-2, sampling='LOG', default=1e-3),
-                                                         clipnorm=hp.Float('opt_clipnorm', min_value=0.001, max_value=1.11, step=0.10, default=1.0),
-                                                         clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0)), 
-                                                         loss='mse', metrics=['mae'])
-        return model
-
-# In[ ]:
-
-
-
 # In[ ]:
 
 class preprocessing:
@@ -444,13 +303,13 @@ class prediction:
     def dl(self):
         
         if (self.i == 1):
-            model = validation(1, self.X, self.y, self.cv, 'min', 3, 232, False).dl(), #lstm
+            model = validation(1, self.X, self.y, self.cv, 'min', 3, 232, False).dl(), #bi_gru_lstm
         elif (self.i == 2):
             model = validation(2, self.X, self.y, self.cv, 'min', 3, 232, False).dl(), #bi_lstm
         elif(self.i == 3):
             model = validation(3, self.X, self.y, self.cv, 'min', 3, 232, False).dl(), #gru_lstm
         else:
-            model = validation(4, self.X, self.y, self.cv, 'min', 3, 232, False).dl()  #bi_gru_lstm
+            model = validation(4, self.X, self.y, self.cv, 'min', 3, 232, False).dl()  #lstm
         
         return model
         
@@ -483,45 +342,127 @@ class optimization:
         epoch = self.epoch
         seed = self.seed
 
-
         train_x, test_x, train_y, test_y = train_test_split(X, y, test_size=spilt, random_state=seed)
         size = len(X.columns)
 
         def get_tuner(m):
 
             if (m == 1):
-                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed),
-                 hypermodel=dlmodels(size).lstm(), project_name='gdf_lstm'),
+                
+                def bi_gru_lstm(hp):
+                    model = tf.keras.Sequential()
+                    #GRU
+                    model.add(tf.keras.layers.Bidirectional(tf.keras.layers.GRU(units=hp.Int('neurons_gru', 4, 10, 1, default=7), 
+                    input_shape=(size, 1), activation='relu', recurrent_dropout=hp.Float('rcc_dropout_gru', min_value=0.0, max_value=0.4, step=0.2, default=0.2), return_sequences=True)))
+                    model.add(tf.keras.layers.BatchNormalization())
+                    #LSTM
+                    model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7), 
+                    activation='relu', recurrent_dropout=hp.Float('rcc_dropout_lstm', min_value=0.0, max_value=0.4, step=0.2, default=0.2), return_sequences=False)))
+                    model.add(tf.keras.layers.BatchNormalization())
+                    #DENSE
+                    model.add(tf.keras.layers.Dense(units=hp.Int('neurons_dense', 4, 10, 1, default=7), activation='relu'))
+                    model.add(tf.keras.layers.BatchNormalization())
+                    #An output layer that makes a single value prediction. 
+                    model.add(tf.keras.layers.Dense(1)) 
+                    #Tune the optimizer's learning rate.
+                    model.compile(optimizer=tf.keras.optimizers.Adam(lr=hp.Float('opt_learn_rate', min_value=1e-4, max_value=1e-2, sampling='LOG', default=1e-3),
+                    clipnorm=hp.Float('opt_clipnorm', min_value=0.001, max_value=1.11, step=0.10, default=1.0), 
+                    clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0)), loss='mse', metrics=['mae'])
+                    return model
+
+                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=bi_gru_lstm, project_name='gdf_bi_gru_ltsm')
+
+
             elif(m == 2):
-                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed),
-                 hypermodel=dlmodels(size).bi_lstm(), project_name='gdf_bi_lstm'),
+
+                def bi_lstm(hp):
+                    model = tf.keras.Sequential()
+                    #LSTM
+                    model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7), 
+                    input_shape=(size, 1), activation='relu', recurrent_dropout=hp.Float('rcc_dropout_lstm', min_value=0.0, max_value=0.4, step=0.2, default=0.2), return_sequences=False)))
+                    model.add(tf.keras.layers.BatchNormalization())
+                    #DENSE
+                    model.add(tf.keras.layers.Dense(units=hp.Int('neurons_dense', 4, 10, 1, default=7), activation='relu'))
+                    model.add(tf.keras.layers.BatchNormalization())
+                    #An output layer that makes a single value prediction. 
+                    model.add(tf.keras.layers.Dense(1)) 
+                    #Tune the optimizer's learning rate.
+                    model.compile(optimizer=tf.keras.optimizers.Adam(lr=hp.Float('opt_learn_rate', min_value=1e-4, max_value=1e-2, sampling='LOG', default=1e-3), 
+                    clipnorm=hp.Float('opt_clipnorm', min_value=0.001, max_value=1.11, step=0.10, default=1.0),
+                    clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0)), loss='mse', metrics=['mae'])
+                    return model
+
+                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=bi_lstm, project_name='gdf_bi_lstm')
+
             elif(m == 3):
-                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed),
-                 hypermodel=dlmodels(size).gru_lstm(), project_name='gdf_gru_lstm'),
+                
+                def gru_lstm(hp):
+                    model = tf.keras.Sequential()
+                    #GRU
+                    model.add(tf.keras.layers.GRU(units=hp.Int('neurons_gru', 4, 10, 1, default=7), 
+                    input_shape=(size, 1), activation='relu', recurrent_dropout=hp.Float('rcc_dropout_gru', min_value=0.0, max_value=0.4, step=0.2, default=0.2), return_sequences=True))
+                    model.add(tf.keras.layers.BatchNormalization())
+                    #LSTM
+                    model.add(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7), 
+                    activation='relu', recurrent_dropout=hp.Float('rcc_dropout_lstm', min_value=0.0, max_value=0.4, step=0.2, default=0.2), return_sequences=False))
+                    model.add(tf.keras.layers.BatchNormalization())
+                    #DENSE
+                    model.add(tf.keras.layers.Dense(units=hp.Int('neurons_dense', 4, 10, 1, default=7), activation='relu'))
+                    model.add(tf.keras.layers.BatchNormalization())
+                    #An output layer that makes a single value prediction. 
+                    model.add(tf.keras.layers.Dense(1)) 
+                    #Tune the optimizer's learning rate.
+                    model.compile(optimizer=tf.keras.optimizers.Adam(lr=hp.Float('opt_learn_rate', min_value=1e-4, max_value=1e-2, sampling='LOG', default=1e-3), 
+                    clipnorm=hp.Float('opt_clipnorm', min_value=0.001, max_value=1.11, step=0.10, default=1.0), 
+                    clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0)), loss='mse', metrics=['mae'])
+                    return model
+
+                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=gru_lstm(), project_name='gdf_gru_lstm')
+
             else:
-                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed),
-                 hypermodel=dlmodels(size).bi_gru_lstm(), project_name='gdf_bi_gru_lstm')
+
+                def lstm(hp):
+                    model = tf.keras.Sequential()
+                    #LSTM
+                    model.add(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7), 
+                    input_shape=(size, 1), activation='relu', recurrent_dropout=hp.Float('rcc_dropout_lstm', min_value=0.0, max_value=0.4, step=0.2, default=0.2), return_sequences=False))
+                    model.add(tf.keras.layers.BatchNormalization())
+                    #DENSE
+                    model.add(tf.keras.layers.Dense(units=hp.Int('neurons_dense', 4, 10, 1, default=7), activation='relu'))
+                    model.add(tf.keras.layers.BatchNormalization())
+                    #An output layer that makes a single value prediction. 
+                    model.add(tf.keras.layers.Dense(1)) 
+     
+                    #Tune the optimizer's learning rate.
+                    model.compile(optimizer=tf.keras.optimizers.Adam(lr=hp.Float('opt_learn_rate', min_value=1e-4, max_value=1e-2, sampling='LOG', default=1e-3),
+                    clipnorm=hp.Float('opt_clipnorm', min_value=0.001, max_value=1.11, step=0.10, default=1.0),
+                    clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0)), loss='mse', metrics=['mae'])
+                    return model
+
+                tunner = ModelTuner(oracle = kt.oracles.BayesianOptimization(objective=kt.Objective('loss', scoring), max_trials=cpusize, seed=seed), hypermodel=lstm(), project_name='gdf_lstm')
             
+
             return tunner
 
         
         def get_name(m):
             
             if (m == 1):
-                name = "GDF-LTSM"
+                name = "GDF-BI_GRU_LTSM"
             elif (m == 2):
                 name = "GDF-BI_LSTM"
             elif (m == 3):
                 name = "GDF-GRU_LSTM"
             else:
-                name = "GDF-BI-GRU_LSTM"
+                name = "GDF_LSTM"
             
             return name
-    
+
 
         get_tuner(i).search(X, y)
         best_hps = get_tuner(i).get_best_hyperparameters()[0]
         model = get_tuner(i).hypermodel.build(best_hps)
+
 
         call_back = [
             tf.keras.callbacks.ReduceLROnPlateau(monitor="loss", factor=0.5, patience=3, verbose=0),
