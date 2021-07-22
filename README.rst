@@ -43,6 +43,18 @@ Why
 * https://www.health.harvard.edu/blog/the-11-most-expensive-medications-201202094228
 
 
+Usage
+-------
+
+%pip install gdemandfcast
+import gdemandfcast.classes as gdf
+train = '/path/to/train.xlsx'
+test = '/path/to/test.xlsx'
+numoflags = 3
+pred = gdf.execute(train, test, numoflags).frm()
+print(pred)
+
+
 Credits
 -------
 
