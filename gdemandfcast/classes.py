@@ -306,11 +306,10 @@ class optimization:
         i = self.i
         X = self.X
         y = self.y
+        size = len(self.X)
         spilt = round((1/self.cv), 2)
 
-
         train_x, test_x, train_y, test_y = train_test_split(X, y, test_size=spilt, random_state=232)
-        size = len(X.columns)
 
         def get_tuner(m):
 
@@ -319,10 +318,10 @@ class optimization:
                 def bi_gru_lstm(hp):
                     model = tf.keras.Sequential()
                     #GRU
-                    model.add(tf.keras.layers.Bidirectional(tf.keras.layers.GRU(units=hp.Int('neurons_gru', 4, 10, 1, default=7), return_sequences=True), input_shape=(size, 1)))
+                    model.add(tf.keras.layers.Bidirectional(tf.keras.layers.GRU(units=hp.Int('neurons_gru', 4, 10, 1, default=7)), input_shape=(size, 1)))
                     model.add(tf.keras.layers.BatchNormalization())
                     #LSTM
-                    model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7), return_sequences=False)))
+                    model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7))))
                     model.add(tf.keras.layers.BatchNormalization())
                     #DENSE
                     model.add(tf.keras.layers.Dense(units=hp.Int('neurons_dense', 4, 10, 1, default=7), activation='relu'))
@@ -340,7 +339,7 @@ class optimization:
                 def bi_lstm(hp):
                     model = tf.keras.Sequential()
                     #LSTM
-                    model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7), return_sequences=True), input_shape=(size, 1)))
+                    model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7)), input_shape=(size, 1)))
                     model.add(tf.keras.layers.BatchNormalization())
                     #DENSE
                     model.add(tf.keras.layers.Dense(units=hp.Int('neurons_dense', 4, 10, 1, default=7), activation='relu'))
@@ -357,10 +356,10 @@ class optimization:
                 def gru_lstm(hp):
                     model = tf.keras.Sequential()
                     #GRU
-                    model.add(tf.keras.layers.GRU(units=hp.Int('neurons_gru', 4, 10, 1, default=7), return_sequences=True), input_shape=(size, 1))
+                    model.add(tf.keras.layers.GRU(units=hp.Int('neurons_gru', 4, 10, 1, default=7)), input_shape=(size, 1))
                     model.add(tf.keras.layers.BatchNormalization())
                     #LSTM
-                    model.add(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7), return_sequences=False))
+                    model.add(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7)))
                     model.add(tf.keras.layers.BatchNormalization())
                     #DENSE
                     model.add(tf.keras.layers.Dense(units=hp.Int('neurons_dense', 4, 10, 1, default=7), activation='relu'))
@@ -377,7 +376,7 @@ class optimization:
                 def lstm(hp):
                     model = tf.keras.Sequential()
                     #LSTM
-                    model.add(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7), return_sequences=True), input_shape=(size, 1))
+                    model.add(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7)), input_shape=(size, 1))
                     model.add(tf.keras.layers.BatchNormalization())
                     #DENSE
                     model.add(tf.keras.layers.Dense(units=hp.Int('neurons_dense', 4, 10, 1, default=7), activation='relu'))
