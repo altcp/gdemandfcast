@@ -540,6 +540,7 @@ class fitting:
 
 
     def autots(self):
+
         ml_score, ml_model = selection(self.X, self.y).ml_run()
         def get_ml_name(m):
             
@@ -600,7 +601,33 @@ class fitting:
         print("Models Tested: SVR, MLP, XGB and GPR")
         print("ML Model Selected: " + get_name(ml_score) + " MAE: " + str(ml_score))
         print(" ")
-        yhat = prediction(ml_model, self.X, self.y).ml().predict(self.T)
+        model = prediction(ml_model, self.X, self.y).ml()
+        yhat = model.predict(self.T)
+        
+        return yhat
+
+
+    def autodl(self):
+
+        dl_score, dl_model = selection(self.X, self.y).dl_run()
+        def get_dl_name(m):
+            
+            if (m == 1):
+                name = "GDF-BI_GRU_LTSM"
+            elif (m == 2):
+                name = "GDF-BI_LSTM"
+            elif (m == 3):
+                name = "GDF-GRU_LSTM"
+            else:
+                name = "GDF_LSTM"
+            
+            return name
+        
+        print(" ")
+        print("Models Tested: BI_GRU_LSTM, BI_LSTM, GRU_LSTM and LSTM")
+        print("DL Model Selected: " + get_dl_name(dl_model) + ", MAE: " + str(dl_score))
+        model = prediction(dl_model, self.X, self.y).dl()
+        yhat = model.predict(self.T)
         
         return yhat
 
@@ -608,11 +635,11 @@ class fitting:
 
 class execute:
     
-    def __init__(self, train, test, lags=3, ml=False):
+    def __init__(self, train, test, lags=3, runtype='auto'):
         self.train = train
         self.test = test
         self.lags = lags
-        self.ml = ml
+        self.runtype = runtype
 
     def frm(self):
     
@@ -628,10 +655,13 @@ class execute:
             y = df2['Y']
             X = df2.loc[:, df2.columns != 'Y']
 
-            if (self.ml == False):
-                predictions = fitting(X, y, T).autots()
-            else:
+            if (self.runtype == 'ml'):
                 predictions = fitting(X, y, T).automl()
+            elif (self.runtype == 'dl'):
+                predictions = fitting(X, y, T).autodl()
+            else:
+                predictions = fitting(X, y, T).autots()
+
 
         return predictions
 
