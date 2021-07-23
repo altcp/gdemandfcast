@@ -278,7 +278,14 @@ class prediction:
 
     def ml(self):
 
-        model = validation(self.i, self.X, self.y, self.cv, False).ml() 
+        if (self.i == 1):
+            model = mlmodels(self.X, self.y, self.cv, False).svr_model()
+        elif (self.i == 2):
+            model = mlmodels(self.X, self.y, self.cv, False).mlp_model()
+        elif (self.i == 3):
+            model = mlmodels(self.X, self.y, self.cv, False).xgb_model()
+        else:
+            model = mlmodels(self.X, self.y, self.cv, False).gpr_model()
         
         return model
 
@@ -318,7 +325,7 @@ class optimization:
                 def bi_gru_lstm(hp):
                     model = tf.keras.Sequential()
                     #GRU
-                    model.add(tf.keras.layers.Bidirectional(tf.keras.layers.GRU(units=hp.Int('neurons_gru', 4, 10, 1, default=7)), input_shape=(size, 1)))
+                    model.add(tf.keras.layers.Bidirectional(tf.keras.layers.GRU(units=hp.Int('neurons_gru', 4, 10, 1, default=7), return_sequences=True), input_shape=(size, 1)))
                     model.add(tf.keras.layers.BatchNormalization())
                     #LSTM
                     model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7))))
@@ -332,14 +339,14 @@ class optimization:
                     return model
 
                 tuner = ModelTuner(oracle=kt.oracles.BayesianOptimization(objective=kt.Objective("loss", "min"), max_trials=3), hypermodel=bi_gru_lstm, project_name='gdf_bi_gru_ltsm')
-
+                gc.collect()
 
             elif(m == 2):
 
                 def bi_lstm(hp):
                     model = tf.keras.Sequential()
                     #LSTM
-                    model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7)), input_shape=(size, 1)))
+                    model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7), return_sequences=True), input_shape=(size, 1)))
                     model.add(tf.keras.layers.BatchNormalization())
                     #DENSE
                     model.add(tf.keras.layers.Dense(units=hp.Int('neurons_dense', 4, 10, 1, default=7), activation='relu'))
@@ -350,6 +357,7 @@ class optimization:
                     return model
 
                 tuner = ModelTuner(oracle=kt.oracles.BayesianOptimization(objective=kt.Objective("loss", "min"), max_trials=3), hypermodel=bi_lstm, project_name='gdf_bi_lstm')
+                gc.collect()
 
             elif(m == 3):
                 
@@ -370,6 +378,7 @@ class optimization:
                     return model
 
                 tuner = ModelTuner(oracle=kt.oracles.BayesianOptimization(objective=kt.Objective("loss", "min"), max_trials=3), hypermodel=gru_lstm, project_name='gdf_gru_lstm')
+                gc.collect()
 
             else:
 
@@ -387,7 +396,8 @@ class optimization:
                     return model
 
                 tuner = ModelTuner(oracle=kt.oracles.BayesianOptimization(objective=kt.Objective("loss", "min"), max_trials=3), hypermodel=lstm, project_name='gdf_lstm')
-            
+                gc.collect()
+
             return tuner
 
         
