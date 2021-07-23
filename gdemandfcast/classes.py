@@ -564,27 +564,35 @@ class fitting:
         self.verbose = verbose
 
 
-    def auto(self):
+    def autots(self):
         ml_score, ml_model = selection(self.X, self.y).ml_run()
         dl_score, dl_model = selection(self.X, self.y).dl_run()
 
         if (ml_score < dl_score):
-            print("ML Model Selected: " + str(ml_model))
+            print("ML Model Selected: " + str(ml_model) + "MAE: " + str(ml_score))
             yhat = prediction(ml_model, self.X, self.y, self.T).ml().predict(self.T)
         else:
-            print("DL Model Selected: " + str(dl_model))
+            print("DL Model Selected: " + str(dl_model) + "MAE: " + str(dl_score))
             yhat = prediction(dl_model, self.X, self.y, self.T).dl().predict(self.T)
 
+        return yhat
+    
+
+    def automl(self):
+        ml_score, ml_model = selection(self.X, self.y).ml_run()
+        print("ML Model Selected: " + str(ml_model) + "MAE: " + str(ml_score))
+        yhat = prediction(ml_model, self.X, self.y, self.T).ml().predict(self.T)
         return yhat
 
 
 
 class execute:
     
-    def __init__(self, train, test, lags=3):
+    def __init__(self, train, test, lags=3, ml=False):
         self.train = train
         self.test = test
         self.lags = lags
+        self.ml = ml
 
     def frm(self):
     
@@ -599,8 +607,12 @@ class execute:
             t = preprocessing(test2, target, self.lags, True).run_univariate().dropna().reset_index(drop=True)
             y = df2['Y']
             X = df2.loc[:, df2.columns != 'Y']
-            predictions = fitting(X, y, t).auto()
-        
+
+            if (self.ml == False):
+                predictions = fitting(X, y, t).autots()
+            else:
+                predictions = fitting(X, y, t).automl()
+
         return predictions
 
 
