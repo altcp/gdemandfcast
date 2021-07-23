@@ -10,7 +10,7 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = ['Click>=8.0', 'arch>=4.15', 'pmdarima>=1.8.2', 'scikit-learn>=0.24.2', 'keras-tuner>=1.0.1', 'tensorflow>=2.4.1',
+requirements = ['Click>=8.0', 'arch>=5.0', 'pmdarima>=1.8.2', 'scikit-learn>=0.24.2', 'keras-tuner>=1.0.1', 'tensorflow>=2.4.1',
 'pandas>=1.2.5', 'xgboost>=1.4.0', 'matplotlib>=3.3.3', 'openpyxl>=3.0.7']
 
 test_requirements = ['pytest>=3.7', ]
@@ -41,6 +41,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/altcp/gdemandfcast',
-    version='0.4.3',
+    version='0.4.4',
     zip_safe=False,
 )

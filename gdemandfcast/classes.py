@@ -617,7 +617,8 @@ class ModelTuner(kt.Tuner):
         clipvalue=hp.Float('opt_clipvalue', min_value=1, max_value=5.50, step=0.25, default=5.0))
 
         @tf.function
-        def run_train_step(real_x, real_y, alpha=0.05):
+        def run_train_step(real_x, real_y):
+
             with tf.GradientTape() as tape:
 
                 pred_y = model(real_x)
@@ -637,16 +638,18 @@ class ModelTuner(kt.Tuner):
                 mse = tf.keras.losses.MSE()
 
                 #Distribution Aware
-                if (shapiro_test.pvalue > alpha):
-                    if (lilliefors_test.pvalue < alpha):
+                if (shapiro_test.pvalue > 0.05):
+
+                    if (lilliefors_test.pvalue < 0.05):
                         loss = huber(real_y, pred_y)
                     else:
                         loss = mse(real_y, pred_y)
+
                 else:
+
                     loss = huber(real_y, pred_y)
 
-                gradients = tape.gradient(loss, model.trainable_variables)
-            
+            gradients = tape.gradient(loss, model.trainable_variables)
             optimizer.apply_gradients(zip(gradients, model.trainable_variables))
             epoch_loss_metric.update_state(loss)
             return loss
@@ -661,10 +664,11 @@ class ModelTuner(kt.Tuner):
             for batch in range(num_of_batches):
                 n = batch*batch_size
                 self.on_batch_begin(trial, model, batch, logs={})
-                batch_loss = run_train_step(x_train[n:n+batch_size], y_train[n:n+batch_size])
-                self.on_batch_end(trial, model, batch, logs={'loss': batch_loss})
+                batch_loss = float(run_train_step(x_train[n:n+batch_size], y_train[n:n+batch_size]))
+                print(batch_loss)
+                self.on_batch_end(trial, model, batch, logs={"loss": batch_loss})
                 
         epoch_loss = epoch_loss_metric.result().numpy()
-        self.on_epoch_end(trial, model, epoch, logs={'loss': epoch_loss})
+        self.on_epoch_end(trial, model, epoch, logs={"loss": epoch_loss})
         epoch_loss_metric.reset_states()
         
