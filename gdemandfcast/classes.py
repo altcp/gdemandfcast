@@ -238,38 +238,29 @@ class preprocessing:
 
 class validation:
 
-    def __init__(self, i, X, y, scoring='neg_mean_absolute_error', cv=5, val=True):
+    def __init__(self, i, X, y, cv=5):
         self.i = i
         self.X = X
         self.y = y
-        self.scoring = scoring
         self.cv = cv
-        self.val  = val
 
     def ml(self):
 
         if (self.i == 1):
-            score = mlmodels(self.X, self.y, self.cv, self.scoring, 3, 232, self.val).svr_model()
+            score = mlmodels(self.X, self.y, self.cv, True).svr_model()
         elif (self.i == 2):
-            score = mlmodels(self.X, self.y, self.cv, self.scoring, 3, 232, self.val).mlp_model()
+            score = mlmodels(self.X, self.y, self.cv, True).mlp_model()
         elif (self.i == 3):
-            score = mlmodels(self.X, self.y, self.cv, self.scoring, 3, 232, self.val).xgb_model()
+            score = mlmodels(self.X, self.y, self.cv, True).xgb_model()
         else:
-            score = mlmodels(self.X, self.y, self.cv, self.scoring, 3, 232, self.val).gpr_model()
+            score = mlmodels(self.X, self.y, self.cv, True).gpr_model()
         
         return score
 
 
     def dl(self):
         
-        if (self.i == 1):
-            score = optimization(1, self.X, self.y, self.cv, 232, self.val).run()
-        elif (self.i == 2):
-            score = optimization(2, self.X, self.y, self.cv, 232, self.val).run()
-        elif (self.i == 3): 
-            score = optimization(3, self.X, self.y, self.cv, 232, self.val).run()
-        else:   
-            score = optimization(4, self.X, self.y, self.cv, 232, self.val).run()
+        score = optimization(self.i, self.X, self.y, True).run()
 
         return score
 
@@ -277,39 +268,30 @@ class validation:
 
 class prediction:
 
-    def __init__(self, i, X, y, T, scoring='neg_mean_absolute_error', cv=5):
+    def __init__(self, i, X, y, cv=5):
         self.i = i
         self.X = X
         self.y = y
-        self.T = T
-        self.scoring = scoring
         self.cv = cv
 
 
     def ml(self):
 
         if (self.i == 1):
-            model = validation(1, self.X, self.y, self.cv, self.scoring, 3, 232, False).ml(), #svr
+            model = validation(1, self.X, self.y, self.cv, False).ml(), #svr
         elif (self.i == 2):
-            model = validation(2, self.X, self.y, self.cv, self.scoring, 3, 232, False).ml(), #mlp
+            model = validation(2, self.X, self.y, self.cv, False).ml(), #mlp
         elif (self.i == 3):
-            model = validation(3, self.X, self.y, self.cv, self.scoring, 3, 232, False).ml(), #xgb
+            model = validation(3, self.X, self.y, self.cv, False).ml(), #xgb
         else:
-            model = validation(4, self.X, self.y, self.cv, self.scoring, 3, 232, False).ml() #gpr
+            model = validation(4, self.X, self.y, self.cv, False).ml() #gpr
         
         return model
 
     
     def dl(self):
-        
-        if (self.i == 1):
-            model = validation(1, self.X, self.y, self.cv, 'min', 3, 232, False).dl(), #bi_gru_lstm
-        elif (self.i == 2):
-            model = validation(2, self.X, self.y, self.cv, 'min', 3, 232, False).dl(), #bi_lstm
-        elif(self.i == 3):
-            model = validation(3, self.X, self.y, self.cv, 'min', 3, 232, False).dl(), #gru_lstm
-        else:
-            model = validation(4, self.X, self.y, self.cv, 'min', 3, 232, False).dl()  #lstm
+
+        model = validation(self.i, self.X, self.y, self.cv, False).dl() 
         
         return model
         
@@ -318,31 +300,22 @@ class prediction:
 
 class optimization:
 
-    def __init__(self, i, X, y, cv=5, scoring='min', cpusize=3, seed=232, validation=False, batchsize=32, epoch=30):
+    def __init__(self, i, X, y, cv=5, validation=False):
         self.i = i
         self.X = X
         self.y = y
         self.cv = cv
-        self.scoring = scoring
-        self.cpusize = cpusize
-        self.seed = seed
         self.vaidation = validation
-        self.batchsize = batchsize
-        self.epoch = epoch
-
+ 
 
     def run(self):
         i = self.i
         X = self.X
         y = self.y
         spilt = round((1/self.cv), 2)
-        scoring = self.scoring
-        cpusize = self.cpusize
-        batchsize = self.batchsize
-        epoch = self.epoch
-        seed = self.seed
 
-        train_x, test_x, train_y, test_y = train_test_split(X, y, test_size=spilt, random_state=seed)
+
+        train_x, test_x, train_y, test_y = train_test_split(X, y, test_size=spilt, random_state=232)
         size = len(X.columns)
 
         def get_tuner(m):
@@ -365,7 +338,7 @@ class optimization:
                     model.compile(optimizer=tf.keras.optimizers.Adam())
                     return model
 
-                tuner = ModelTuner(oracle=kt.oracles.BayesianOptimization(objective=kt.Objective("loss", "min"), max_trials=cpusize), hypermodel=bi_gru_lstm, project_name='gdf_bi_gru_ltsm')
+                tuner = ModelTuner(oracle=kt.oracles.BayesianOptimization(objective=kt.Objective("loss", "min"), max_trials=3), hypermodel=bi_gru_lstm, project_name='gdf_bi_gru_ltsm')
 
 
             elif(m == 2):
@@ -383,7 +356,7 @@ class optimization:
                     model.compile(optimizer=tf.keras.optimizers.Adam())
                     return model
 
-                tuner = ModelTuner(oracle=kt.oracles.BayesianOptimization(objective=kt.Objective("loss", "min"), max_trials=cpusize), hypermodel=bi_lstm, project_name='gdf_bi_lstm')
+                tuner = ModelTuner(oracle=kt.oracles.BayesianOptimization(objective=kt.Objective("loss", "min"), max_trials=3), hypermodel=bi_lstm, project_name='gdf_bi_lstm')
 
             elif(m == 3):
                 
@@ -398,12 +371,12 @@ class optimization:
                     #DENSE
                     model.add(tf.keras.layers.Dense(units=hp.Int('neurons_dense', 4, 10, 1, default=7), activation='relu'))
                     model.add(tf.keras.layers.BatchNormalization())
-                    #An output layer that makes a single value prediction. 
+                    #OUTPUT
                     model.add(tf.keras.layers.Dense(1)) 
                     model.compile(optimizer=tf.keras.optimizers.Adam())
                     return model
 
-                tuner = ModelTuner(oracle=kt.oracles.BayesianOptimization(objective=kt.Objective("loss", "min"), max_trials=cpusize), hypermodel=gru_lstm, project_name='gdf_gru_lstm')
+                tuner = ModelTuner(oracle=kt.oracles.BayesianOptimization(objective=kt.Objective("loss", "min"), max_trials=3), hypermodel=gru_lstm, project_name='gdf_gru_lstm')
 
             else:
 
@@ -415,12 +388,12 @@ class optimization:
                     #DENSE
                     model.add(tf.keras.layers.Dense(units=hp.Int('neurons_dense', 4, 10, 1, default=7), activation='relu'))
                     model.add(tf.keras.layers.BatchNormalization())
-                    #An output layer that makes a single value prediction. 
+                    #OUTPUT
                     model.add(tf.keras.layers.Dense(1)) 
                     model.compile(optimizer=tf.keras.optimizers.Adam())
                     return model
 
-                tuner = ModelTuner(oracle=kt.oracles.BayesianOptimization(objective=kt.Objective("loss", "min"), max_trials=cpusize), hypermodel=lstm, project_name='gdf_lstm')
+                tuner = ModelTuner(oracle=kt.oracles.BayesianOptimization(objective=kt.Objective("loss", "min"), max_trials=3), hypermodel=lstm, project_name='gdf_lstm')
             
             return tuner
 
@@ -449,7 +422,7 @@ class optimization:
             tf.keras.callbacks.EarlyStopping(monitor="loss", patience=3, verbose=0)
         ]
     
-        history = model.fit(X, y, validation_data=(test_x, test_y), callbacks=call_back, epochs=epoch, batch_size=batchsize, verbose=0)
+        history = model.fit(X, y, validation_data=(test_x, test_y), callbacks=call_back, epochs=30, batch_size=32, verbose=0)
         scores = model.evaluate(test_x, test_y, verbose=0)
 
         if (self.validation == True):
@@ -468,7 +441,7 @@ class visualization:
         self.score = score
         self.x_name = x_name
         self.y_name = y_name
-        self.labels =labels
+        self.labels = labels
         self.df = df
         self.bins = bins
         self.x_means = df[x_means]
@@ -569,10 +542,10 @@ class fitting:
         dl_score, dl_model = selection(self.X, self.y).dl_run()
 
         if (ml_score < dl_score):
-            print("ML Model Selected: " + str(ml_model) + "MAE: " + str(ml_score))
+            print("ML Model Selected: " + str(ml_model) + " MAE: " + str(ml_score))
             yhat = prediction(ml_model, self.X, self.y, self.T).ml().predict(self.T)
         else:
-            print("DL Model Selected: " + str(dl_model) + "MAE: " + str(dl_score))
+            print("DL Model Selected: " + str(dl_model) + " MAE: " + str(dl_score))
             yhat = prediction(dl_model, self.X, self.y, self.T).dl().predict(self.T)
 
         return yhat
@@ -580,7 +553,7 @@ class fitting:
 
     def automl(self):
         ml_score, ml_model = selection(self.X, self.y).ml_run()
-        print("ML Model Selected: " + str(ml_model) + "MAE: " + str(ml_score))
+        print("ML Model Selected: " + str(ml_model) + " MAE: " + str(ml_score))
         yhat = prediction(ml_model, self.X, self.y, self.T).ml().predict(self.T)
         return yhat
 
@@ -651,19 +624,17 @@ class ModelTuner(kt.Tuner):
 
                 #Distribution Aware
                 if (shapiro_test.pvalue > 0.05):
-
                     if (lilliefors_test.pvalue < 0.05):
                         loss = huber(real_y, pred_y)
                     else:
                         loss = mse(real_y, pred_y)
-
                 else:
-
                     loss = huber(real_y, pred_y)
 
             gradients = tape.gradient(loss, model.trainable_variables)
             optimizer.apply_gradients(zip(gradients, model.trainable_variables))
             epoch_loss_metric.update_state(loss)
+
             return loss
             
         #Calculate number of batches and define number of epochs per Trial
@@ -676,11 +647,11 @@ class ModelTuner(kt.Tuner):
             for batch in range(num_of_batches):
                 n = batch*batch_size
                 self.on_batch_begin(trial, model, batch, logs={})
-                batch_loss = float(run_train_step(x_train[n:n+batch_size], y_train[n:n+batch_size]))
-                print(batch_loss)
-                self.on_batch_end(trial, model, batch, logs={"loss": batch_loss})
+                batch_loss = run_train_step(x_train[n:n+batch_size], y_train[n:n+batch_size])
+                print(float(batch_loss))
+                self.on_batch_end(trial, model, batch, logs={"loss": float(batch_loss)})
                 
-        epoch_loss = epoch_loss_metric.result().numpy()
-        self.on_epoch_end(trial, model, epoch, logs={"loss": epoch_loss})
-        epoch_loss_metric.reset_states()
+            epoch_loss = epoch_loss_metric.result().numpy()
+            self.on_epoch_end(trial, model, epoch, logs={"loss": epoch_loss})
+            epoch_loss_metric.reset_states()
         
