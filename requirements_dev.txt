@@ -8,7 +8,7 @@ Sphinx==4.1.1
 twine==3.4.2
 Click==8.0.1
 pytest==6.2.4
-arch==5.01
+arch>=4.15
 pmdarima==1.8.2 
 scikit-learn==0.24.2 
 keras-tuner==1.0.3
