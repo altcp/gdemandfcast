@@ -526,8 +526,8 @@ class selection:
 
         best_score = 100
         best_model = 1
-
-        for i in range(1, 5, 1):
+        #Default = 1
+        for i in range(3, 5, 1):
             gc.collect()
             score = validation(i, X, y).dl()
             if (score < best_score):
@@ -612,7 +612,7 @@ class fitting:
         yhat = model.predict(self.T)
 
         try: 
-            MAPE = mean_absolute_percentage_error(self.y, yhat)
+            MAPE = mean_absolute_percentage_error(self.y, yhat[:-1])
             print("MAPE: "  + str(MAPE))
         except:
             print(" ")
