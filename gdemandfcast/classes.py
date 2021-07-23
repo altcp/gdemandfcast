@@ -4,7 +4,7 @@
 import gc
 import math
 import arch as am
-
+import warnings
 import pandas as pd
 import pmdarima as pm
 import keras_tuner as kt
@@ -24,7 +24,6 @@ from sklearn import model_selection
 from sklearn.pipeline import Pipeline
 from sklearn.svm import SVR
 from scipy import stats
-
 
 
 class archmodels:
@@ -589,7 +588,7 @@ class fitting:
     
 
     def automl(self):
-
+        warnings.filterwarnings('ignore')
         ml_score, ml_model = selection(self.X, self.y).ml_run()
         def get_name(m):
             
@@ -612,8 +611,8 @@ class fitting:
         yhat = model.predict(self.T)
 
         try: 
-            MAPE = mean_absolute_percentage_error(self.y, yhat[:-1])
-            print("MAPE: "  + str(MAPE))
+            MAPE = mean_absolute_percentage_error(self.y[1:20], yhat[2:21])
+            print("Best Model, MAPE: "  + str(round(MAPE, 2)))
         except:
             print(" ")
             
