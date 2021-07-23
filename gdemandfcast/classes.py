@@ -256,14 +256,14 @@ class validation:
         else:
             score = mlmodels(self.X, self.y, self.cv, True).gpr_model()
         
-        return score
+        return round(score, 2)
 
 
     def dl(self):
         
         score = optimization(self.i, self.X, self.y, self.cv, True).run()
 
-        return score
+        return round(score, 2)
 
 # In[ ]:
 
@@ -274,7 +274,7 @@ class prediction:
         self.X = X
         self.y = y
         self.cv = cv
-
+        
 
     def ml(self):
 
@@ -285,7 +285,7 @@ class prediction:
     
     def dl(self):
 
-        model = validation(self.i, self.X, self.y, self.cv, False).dl() 
+        model = optimization(self.i, self.X, self.y, self.cv, False).run()
         
         return model
         
@@ -561,10 +561,12 @@ class fitting:
 
         if (ml_score < dl_score):
             print("ML Model Selected: " + get_ml_name(ml_model) + ", MAE: " + str(ml_score))
-            yhat = prediction(ml_model, self.X, self.y).ml().predict(self.T)
+            model = prediction(ml_model, self.X, self.y).ml()
+            yhat = model.predict(self.T)
         else:
             print("DL Model Selected: " + get_dl_name(dl_model) + ", MAE: " + str(dl_score))
-            yhat = prediction(dl_model, self.X, self.y).dl().predict(self.T)
+            model = prediction(dl_model, self.X, self.y).dl()
+            yhat = model.predict(self.T)
 
         return yhat
     
