@@ -98,7 +98,7 @@ class armamodels:
 
 class mlmodels:
     
-    def __init__(self, X, y, cv, validate, scoring='r2', num_of_cpu=-1, seed=232):
+    def __init__(self, X, y, cv, validate, scoring='neg_mean_absolute_error', num_of_cpu=-1, seed=232):
         self.x = X
         self.y = y
         self.cv = cv
@@ -325,7 +325,7 @@ class optimization:
                 def bi_gru_lstm(hp):
                     model = tf.keras.Sequential()
                     #GRU
-                    model.add(tf.keras.layers.Bidirectional(tf.keras.layers.GRU(units=hp.Int('neurons_gru', 4, 10, 1, default=7), return_sequences=True), input_shape=(size, 1)))
+                    model.add(tf.keras.layers.Bidirectional(tf.keras.layers.GRU(units=hp.Int('neurons_gru', 4, 10, 1, default=7), return_sequences=True), input_dim=size))
                     model.add(tf.keras.layers.BatchNormalization())
                     #LSTM
                     model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7))))
@@ -346,7 +346,7 @@ class optimization:
                 def bi_lstm(hp):
                     model = tf.keras.Sequential()
                     #LSTM
-                    model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7), return_sequences=True), input_shape=(size, 1)))
+                    model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7), return_sequences=True), input_dim=size))
                     model.add(tf.keras.layers.BatchNormalization())
                     #DENSE
                     model.add(tf.keras.layers.Dense(units=hp.Int('neurons_dense', 4, 10, 1, default=7), activation='relu'))
@@ -364,7 +364,7 @@ class optimization:
                 def gru_lstm(hp):
                     model = tf.keras.Sequential()
                     #GRU
-                    model.add(tf.keras.layers.GRU(units=hp.Int('neurons_gru', 4, 10, 1, default=7)), input_shape=(size, 1))
+                    model.add(tf.keras.layers.GRU(units=hp.Int('neurons_gru', 4, 10, 1, default=7)), input_dim=size)
                     model.add(tf.keras.layers.BatchNormalization())
                     #LSTM
                     model.add(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7)))
@@ -385,7 +385,7 @@ class optimization:
                 def lstm(hp):
                     model = tf.keras.Sequential()
                     #LSTM
-                    model.add(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7)), input_shape=(size, 1))
+                    model.add(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7)), input_dim=size)
                     model.add(tf.keras.layers.BatchNormalization())
                     #DENSE
                     model.add(tf.keras.layers.Dense(units=hp.Int('neurons_dense', 4, 10, 1, default=7), activation='relu'))
@@ -457,7 +457,7 @@ class visualization:
 
         print(" ")
         print(" ")
-        msg = f"{self.name} achieved a tunned accuracy of {self.score} percent using Distribution Aware Gradient Descent Optimization."  
+        msg = f"{self.name} achieved a tunned loss of {self.score} using Distribution Aware Gradient Descent Optimization."  
         print(msg)
 
         plt.plot(self.history.history['loss'])
