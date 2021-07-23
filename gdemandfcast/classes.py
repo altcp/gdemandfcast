@@ -365,7 +365,7 @@ class optimization:
                     model.compile(optimizer=tf.keras.optimizers.Adam())
                     return model
 
-                tuner = ModelTuner(oracle=kt.oracles.BayesianOptimization(objective=kt.objective("loss", "min"), max_trials=cpusize), hypermodel=bi_gru_lstm, project_name='gdf_bi_gru_ltsm')
+                tuner = ModelTuner(oracle=kt.oracles.BayesianOptimization(objective=kt.Objective("loss", "min"), max_trials=cpusize), hypermodel=bi_gru_lstm, project_name='gdf_bi_gru_ltsm')
 
 
             elif(m == 2):
@@ -383,7 +383,7 @@ class optimization:
                     model.compile(optimizer=tf.keras.optimizers.Adam())
                     return model
 
-                tuner = ModelTuner(oracle=kt.oracles.BayesianOptimization(objective=kt.objective("loss", "min"), max_trials=cpusize), hypermodel=bi_lstm, project_name='gdf_bi_lstm')
+                tuner = ModelTuner(oracle=kt.oracles.BayesianOptimization(objective=kt.Objective("loss", "min"), max_trials=cpusize), hypermodel=bi_lstm, project_name='gdf_bi_lstm')
 
             elif(m == 3):
                 
@@ -403,7 +403,7 @@ class optimization:
                     model.compile(optimizer=tf.keras.optimizers.Adam())
                     return model
 
-                tuner = ModelTuner(oracle=kt.oracles.BayesianOptimization(objective=kt.objective("loss", "min"), max_trials=cpusize), hypermodel=gru_lstm, project_name='gdf_gru_lstm')
+                tuner = ModelTuner(oracle=kt.oracles.BayesianOptimization(objective=kt.Objective("loss", "min"), max_trials=cpusize), hypermodel=gru_lstm, project_name='gdf_gru_lstm')
 
             else:
 
@@ -420,7 +420,7 @@ class optimization:
                     model.compile(optimizer=tf.keras.optimizers.Adam())
                     return model
 
-                tuner = ModelTuner(oracle=kt.oracles.BayesianOptimization(objective=kt.objective("loss", "min"), max_trials=cpusize), hypermodel=lstm, project_name='gdf_lstm')
+                tuner = ModelTuner(oracle=kt.oracles.BayesianOptimization(objective=kt.Objective("loss", "min"), max_trials=cpusize), hypermodel=lstm, project_name='gdf_lstm')
             
             return tuner
 
