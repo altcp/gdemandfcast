@@ -16,6 +16,7 @@ import sklearn.gaussian_process as gp
 
 from tensorflow import keras
 from xgboost import XGBRegressor
+from sklearn.metrics import mean_absolute_percentage_error
 from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.neural_network import MLPRegressor
@@ -122,12 +123,12 @@ class mlmodels:
 
         search = GridSearchCV(pipe, param_grid, cv=self.cv, scoring=self.scoring, n_jobs=self.jobs)
         search.fit(self.x, self.y)
-        results = model_selection.cross_val_score(search.best_estimator_, self.x, self.y, cv=self.cv)
+        results = model_selection.cross_val_score(search.best_estimator_, self.x, self.y, cv=self.cv, scoring=self.scoring)
         
         if (self.validate == False):
             return search
         else:
-            return results.mean() * 100.0
+            return np.nanmean(results) * 100.0
     
     
     def mlp_model(self):
@@ -147,12 +148,12 @@ class mlmodels:
 
         search = GridSearchCV(pipe, param_grid, cv=self.cv, scoring=self.scoring, n_jobs=self.jobs)
         search.fit(self.x, self.y)
-        results = model_selection.cross_val_score(search.best_estimator_, self.x, self.y, cv=self.cv)
+        results = model_selection.cross_val_score(search.best_estimator_, self.x, self.y, cv=self.cv, scoring=self.scoring)
      
         if (self.validate == False):
             return search
         else:
-            return results.mean() * 100.0
+            return np.nanmean(results) * 100.0
 
 
     def xgb_model(self):
@@ -167,12 +168,12 @@ class mlmodels:
 
         search = GridSearchCV(pipe, param_grid, cv=self.cv, scoring=self.scoring, n_jobs=self.jobs)
         search.fit(self.x, self.y)
-        results = model_selection.cross_val_score(search.best_estimator_, self.x, self.y, cv=self.cv)
+        results = model_selection.cross_val_score(search.best_estimator_, self.x, self.y, cv=self.cv, scoring=self.scoring)
 
         if (self.validate == False):
             return search
         else:
-            return results.mean() * 100.0
+            return np.nanmean(results) * 100.0
     
     
     def svr_model(self):
@@ -188,12 +189,12 @@ class mlmodels:
 
         search = GridSearchCV(pipe, param_grid, cv=self.cv, scoring=self.scoring, n_jobs=self.jobs)
         search.fit(self.x, self.y)
-        results = model_selection.cross_val_score(search.best_estimator_, self.x, self.y, cv=self.cv)
+        results = model_selection.cross_val_score(search.best_estimator_, self.x, self.y, cv=self.cv, scoring=self.scoring)
      
         if (self.validate == False):
             return search
         else:
-            return results.mean() * 100.0
+            return np.nanmean(results) * 100.0
 
             
 # In[ ]:
@@ -609,7 +610,14 @@ class fitting:
         print(" ")
         model = prediction(ml_model, self.X, self.y).ml()
         yhat = model.predict(self.T)
-        
+
+        try: 
+            MAPE = mean_absolute_percentage_error(self.y, yhat)
+            print("MAPE: "  + str(MAPE))
+        except:
+            print(" ")
+            
+            
         return yhat
 
 
