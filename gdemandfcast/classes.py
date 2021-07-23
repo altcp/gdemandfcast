@@ -19,6 +19,7 @@ from xgboost import XGBRegressor
 from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.neural_network import MLPRegressor
+from sklearn import model_selection
 from sklearn.pipeline import Pipeline
 from sklearn.svm import SVR
 from scipy import stats
@@ -98,7 +99,7 @@ class armamodels:
 
 class mlmodels:
     
-    def __init__(self, X, y, cv, validate, scoring='neg_mean_absolute_error', num_of_cpu=-1, seed=232):
+    def __init__(self, X, y, cv, validate, scoring='r2', num_of_cpu=-1, seed=232):
         self.x = X
         self.y = y
         self.cv = cv
@@ -121,11 +122,12 @@ class mlmodels:
 
         search = GridSearchCV(pipe, param_grid, cv=self.cv, scoring=self.scoring, n_jobs=self.jobs)
         search.fit(self.x, self.y)
+        results = model_selection.cross_val_score(search.best_estimator_, self.x, self.y, cv=self.cv)
         
         if (self.validate == False):
             return search
         else:
-            return search.best_score_
+            return results.mean() * 100.0
     
     
     def mlp_model(self):
@@ -145,11 +147,12 @@ class mlmodels:
 
         search = GridSearchCV(pipe, param_grid, cv=self.cv, scoring=self.scoring, n_jobs=self.jobs)
         search.fit(self.x, self.y)
+        results = model_selection.cross_val_score(search.best_estimator_, self.x, self.y, cv=self.cv)
      
         if (self.validate == False):
             return search
         else:
-            return search.best_score_
+            return results.mean() * 100.0
 
 
     def xgb_model(self):
@@ -164,11 +167,12 @@ class mlmodels:
 
         search = GridSearchCV(pipe, param_grid, cv=self.cv, scoring=self.scoring, n_jobs=self.jobs)
         search.fit(self.x, self.y)
-     
+        results = model_selection.cross_val_score(search.best_estimator_, self.x, self.y, cv=self.cv)
+
         if (self.validate == False):
             return search
         else:
-            return search.best_score_
+            return results.mean() * 100.0
     
     
     def svr_model(self):
@@ -184,11 +188,12 @@ class mlmodels:
 
         search = GridSearchCV(pipe, param_grid, cv=self.cv, scoring=self.scoring, n_jobs=self.jobs)
         search.fit(self.x, self.y)
+        results = model_selection.cross_val_score(search.best_estimator_, self.x, self.y, cv=self.cv)
      
         if (self.validate == False):
             return search
         else:
-            return search.best_score_
+            return results.mean() * 100.0
 
             
 # In[ ]:
@@ -500,13 +505,14 @@ class selection:
         X = self.X
         y = self.y
 
-        best_score = 100
+        best_score = 0
         best_model = 1
 
+        # Closer to One
         for i in range(1, 5, 1):
             gc.collect()
             score = validation(i, X, y).ml()
-            if (score < best_score):
+            if (score > best_score):
                 best_score = score
                 best_model = i
 
@@ -570,11 +576,11 @@ class fitting:
             return name
 
         if (ml_score < dl_score):
-            print("ML Model Selected: " + get_ml_name(ml_model) + ", MAE: " + str(ml_score))
+            print("ML Model Selected: " + get_ml_name(ml_model) + ", R2: " + str(ml_score))
             model = prediction(ml_model, self.X, self.y).ml()
             yhat = model.predict(self.T)
         else:
-            print("DL Model Selected: " + get_dl_name(dl_model) + ", MAE: " + str(dl_score))
+            print("DL Model Selected: " + get_dl_name(dl_model) + ", R2: " + str(dl_score))
             model = prediction(dl_model, self.X, self.y).dl()
             yhat = model.predict(self.T)
 
@@ -599,7 +605,7 @@ class fitting:
         
         print(" ")
         print("Models Tested: SVR, MLP, XGB and GPR")
-        print("ML Model Selected: " + get_name(ml_score) + " MAE: " + str(ml_score))
+        print("ML Model Selected: " + get_name(ml_score) + " R2: " + str(ml_score))
         print(" ")
         model = prediction(ml_model, self.X, self.y).ml()
         yhat = model.predict(self.T)
@@ -625,7 +631,7 @@ class fitting:
         
         print(" ")
         print("Models Tested: BI_GRU_LSTM, BI_LSTM, GRU_LSTM and LSTM")
-        print("DL Model Selected: " + get_dl_name(dl_model) + ", MAE: " + str(dl_score))
+        print("DL Model Selected: " + get_dl_name(dl_model) + ", R2: " + str(dl_score))
         model = prediction(dl_model, self.X, self.y).dl()
         yhat = model.predict(self.T)
         
