@@ -98,16 +98,17 @@ class armamodels:
 
 class mlmodels:
     
-    def __init__(self, X, y, cv=5, scoring='r2', num_of_cpu=-2, seed=232, validate=False):
+    def __init__(self, X, y, cv, validate, scoring='r2', num_of_cpu=-1, seed=232):
         self.x = X
         self.y = y
         self.cv = cv
+        self.validate = validate
+
         self.scoring = scoring
         self.jobs = num_of_cpu
         self.seed = seed
-        self.validate = validate
-    
-    
+
+        
     def gpr_model(self):
         
         gc.collect() 
@@ -260,7 +261,7 @@ class validation:
 
     def dl(self):
         
-        score = optimization(self.i, self.X, self.y, True).run()
+        score = optimization(self.i, self.X, self.y, self.cv, True).run()
 
         return score
 
