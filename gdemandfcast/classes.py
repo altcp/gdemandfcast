@@ -347,7 +347,7 @@ class optimization:
                 def bi_lstm(hp):
                     model = tf.keras.Sequential()
                     #LSTM
-                    model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7), return_sequences=False), input_shape=(size, 1)))
+                    model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7), return_sequences=True), input_shape=(size, 1)))
                     model.add(tf.keras.layers.BatchNormalization())
                     #DENSE
                     model.add(tf.keras.layers.Dense(units=hp.Int('neurons_dense', 4, 10, 1, default=7), activation='relu'))
@@ -384,7 +384,7 @@ class optimization:
                 def lstm(hp):
                     model = tf.keras.Sequential()
                     #LSTM
-                    model.add(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7), return_sequences=False), input_shape=(size, 1))
+                    model.add(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7), return_sequences=True), input_shape=(size, 1))
                     model.add(tf.keras.layers.BatchNormalization())
                     #DENSE
                     model.add(tf.keras.layers.Dense(units=hp.Int('neurons_dense', 4, 10, 1, default=7), activation='relu'))
@@ -540,22 +540,65 @@ class fitting:
 
     def autots(self):
         ml_score, ml_model = selection(self.X, self.y).ml_run()
+        def get_ml_name(m):
+            
+            if (m == 1):
+                name = "SVR"
+            elif (m == 2):
+                name = "MLP"
+            elif (m == 3):
+                name = "XGB"
+            else:
+                name = "GPR"
+            
+            return name
+
         dl_score, dl_model = selection(self.X, self.y).dl_run()
+        def get_dl_name(m):
+            
+            if (m == 1):
+                name = "GDF-BI_GRU_LTSM"
+            elif (m == 2):
+                name = "GDF-BI_LSTM"
+            elif (m == 3):
+                name = "GDF-GRU_LSTM"
+            else:
+                name = "GDF_LSTM"
+            
+            return name
 
         if (ml_score < dl_score):
-            print("ML Model Selected: " + str(ml_model) + " MAE: " + str(ml_score))
-            yhat = prediction(ml_model, self.X, self.y, self.T).ml().predict(self.T)
+            print("ML Model Selected: " + get_ml_name(ml_model) + ", MAE: " + str(ml_score))
+            yhat = prediction(ml_model, self.X, self.y).ml().predict(self.T)
         else:
-            print("DL Model Selected: " + str(dl_model) + " MAE: " + str(dl_score))
-            yhat = prediction(dl_model, self.X, self.y, self.T).dl().predict(self.T)
+            print("DL Model Selected: " + get_dl_name(dl_model) + ", MAE: " + str(dl_score))
+            yhat = prediction(dl_model, self.X, self.y).dl().predict(self.T)
 
         return yhat
     
 
     def automl(self):
+
         ml_score, ml_model = selection(self.X, self.y).ml_run()
-        print("ML Model Selected: " + str(ml_model) + " MAE: " + str(ml_score))
-        yhat = prediction(ml_model, self.X, self.y, self.T).ml().predict(self.T)
+        def get_name(m):
+            
+            if (m == 1):
+                name = "SVR"
+            elif (m == 2):
+                name = "MLP"
+            elif (m == 3):
+                name = "XGB"
+            else:
+                name = "GPR"
+            
+            return name
+        
+        print(" ")
+        print("Models Tested: SVR, MLP, XGB, GPR")
+        print("ML Model Selected: " + get_name(ml_score) + " MAE: " + str(ml_score))
+        print(" ")
+        yhat = prediction(ml_model, self.X, self.y).ml().predict(self.T)
+        
         return yhat
 
 
