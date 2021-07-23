@@ -278,14 +278,7 @@ class prediction:
 
     def ml(self):
 
-        if (self.i == 1):
-            model = validation(1, self.X, self.y, self.cv, False).ml(), #svr
-        elif (self.i == 2):
-            model = validation(2, self.X, self.y, self.cv, False).ml(), #mlp
-        elif (self.i == 3):
-            model = validation(3, self.X, self.y, self.cv, False).ml(), #xgb
-        else:
-            model = validation(4, self.X, self.y, self.cv, False).ml() #gpr
+        model = validation(self.i, self.X, self.y, self.cv, False).ml() 
         
         return model
 
@@ -498,13 +491,13 @@ class selection:
         X = self.X
         y = self.y
 
-        best_score = 0
+        best_score = 100
         best_model = 1
 
         for i in range(1, 5, 1):
             gc.collect()
             score = validation(i, X, y).ml()
-            if (score > best_score):
+            if (score < best_score):
                 best_score = score
                 best_model = i
 
@@ -515,13 +508,13 @@ class selection:
         X = self.X
         y = self.y
 
-        best_score = 0
+        best_score = 100
         best_model = 1
 
         for i in range(1, 5, 1):
             gc.collect()
             score = validation(i, X, y).dl()
-            if (score > best_score):
+            if (score < best_score):
                 best_score = score
                 best_model = i
         
@@ -531,11 +524,10 @@ class selection:
 
 class fitting:
 
-    def __init__(self, X, y, T, verbose=0):
+    def __init__(self, X, y, T):
         self.X = X
         self.y = y
         self.T = T
-        self.verbose = verbose
 
 
     def autots(self):
@@ -594,7 +586,7 @@ class fitting:
             return name
         
         print(" ")
-        print("Models Tested: SVR, MLP, XGB, GPR")
+        print("Models Tested: SVR, MLP, XGB and GPR")
         print("ML Model Selected: " + get_name(ml_score) + " MAE: " + str(ml_score))
         print(" ")
         yhat = prediction(ml_model, self.X, self.y).ml().predict(self.T)
@@ -621,14 +613,14 @@ class execute:
         for col in train2.columns:
             target = col
             df2 = preprocessing(train2, target, self.lags, False).run_univariate().dropna().reset_index(drop=True)
-            t = preprocessing(test2, target, self.lags, True).run_univariate().dropna().reset_index(drop=True)
+            T = preprocessing(test2, target, self.lags, True).run_univariate().dropna().reset_index(drop=True)
             y = df2['Y']
             X = df2.loc[:, df2.columns != 'Y']
 
             if (self.ml == False):
-                predictions = fitting(X, y, t).autots()
+                predictions = fitting(X, y, T).autots()
             else:
-                predictions = fitting(X, y, t).automl()
+                predictions = fitting(X, y, T).automl()
 
         return predictions
 
