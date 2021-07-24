@@ -6,7 +6,8 @@ import pytest
 
 from click.testing import CliRunner
 
-from gdemandfcast import classes
+from gdemandfcast import ai
+from gdemandfcast import ui
 from gdemandfcast import cli
 
 
