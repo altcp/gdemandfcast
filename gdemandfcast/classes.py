@@ -122,12 +122,12 @@ class mlmodels:
 
         search = GridSearchCV(pipe, param_grid, cv=self.cv, scoring=self.scoring, n_jobs=self.jobs)
         search.fit(self.x, self.y)
-        results = model_selection.cross_val_score(search.best_estimator_, self.x, self.y, cv=self.cv, scoring=self.scoring)
+        results = model_selection.cross_val_score(search.best_estimator_, self.x, self.y, cv=self.cv, scoring='neg_mean_absolute_percentage_error')
         
         if (self.validate == False):
             return search
         else:
-            return np.nanmean(results) * 100.0
+            return round((np.nanmean(results) * 100.0), 2)
     
     
     def mlp_model(self):
@@ -147,12 +147,12 @@ class mlmodels:
 
         search = GridSearchCV(pipe, param_grid, cv=self.cv, scoring=self.scoring, n_jobs=self.jobs)
         search.fit(self.x, self.y)
-        results = model_selection.cross_val_score(search.best_estimator_, self.x, self.y, cv=self.cv, scoring=self.scoring)
+        results = model_selection.cross_val_score(search.best_estimator_, self.x, self.y, cv=self.cv, scoring='neg_mean_absolute_percentage_error')
      
         if (self.validate == False):
             return search
         else:
-            return np.nanmean(results) * 100.0
+            return round((np.nanmean(results) * 100.0), 2)
 
 
     def xgb_model(self):
@@ -167,12 +167,12 @@ class mlmodels:
 
         search = GridSearchCV(pipe, param_grid, cv=self.cv, scoring=self.scoring, n_jobs=self.jobs)
         search.fit(self.x, self.y)
-        results = model_selection.cross_val_score(search.best_estimator_, self.x, self.y, cv=self.cv, scoring=self.scoring)
+        results = model_selection.cross_val_score(search.best_estimator_, self.x, self.y, cv=self.cv, scoring='neg_mean_absolute_percentage_error')
 
         if (self.validate == False):
             return search
         else:
-            return np.nanmean(results) * 100.0
+            return round((np.nanmean(results) * 100.0), 2)
     
     
     def svr_model(self):
@@ -188,12 +188,12 @@ class mlmodels:
 
         search = GridSearchCV(pipe, param_grid, cv=self.cv, scoring=self.scoring, n_jobs=self.jobs)
         search.fit(self.x, self.y)
-        results = model_selection.cross_val_score(search.best_estimator_, self.x, self.y, cv=self.cv, scoring=self.scoring)
+        results = model_selection.cross_val_score(search.best_estimator_, self.x, self.y, cv=self.cv, scoring='neg_mean_absolute_percentage_error')
      
         if (self.validate == False):
             return search
         else:
-            return np.nanmean(results) * 100.0
+            return round((np.nanmean(results) * 100.0), 2)
 
             
 # In[ ]:
@@ -339,7 +339,7 @@ class optimization:
                     model.add(tf.keras.layers.Dense(units=hp.Int('neurons_dense', 4, 10, 1, default=7), activation='relu'))
                     model.add(tf.keras.layers.BatchNormalization())
                     model.add(tf.keras.layers.Dense(1)) 
-                    model.compile(optimizer=tf.keras.optimizers.Adam())
+                    model.compile(optimizer=tf.keras.optimizers.Adam(), loss=tf.keras.losses.MSE(), metrics=[tf.keras.metrics.MeanAbsolutePercentageError()])
                     return model
 
                 tuner = ModelTuner(oracle=kt.oracles.BayesianOptimization(objective=kt.Objective("loss", "min"), max_trials=3), hypermodel=bi_gru_lstm, project_name='gdf_bi_gru_ltsm')
@@ -357,7 +357,7 @@ class optimization:
                     model.add(tf.keras.layers.Dense(units=hp.Int('neurons_dense', 4, 10, 1, default=7), activation='relu'))
                     model.add(tf.keras.layers.BatchNormalization())
                     model.add(tf.keras.layers.Dense(1)) 
-                    model.compile(optimizer=tf.keras.optimizers.Adam())
+                    model.compile(optimizer=tf.keras.optimizers.Adam(), loss=tf.keras.losses.MSE(), metrics=[tf.keras.metrics.MeanAbsolutePercentageError()])
                     return model
 
                 tuner = ModelTuner(oracle=kt.oracles.BayesianOptimization(objective=kt.Objective("loss", "min"), max_trials=3), hypermodel=bi_lstm, project_name='gdf_bi_lstm')
@@ -378,7 +378,7 @@ class optimization:
                     model.add(tf.keras.layers.Dense(units=hp.Int('neurons_dense', 4, 10, 1, default=7), activation='relu'))
                     model.add(tf.keras.layers.BatchNormalization())
                     model.add(tf.keras.layers.Dense(1)) 
-                    model.compile(optimizer=tf.keras.optimizers.Adam())
+                    model.compile(optimizer=tf.keras.optimizers.Adam(), loss=tf.keras.losses.MSE(), metrics=[tf.keras.metrics.MeanAbsolutePercentageError()])
                     return model
 
                 tuner = ModelTuner(oracle=kt.oracles.BayesianOptimization(objective=kt.Objective("loss", "min"), max_trials=3), hypermodel=gru_lstm, project_name='gdf_gru_lstm')
@@ -396,7 +396,7 @@ class optimization:
                     model.add(tf.keras.layers.Dense(units=hp.Int('neurons_dense', 4, 10, 1, default=7), activation='relu'))
                     model.add(tf.keras.layers.BatchNormalization())
                     model.add(tf.keras.layers.Dense(1)) 
-                    model.compile(optimizer=tf.keras.optimizers.Adam())
+                    model.compile(optimizer=tf.keras.optimizers.Adam(), loss=tf.keras.losses.MSE(), metrics=[tf.keras.metrics.MeanAbsolutePercentageError()])
                     return model
 
                 tuner = ModelTuner(oracle=kt.oracles.BayesianOptimization(objective=kt.Objective("loss", "min"), max_trials=3), hypermodel=lstm, project_name='gdf_lstm')
@@ -465,7 +465,7 @@ class visualization:
 
         print(" ")
         print(" ")
-        msg = f"{self.name} achieved a tunned loss of {self.score} using Distribution Aware Gradient Descent Optimization."  
+        msg = f"{self.name} achieved a MAPE of {self.score} using Distribution Aware Gradient Descent Optimization."  
         print(msg)
 
         plt.plot(self.history.history['loss'])
@@ -508,35 +508,35 @@ class selection:
         X = self.X
         y = self.y
 
-        best_score = 0
+        best_score = 1000
         best_model = 1
 
         # Closer to One
         for i in range(1, 5, 1):
             gc.collect()
             score = validation(i, X, y).ml()
-            if (score > best_score):
+            if (score < best_score):
                 best_score = score
                 best_model = i
 
-        return best_score, best_model
+        return best_model
 
 
     def dl_run(self):
         X = self.X
         y = self.y
 
-        best_score = 100
+        best_score = 1000
         best_model = 1
 
         for i in range(1, 5, 1):
             gc.collect()
             score = validation(i, X, y).dl()
-            if (score < best_score):
-                best_score = score
+            if (score[1] < best_score):
+                best_score = score[1]
                 best_model = i
         
-        return best_score, best_model
+        return best_model
 
 
 
@@ -550,7 +550,9 @@ class fitting:
 
     def autots(self):
 
-        ml_score, ml_model = selection(self.X, self.y).ml_run()
+        size = len(self.y)
+        ml_model = selection(self.X, self.y).ml_run()
+
         def get_ml_name(m):
             
             if (m == 1):
@@ -564,7 +566,7 @@ class fitting:
             
             return name
 
-        dl_score, dl_model = selection(self.X, self.y).dl_run()
+        dl_model = selection(self.X, self.y).dl_run()
         def get_dl_name(m):
             
             if (m == 1):
@@ -578,21 +580,34 @@ class fitting:
             
             return name
 
-        if (ml_score < dl_score):
-            print("ML Model Selected: " + get_ml_name(ml_model) + ", R2: " + str(ml_score))
-            model = prediction(ml_model, self.X, self.y).ml()
-            yhat = model.predict(self.T)
-        else:
-            print("DL Model Selected: " + get_dl_name(dl_model) + ", R2: " + str(dl_score))
-            model = prediction(dl_model, self.X, self.y).dl()
-            yhat = model.predict(self.T)
+        print("ML Model Selected: " + get_ml_name(ml_model))
+        model = prediction(ml_model, self.X, self.y).ml()
+        yhat_ml = model.predict(self.T)
 
+        MAPE_ML = mean_absolute_percentage_error(self.y[1:(size)], yhat_ml[2:(size+1)])
+        print("MAPE: "  + str(MAPE_ML))
+
+        print("DL Model Selected: " + get_dl_name(dl_model))
+        model = prediction(dl_model, self.X, self.y).dl()
+        yhat_dl = model.predict(self.T)
+
+        MAPE_DL = mean_absolute_percentage_error(self.y[1:(size)], yhat_dl[2:(size+1)])
+        print("MAPE: "  + str(MAPE_DL))
+
+        if (MAPE_ML < MAPE_DL):
+            yhat = yhat_ml
+        else:
+            yhat = yhat_dl
+                
         return yhat
     
 
     def automl(self):
+
         warnings.filterwarnings('ignore')
+        size = len(self.y)
         ml_score, ml_model = selection(self.X, self.y).ml_run()
+
         def get_name(m):
             
             if (m == 1):
@@ -608,24 +623,22 @@ class fitting:
         
         print(" ")
         print("Models Tested: SVR, MLP, XGB and GPR")
-        print("ML Model Selected: " + get_name(ml_score) + " R2: " + str(ml_score))
+        print("ML Model Selected: " + get_name(ml_score))
         print(" ")
         model = prediction(ml_model, self.X, self.y).ml()
-        yhat = model.predict(self.T)
+        yhat_ml = model.predict(self.T)
 
-        try: 
-            MAPE = mean_absolute_percentage_error(self.y[1:20], yhat[2:21])
-            print("Best Model, MAPE: "  + str(round(MAPE, 2)))
-        except:
-            print(" ")
+        MAPE_ML = mean_absolute_percentage_error(self.y[1:(size)], yhat_ml[2:(size+1)])
+        print("MAPE: "  + str(MAPE_ML))
             
-            
-        return yhat
+        return yhat_ml
 
 
     def autodl(self):
 
+        size = len(self.y)
         dl_score, dl_model = selection(self.X, self.y).dl_run()
+
         def get_dl_name(m):
             
             if (m == 1):
@@ -641,11 +654,14 @@ class fitting:
         
         print(" ")
         print("Models Tested: BI_GRU_LSTM, BI_LSTM, GRU_LSTM and LSTM")
-        print("DL Model Selected: " + get_dl_name(dl_model) + ", R2: " + str(dl_score))
+        print("DL Model Selected: " + get_dl_name(dl_model) + ", LOSS: " + str(dl_score))
         model = prediction(dl_model, self.X, self.y).dl()
-        yhat = model.predict(self.T)
+        yhat_dl = model.predict(self.T)
+
+        MAPE_DL = mean_absolute_percentage_error(self.y[1:(size)], yhat_dl[2:(size+1)])
+        print("MAPE: "  + str(MAPE_DL))
         
-        return yhat
+        return yhat_dl
 
 
 
@@ -664,22 +680,28 @@ class execute:
         train2 = train1.fillna(0)
         test2 = test1.fillna(0)
 
+        predictions = pd.DataFrame()
+
         for col in train2.columns:
             target = col
+            outcome = col + "_yhat"
             df2 = preprocessing(train2, target, self.lags, False).run_univariate().dropna().reset_index(drop=True)
             T = preprocessing(test2, target, self.lags, True).run_univariate().dropna().reset_index(drop=True)
             y = df2['Y']
             X = df2.loc[:, df2.columns != 'Y']
 
             if (self.runtype == 'ml'):
-                predictions = fitting(X, y, T).automl()
+                predictions[outcome] = fitting(X, y, T).automl()
             elif (self.runtype == 'dl'):
-                predictions = fitting(X, y, T).autodl()
+                predictions[outcome] = fitting(X, y, T).autodl()
             else:
-                predictions = fitting(X, y, T).autots()
+                predictions[outcome] = fitting(X, y, T).autots()
+        
+        size = len(predictions)
+        test3 = test2.tail(size).reset_index(drop=True)
+        results = pd.concat([test3, predictions], axis=1).reset_index(drop=True)  
 
-
-        return predictions
+        return results
 
 
 
