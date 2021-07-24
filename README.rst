@@ -43,17 +43,6 @@ Why
 * https://www.health.harvard.edu/blog/the-11-most-expensive-medications-201202094228
 
 
-Usage
--------
-|
-| train = '/path/to/train.xlsx'
-| test = '/path/to/test.xlsx'
-| num_of_lags = 3
-| pred = gdf.execute(train, test, num_of_lags).frm()
-| print(pred)
-|
-
-
 Demo
 ------
 |
