@@ -318,10 +318,9 @@ class optimization:
         i = self.i
         X = self.X
         y = self.y
-        size = len(self.X)
         spilt = round((1/self.cv), 2)
-
         train_x, test_x, train_y, test_y = train_test_split(X, y, test_size=spilt, random_state=232)
+
 
         def get_tuner(m):
 
@@ -330,7 +329,8 @@ class optimization:
                 def bi_gru_lstm(hp):
                     model = tf.keras.Sequential()
                     #GRU
-                    model.add(tf.keras.layers.Bidirectional(tf.keras.layers.GRU(units=hp.Int('neurons_gru', 4, 10, 1, default=7), return_sequences=True), input_dim=size))
+                    model.add(tf.keras.layers.Bidirectional(tf.keras.layers.GRU(units=hp.Int('neurons_gru', 4, 10, 1, default=7), return_sequences=True), 
+                    input_shape=(test_x.shape[0], test_x.shape[1], 1)))
                     model.add(tf.keras.layers.BatchNormalization())
                     #LSTM
                     model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7))))
@@ -338,7 +338,6 @@ class optimization:
                     #DENSE
                     model.add(tf.keras.layers.Dense(units=hp.Int('neurons_dense', 4, 10, 1, default=7), activation='relu'))
                     model.add(tf.keras.layers.BatchNormalization())
-                    #An output layer that makes a single value prediction. 
                     model.add(tf.keras.layers.Dense(1)) 
                     model.compile(optimizer=tf.keras.optimizers.Adam())
                     return model
@@ -351,12 +350,12 @@ class optimization:
                 def bi_lstm(hp):
                     model = tf.keras.Sequential()
                     #LSTM
-                    model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7), return_sequences=True), input_dim=size))
+                    model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7), return_sequences=True), 
+                    input_shape=(test_x.shape[0], test_x.shape[1], 1)))
                     model.add(tf.keras.layers.BatchNormalization())
                     #DENSE
                     model.add(tf.keras.layers.Dense(units=hp.Int('neurons_dense', 4, 10, 1, default=7), activation='relu'))
                     model.add(tf.keras.layers.BatchNormalization())
-                    #An output layer that makes a single value prediction. 
                     model.add(tf.keras.layers.Dense(1)) 
                     model.compile(optimizer=tf.keras.optimizers.Adam())
                     return model
@@ -369,7 +368,8 @@ class optimization:
                 def gru_lstm(hp):
                     model = tf.keras.Sequential()
                     #GRU
-                    model.add(tf.keras.layers.GRU(units=hp.Int('neurons_gru', 4, 10, 1, default=7)), input_dim=size)
+                    model.add(tf.keras.layers.GRU(units=hp.Int('neurons_gru', 4, 10, 1, default=7), return_sequences=False), 
+                    input_shape=(test_x.shape[0], 1))
                     model.add(tf.keras.layers.BatchNormalization())
                     #LSTM
                     model.add(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7)))
@@ -377,7 +377,6 @@ class optimization:
                     #DENSE
                     model.add(tf.keras.layers.Dense(units=hp.Int('neurons_dense', 4, 10, 1, default=7), activation='relu'))
                     model.add(tf.keras.layers.BatchNormalization())
-                    #OUTPUT
                     model.add(tf.keras.layers.Dense(1)) 
                     model.compile(optimizer=tf.keras.optimizers.Adam())
                     return model
@@ -390,12 +389,12 @@ class optimization:
                 def lstm(hp):
                     model = tf.keras.Sequential()
                     #LSTM
-                    model.add(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7)), input_dim=size)
+                    model.add(tf.keras.layers.LSTM(units=hp.Int('neurons_lstm', 4, 10, 1, default=7), return_sequences=False), 
+                    input_shape=(test_x.shape[0], 1))
                     model.add(tf.keras.layers.BatchNormalization())
                     #DENSE
                     model.add(tf.keras.layers.Dense(units=hp.Int('neurons_dense', 4, 10, 1, default=7), activation='relu'))
                     model.add(tf.keras.layers.BatchNormalization())
-                    #OUTPUT
                     model.add(tf.keras.layers.Dense(1)) 
                     model.compile(optimizer=tf.keras.optimizers.Adam())
                     return model
@@ -429,7 +428,11 @@ class optimization:
             tf.keras.callbacks.ReduceLROnPlateau(monitor="loss", factor=0.5, patience=3, verbose=0),
             tf.keras.callbacks.EarlyStopping(monitor="loss", patience=3, verbose=0)
         ]
-    
+
+
+        X = X.reshape(X.shape[0], X.shape[1], 1)
+        test_x = test_x.reshape(test_x.shape[0], test_x.shape[1], 1)
+
         history = model.fit(X, y, validation_data=(test_x, test_y), callbacks=call_back, epochs=30, batch_size=32, verbose=0)
         scores = model.evaluate(test_x, test_y, verbose=0)
 
@@ -525,8 +528,8 @@ class selection:
 
         best_score = 100
         best_model = 1
-        #Default = 1
-        for i in range(3, 5, 1):
+
+        for i in range(1, 5, 1):
             gc.collect()
             score = validation(i, X, y).dl()
             if (score < best_score):
