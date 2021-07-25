@@ -3,11 +3,9 @@
 """Tests for `gdemandfcast` package."""
 
 import pytest
-
 from click.testing import CliRunner
 
-from gdemandfcast import ai
-from gdemandfcast import ui
+from gdemandfcast import ai as gdf
 from gdemandfcast import cli
 
 
@@ -36,3 +34,11 @@ def test_command_line_interface():
     help_result = runner.invoke(cli.main, ['--help'])
     assert help_result.exit_code == 0
     assert '--help  Show this message and exit.' in help_result.output
+
+
+#def test_main_function():
+
+    #train = '/path/to/train.xlsx'
+    #test = '/path/to/test.xlsx'
+    #assert print(gdf.execute(train, test, 3).frm())
+
