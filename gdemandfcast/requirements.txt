@@ -1,0 +1,7 @@
+tensorflow ==2.5.0
+keras-tuner==1.0.3
+pmdarima==1.8.2
+streamlit==0.85.0
+pandas==1.3.1
+matplotlib==3.4.2
+xgboost==1.4.2
