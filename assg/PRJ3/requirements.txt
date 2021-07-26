@@ -1,6 +1,6 @@
 keras==2.4.3
 mtcnn==2.4.3
-pyyaml==5.3.1
+pyyaml==5.4.1
 autopep8==1.5.4
 jupyterlab==3.0.4
 sckit-learn==0.24.0
