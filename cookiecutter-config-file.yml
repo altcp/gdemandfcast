@@ -1,0 +1,13 @@
+# This file contains values from Cookiecutter
+
+default_context:
+  project_name: "gdemandfcast"
+  project_description: "Generic Python Package for Timeseries Forecasting"
+  organization: "altcp"
+  license: "GNU GPL v3.0"
+  minimal_python_version: 3.8
+  github_name: "altcp"
+  email: "colab.tcp@gmail.com"
+  version: "0.6.0"
+  line_length: "88"
+  create_example_template: "none"
