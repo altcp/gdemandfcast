@@ -1,6 +1,3 @@
-"""Example of code."""
-
-
 def hello(name: str) -> str:
     """Just an greetings example.
 
