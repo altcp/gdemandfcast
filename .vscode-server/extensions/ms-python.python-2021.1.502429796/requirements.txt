@@ -10,4 +10,4 @@ git+git://github.com/vscode-python/jedi-language-server@42823a2598d4b6369e9273c5
 jedi==0.17.2              # via jedi-language-server
 parso==0.7.0              # via jedi
 pygls==0.9.1 ; python_version >= "3.6"  # via -r requirements.in, jedi-language-server
-python-jsonrpc-server==0.2.0  # via -r requirements.in
+python-jsonrpc-server==0.4.0  # via -r requirements.in
