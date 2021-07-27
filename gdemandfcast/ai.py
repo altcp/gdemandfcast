@@ -163,7 +163,8 @@ class compare:
         df["Y"] = self.y
 
         for model, name in (m1, m2, m3, m4):
-            df[name] = model.predict(self.T)
+            df2 = model.predict(self.T)
+            df[name] = df2.head(len(df)).reset_index(drop=True)
 
         if self.charts == True:
             df.plot.line()
@@ -190,7 +191,7 @@ class compare:
         df["Y"] = self.y
 
         for model, name in (m1, m2, m3, m4):
-            df[name] = model.predict(self.T)
+            df[name] = model.predict(self.T).head(len(df)).reset_index(drop=True)
 
         if self.charts == True:
             df.plot.line()
