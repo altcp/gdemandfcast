@@ -24,7 +24,7 @@ from gdemandfcast.ai import execute
 
 def test_execute():
 
-    train = "data/Test Data.xlsx"
-    test = "data/Test Data.xlsx"
+    train = "./data/Test Data.xlsx"
+    test = "./data/Test Data.xlsx"
     df = execute(train, test, 3).frm()
     assert print(df)
