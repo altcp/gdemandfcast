@@ -241,10 +241,12 @@ class compare:
 
         column_names = ["Y", "GPR", "MLP", "XGB", "SVR"]
         df = pd.DataFrame(columns=column_names)
-        df["Y"] = self.test_y
+        # Remove First Element to Match Prediction
+        df["Y"] = self.test_y.loc[1:]
 
         for model, name in (m1, m2, m3, m4):
             mf = model.predict(self.test_X)
+            # Remove Last Element to Match Truth
             df[name] = mf[:-1].to_frame()
 
         # See Magnitude of Absolute Difference
@@ -271,10 +273,12 @@ class compare:
             "GDF_LSTM",
         ]
         df = pd.DataFrame(columns=column_names)
-        df["Y"] = self.test_y
+        # Remove First Element to Match Prediction
+        df["Y"] = self.test_y.loc[1:]
 
         for model, name in (m1, m2, m3, m4):
             mf = model.predict(self.test_X)
+            # Remove Last Element to Match Truth
             df[name] = mf[:-1].to_frame()
 
         # See Magnitude of Absolute Difference
