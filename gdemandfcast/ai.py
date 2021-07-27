@@ -89,7 +89,7 @@ class execute:
                             last_col: n_1,
                         }
                     )
-                    print("% Accuracy: " + str(percentage_accurate))
+                    print("% Accurate: " + str(percentage_accurate))
 
                 elif self.shift == "dl":
                     pred_df, percentage_accurate = compare(
@@ -108,7 +108,7 @@ class execute:
                             last_col: n_1,
                         }
                     )
-                    print("% Accuracy: " + str(percentage_accurate))
+                    print("% Accurate: " + str(percentage_accurate))
 
                 elif self.shift == "ts":
                     pred_df, percentage_accurate = compare(
@@ -298,8 +298,7 @@ class compare:
 
         best_mape = 100
         best_model = "XGB"
-        df1 = self.compare_ml()
-        df = df1.to_frame()
+        df = self.compare_ml()
 
         for col in df.columns:
             if col != "Y":
@@ -321,7 +320,7 @@ class compare:
             else:
                 percentage_accurate = (1 - best_mape) * 100
 
-        return df[best_model], percentage_accurate
+        return df[["Y", best_model]], percentage_accurate
 
     def autodl(self):
         # Todo: Rewrite
