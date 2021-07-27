@@ -45,6 +45,7 @@ class execute:
         df = pd.DataFrame()
 
         for col in train2.columns:
+
             target = col
             df2 = (
                 preprocessing(train2, target, self.lags, False)
@@ -58,11 +59,9 @@ class execute:
                 .dropna()
                 .reset_index(drop=True)
             )
+
             y = df2["Y"]
             X = df2.loc[:, df2.columns != "Y"]
-
-            label = target + "_test"
-            df[label] = y
 
             if self.runtype == "auto":
 
@@ -81,18 +80,22 @@ class execute:
             else:
 
                 if self.group == "ml":
-                    labelpred = target + "_ml"
                     pred_df = compare(X, y, T, True).compare_ml()
-                    df[labelpred] = pred_df
                 elif self.group == "dl":
-                    labelpred = target + "_dl"
                     pred_df = compare(X, y, T, True).compare_dl()
-                    df[labelpred] = pred_df
-
                 else:
-                    labelpred = target + "_ts"
                     pred_df = compare(X, y, T, True).compare_ts()
-                    df[labelpred] = pred_df
+
+            df = pd.conat([df, pred_df], axis=1)
+            df = df.rename(
+                columns={
+                    "Y": target + "_Y",
+                    "GPR": target + "_GPR",
+                    "MLP": target + "_MLP",
+                    "XGB": target + "_XGB",
+                    "SVR": target + "_SVR",
+                }
+            )
 
         return df
 
