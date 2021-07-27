@@ -1,4 +1,6 @@
-#!/usr/bin/env python
+# To add a new cell, type '# %%'
+# To add a new markdown cell, type '# %% [markdown]'
+# %%
 
 import gc
 import math
@@ -22,53 +24,180 @@ from sklearn.svm import SVR
 from tensorflow import keras
 from xgboost import XGBRegressor
 
-# In[ ]:
+# %%
 
 
-# In[ ]:
+class execute:
+    def __init__(self, train, test, lags, group="ml", runtype="manual"):
+        self.train = train
+        self.test = test
+        self.lags = lags
+        self.group = group
+        self.runtype = runtype
+
+    def frm(self):
+
+        train1 = pd.read_excel(self.train)
+        test1 = pd.read_excel(self.test)
+        train2 = train1.fillna(0)
+        test2 = test1.fillna(0)
+
+        df = pd.DataFrame()
+
+        for col in train2.columns:
+            target = col
+            df2 = (
+                preprocessing(train2, target, self.lags, False)
+                .run_univariate()
+                .dropna()
+                .reset_index(drop=True)
+            )
+            T = (
+                preprocessing(test2, target, self.lags, True)
+                .run_univariate()
+                .dropna()
+                .reset_index(drop=True)
+            )
+            y = df2["Y"]
+            X = df2.loc[:, df2.columns != "Y"]
+
+            label = target + "_test"
+            df[label] = T
+
+            if self.runtype == "auto":
+
+                if self.group == "ml":
+                    labelpred = target + "_ml"
+                    df[labelpred] = compare(X, y, T, False).automl()
+
+                elif self.group == "dl":
+                    labelpred = target + "_dl"
+                    df[labelpred] = compare(X, y, T, False).autodl()
+
+                else:
+                    labelpred = target + "_ts"
+                    df[labelpred] = compare(X, y, T, False).autots()
+
+            else:
+
+                if self.group == "ml":
+                    labelpred = target + "_ml"
+                    df = compare(X, y, T, True).compare_ml()
+                elif self.group == "dl":
+                    labelpred = target + "_dl"
+                    df[labelpred] = compare(X, y, T, True).compare_dl()
+                else:
+                    labelpred = target + "_ts"
+                    df[labelpred] = compare(X, y, T, True).compare_ts()
+
+        return df
 
 
-class armamodels:
-    def __init__(self, y, D=8, P=8, Q=8, seed=232, seasonal=True, alpha=0.05):
+# %%
+
+
+class preprocessing:
+    def __init__(self, df, target="Y", p=7, create_testset=False):
+        self.df = df
+        self.target = target
+        self.p = p  # Size of Bucket (e.g., Week = 7 or 5, Lag)
+        self.create_testset = create_testset
+
+    def run_univariate(self):
+
+        df1 = pd.DataFrame()
+
+        if self.create_testset == False:
+            P = self.p + 1
+        else:
+            P = self.p
+
+        for i in range(P):
+            if i == 0:
+                if P > self.p:
+                    df1["Y"] = self.df[self.target]
+                else:
+                    df1["X0"] = self.df[self.target]
+            else:
+                column_name = "X" + str(i)
+                df1[column_name] = self.df[self.target].shift(i)
+
+        return df1
+
+    def create_frequency(self):
+
+        df1 = pd.DataFrame()
+        df1 = self.df.groupby(np.arrange(len(self.df)) // self.p).sum()
+        df1.index = self.df.loc[1 :: self.p, self.target]
+
+        return df1
+
+
+# %%
+
+
+class compare:
+    def __init__(self, X, y, T, charts):
+        self.X = X
         self.y = y
-        self.D = D
-        self.P = P
-        self.Q = Q
-        self.seasonal = seasonal
-        self.seed = seed
-        self.alpha = alpha
+        self.T = T
+        self.charts = charts
 
-    def run_model(self):
+    def compare_ml(self):
+        warnings.filterwarnings("ignore")
 
-        kpss_test = pm.arima.ndiffs(self.y, alpha=self.alpha, test="kpss", max_d=self.D)
-        adf_test = pm.arima.ndiffs(self.y, alpha=self.alpha, test="adf", max_d=self.D)
-        num_of_diffs = max(kpss_test, adf_test)
+        m1 = mlmodels(self.X, self.y, False).gpr_model()
+        m2 = mlmodels(self.X, self.y, False).mlp_model()
+        m3 = mlmodels(self.X, self.y, False).xgb_model()
+        m4 = mlmodels(self.X, self.y, False).svr_model()
 
-        arima_model = pm.auto_arima(
-            self.y,
-            d=num_of_diffs,
-            start_p=0,
-            start_q=0,
-            start_P=0,
-            max_p=self.P,
-            max_q=self.Q,
-            trace=False,
-            seasonal=self.seasonal,
-            error_action="ignore",
-            random_state=self.seed,
-            suppress_warnings=True,
-        )
+        df = pd.DataFrame()
+        df["Test"] = self.T
 
-        e_mu = arima_model.predict(n_periods=1)
-        e_mu = e_mu[0]
+        for model, name in (m1, m2, m3, m4):
+            df[name] = model.predict(self.T)
 
-        return e_mu
+        if self.charts == True:
+            df.plot.line()
+
+        return df
+
+    def compare_dl(self):
+
+        m1 = dlmodels(1, self.X, self.y, False).run()
+        m2 = dlmodels(2, self.X, self.y, False).run()
+        m3 = dlmodels(3, self.X, self.y, False).run()
+        m4 = dlmodels(4, self.X, self.y, False).run()
+
+        df = pd.DataFrame()
+        df["Test"] = self.T
+
+        for model, name in (m1, m2, m3, m4):
+            df[name] = model.predict(self.T)
+
+        if self.charts == True:
+            df.plot.line()
+
+        return df
+
+    def compare_ts(self):
+        # Todo: Rewrite
+        pass
+
+    def autots(self):
+        # Todo: Rewrite
+        pass
+
+    def automl(self):
+        # Todo: Rewrite
+        pass
+
+    def autodl(self):
+        # Todo: Rewrite
+        pass
 
 
-# In[ ]:
-
-
-# In[ ]:
+# %%
 
 
 class mlmodels:
@@ -122,7 +251,7 @@ class mlmodels:
         )
 
         if self.validate == False:
-            return search
+            return search, "GPR"
         else:
             return round((np.nanmean(results) * 100.0), 2)
 
@@ -181,7 +310,7 @@ class mlmodels:
         )
 
         if self.validate == False:
-            return search
+            return search, "MLP"
         else:
             return round((np.nanmean(results) * 100.0), 2)
 
@@ -228,7 +357,7 @@ class mlmodels:
         )
 
         if self.validate == False:
-            return search
+            return search, "XGB"
         else:
             return round((np.nanmean(results) * 100.0), 2)
 
@@ -255,116 +384,15 @@ class mlmodels:
         )
 
         if self.validate == False:
-            return search
+            return search, "SVR"
         else:
             return round((np.nanmean(results) * 100.0), 2)
 
 
-# In[ ]:
+# %%
 
 
-# In[ ]:
-
-
-class preprocessing:
-    def __init__(self, df, target="Y", p=7, create_testset=False):
-        self.df = df
-        self.target = target
-        self.p = p  # Size of Bucket (e.g., Week = 7 or 5, Lag)
-        self.create_testset = create_testset
-
-    def run_univariate(self):
-
-        df1 = pd.DataFrame()
-
-        if self.create_testset == False:
-            P = self.p + 1
-        else:
-            P = self.p
-
-        for i in range(P):
-            if i == 0:
-                if P > self.p:
-                    df1["Y"] = self.df[self.target]
-                else:
-                    df1["X0"] = self.df[self.target]
-            else:
-                column_name = "X" + str(i)
-                df1[column_name] = self.df[self.target].shift(i)
-
-        return df1
-
-    def create_frequency(self):
-
-        df1 = pd.DataFrame()
-        df1 = self.df.groupby(np.arrange(len(self.df)) // self.p).sum()
-        df1.index = self.df.loc[1 :: self.p, self.target]
-
-        return df1
-
-
-# In[ ]:
-
-
-class validation:
-    def __init__(self, i, X, y):
-        self.i = i
-        self.X = X
-        self.y = y
-
-    def ml(self):
-
-        if self.i == 1:
-            score = mlmodels(self.X, self.y, True).svr_model()
-        elif self.i == 2:
-            score = mlmodels(self.X, self.y, True).mlp_model()
-        elif self.i == 3:
-            score = mlmodels(self.X, self.y, True).xgb_model()
-        else:
-            score = mlmodels(self.X, self.y, True).gpr_model()
-
-        return round(score, 2)
-
-    def dl(self):
-
-        score = optimization(self.i, self.X, self.y, True).run()
-
-        return round(score, 2)
-
-
-# In[ ]:
-
-
-class prediction:
-    def __init__(self, i, X, y):
-        self.i = i
-        self.X = X
-        self.y = y
-
-    def ml(self):
-
-        if self.i == 1:
-            model = mlmodels(self.X, self.y, False).svr_model()
-        elif self.i == 2:
-            model = mlmodels(self.X, self.y, False).mlp_model()
-        elif self.i == 3:
-            model = mlmodels(self.X, self.y, False).xgb_model()
-        else:
-            model = mlmodels(self.X, self.y, False).gpr_model()
-
-        return model
-
-    def dl(self):
-
-        model = optimization(self.i, self.X, self.y, False).run()
-
-        return model
-
-
-# In[ ]:
-
-
-class optimization:
+class dlmodels:
     def __init__(self, i, X, y, validation):
         self.i = i
         self.X = X
@@ -393,7 +421,7 @@ class optimization:
                                 units=hp.Int("neurons_gru", 4, 10, 1, default=7),
                                 return_sequences=True,
                             ),
-                            input_shape=(test_x.shape[0], test_x.shape[1], 1),
+                            input_shape=(test_x.shape[1], 1),
                         )
                     )
                     model.add(tf.keras.layers.BatchNormalization())
@@ -442,7 +470,7 @@ class optimization:
                                 units=hp.Int("neurons_lstm", 4, 10, 1, default=7),
                                 return_sequences=True,
                             ),
-                            input_shape=(test_x.shape[0], test_x.shape[1], 1),
+                            input_shape=(test_x.shape[1], 1),
                         )
                     )
                     model.add(tf.keras.layers.BatchNormalization())
@@ -556,19 +584,6 @@ class optimization:
 
             return tuner
 
-        def get_name(m):
-
-            if m == 1:
-                name = "GDF-BI_GRU_LTSM"
-            elif m == 2:
-                name = "GDF-BI_LSTM"
-            elif m == 3:
-                name = "GDF-GRU_LSTM"
-            else:
-                name = "GDF_LSTM"
-
-            return name
-
         get_tuner(i).search(X, y)
         best_hps = get_tuner(i).get_best_hyperparameters()[0]
         model = get_tuner(i).hypermodel.build(best_hps)
@@ -599,14 +614,33 @@ class optimization:
         scores = model.evaluate(test_x, test_y, verbose=0)
 
         if self.validation == True:
+
+            def get_name(m):
+
+                if m == 1:
+                    name = "GDF-BI_GRU_LTSM"
+                elif m == 2:
+                    name = "GDF-BI_LSTM"
+                elif m == 3:
+                    name = "GDF-GRU_LSTM"
+                else:
+                    name = "GDF_LSTM"
+
+                return name
+
             visualization(
                 history, round((scores[1] * 100), 2), get_name(self.i)
             ).disp_fit()
             print(" ")
             print(" ")
             return None
+
         else:
+
             return model
+
+
+# %%
 
 
 class visualization:
@@ -630,222 +664,7 @@ class visualization:
         return None
 
 
-class selection:
-    def __init__(self, X, y):
-        self.X = X
-        self.y = y
-
-    def ml_run(self):
-        X = self.X
-        y = self.y
-
-        best_score = 1000
-        best_model = 1
-
-        # Closer to One
-        for i in range(1, 5, 1):
-            gc.collect()
-            score = validation(i, X, y).ml()
-            if score < best_score:
-                best_score = score
-                best_model = i
-
-        return best_score, best_model
-
-    def dl_run(self):
-        X = self.X
-        y = self.y
-
-        best_score = 1000
-        best_model = 1
-
-        for i in range(1, 5, 1):
-            gc.collect()
-            score = validation(i, X, y).dl()
-            if score[1] < best_score:
-                best_score = score[1]
-                best_model = i
-
-        return best_score, best_model
-
-
-class fitting:
-    def __init__(self, X, y, T):
-        self.X = X
-        self.y = y
-        self.T = T
-
-    def autots(self):
-
-        size = len(self.y)
-        ml_model = selection(self.X, self.y).ml_run()
-
-        def get_ml_name(m):
-
-            if m == 1:
-                name = "SVR"
-            elif m == 2:
-                name = "MLP"
-            elif m == 3:
-                name = "XGB"
-            else:
-                name = "GPR"
-
-            return name
-
-        dl_model = selection(self.X, self.y).dl_run()
-
-        def get_dl_name(m):
-
-            if m == 1:
-                name = "GDF-BI_GRU_LTSM"
-            elif m == 2:
-                name = "GDF-BI_LSTM"
-            elif m == 3:
-                name = "GDF-GRU_LSTM"
-            else:
-                name = "GDF_LSTM"
-
-            return name
-
-        print("ML Model Selected: " + get_ml_name(ml_model))
-        model = prediction(ml_model, self.X, self.y).ml()
-        yhat_ml = model.predict(self.T)
-
-        MAPE_ML = mean_absolute_percentage_error(
-            self.y[1:(size)], yhat_ml[2 : (size + 1)]
-        )
-        print("MAPE: " + str(MAPE_ML))
-
-        print("DL Model Selected: " + get_dl_name(dl_model))
-        model = prediction(dl_model, self.X, self.y).dl()
-        yhat_dl = model.predict(self.T)
-
-        MAPE_DL = mean_absolute_percentage_error(
-            self.y[1:(size)], yhat_dl[2 : (size + 1)]
-        )
-        print("MAPE: " + str(MAPE_DL))
-
-        if MAPE_ML < MAPE_DL:
-            yhat = yhat_ml
-        else:
-            yhat = yhat_dl
-
-        return yhat
-
-    def automl(self):
-
-        warnings.filterwarnings("ignore")
-        size = len(self.y)
-        ml_score, ml_model = selection(self.X, self.y).ml_run()
-
-        def get_name(m):
-
-            if m == 1:
-                name = "SVR"
-            elif m == 2:
-                name = "MLP"
-            elif m == 3:
-                name = "XGB"
-            else:
-                name = "GPR"
-
-            return name
-
-        print(" ")
-        print("Models Tested: SVR, MLP, XGB and GPR")
-        print("ML Model Selected: " + get_name(ml_score))
-        print(" ")
-        model = prediction(ml_model, self.X, self.y).ml()
-        yhat_ml = model.predict(self.T)
-
-        MAPE_ML = mean_absolute_percentage_error(
-            self.y[1:(size)], yhat_ml[2 : (size + 1)]
-        )
-        print("MAPE: " + str(MAPE_ML))
-
-        return yhat_ml
-
-    def autodl(self):
-
-        size = len(self.y)
-        dl_score, dl_model = selection(self.X, self.y).dl_run()
-
-        def get_dl_name(m):
-
-            if m == 1:
-                name = "GDF-BI_GRU_LTSM"
-            elif m == 2:
-                name = "GDF-BI_LSTM"
-            elif m == 3:
-                name = "GDF-GRU_LSTM"
-            else:
-                name = "GDF_LSTM"
-
-            return name
-
-        print(" ")
-        print("Models Tested: BI_GRU_LSTM, BI_LSTM, GRU_LSTM and LSTM")
-        print(
-            "DL Model Selected: " + get_dl_name(dl_model) + ", LOSS: " + str(dl_score)
-        )
-        model = prediction(dl_model, self.X, self.y).dl()
-        yhat_dl = model.predict(self.T)
-
-        MAPE_DL = mean_absolute_percentage_error(
-            self.y[1:(size)], yhat_dl[2 : (size + 1)]
-        )
-        print("MAPE: " + str(MAPE_DL))
-
-        return yhat_dl
-
-
-class execute:
-    def __init__(self, train, test, lags=3, runtype="auto"):
-        self.train = train
-        self.test = test
-        self.lags = lags
-        self.runtype = runtype
-
-    def frm(self):
-
-        train1 = pd.read_excel(self.train)
-        test1 = pd.read_excel(self.test)
-        train2 = train1.fillna(0)
-        test2 = test1.fillna(0)
-
-        predictions = pd.DataFrame()
-
-        for col in train2.columns:
-            target = col
-            outcome = str(col) + "_yhat"
-            df2 = (
-                preprocessing(train2, target, self.lags, False)
-                .run_univariate()
-                .dropna()
-                .reset_index(drop=True)
-            )
-            T = (
-                preprocessing(test2, target, self.lags, True)
-                .run_univariate()
-                .dropna()
-                .reset_index(drop=True)
-            )
-            y = df2["Y"]
-            X = df2.loc[:, df2.columns != "Y"]
-
-            if self.runtype == "ml":
-                predictions[outcome] = fitting(X, y, T).automl()
-            elif self.runtype == "dl":
-                predictions[outcome] = fitting(X, y, T).autodl()
-            else:
-                predictions[outcome] = fitting(X, y, T).autots()
-
-        size = len(predictions)
-        test3 = test2.tail(size).reset_index(drop=True)
-        results = pd.concat([test3, predictions], axis=1).reset_index(drop=True)
-
-        return results
+# %%
 
 
 class ModelTuner(kt.Tuner):
@@ -927,20 +746,4 @@ class ModelTuner(kt.Tuner):
             epoch_loss_metric.reset_states()
 
 
-# Test
-def hello(name: str) -> str:
-    """Just an greetings example.
-
-    Args:
-        name (str): Name to greet.
-
-    Returns:
-        str: greeting message
-
-    Examples:
-        .. code:: python
-
-            >>> hello("Roman")
-            'Hello Roman!'
-    """
-    return f"Hello {name}!"
+# %%
