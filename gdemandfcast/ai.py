@@ -15,6 +15,7 @@ import pandas as pd
 import pmdarima as pm
 import sklearn.gaussian_process as gp
 import tensorflow as tf
+from numpy.core.arrayprint import str_format
 from scipy import stats
 from sklearn import model_selection
 from sklearn.metrics import mean_absolute_percentage_error
@@ -49,6 +50,7 @@ class execute:
         for col in train2.columns:
 
             target = col
+
             df2 = (
                 preprocessing(train2, target, self.lags, False)
                 .run_univariate()
@@ -68,15 +70,15 @@ class execute:
             if self.runtype == "auto":
 
                 if self.group == "ml":
-                    labelpred = target + "_ml"
+                    labelpred = str(target) + "_ml"
                     df[labelpred] = compare(X, y, T, False).automl()
 
                 elif self.group == "dl":
-                    labelpred = target + "_dl"
+                    labelpred = str(target) + "_dl"
                     df[labelpred] = compare(X, y, T, False).autodl()
 
                 else:
-                    labelpred = target + "_ts"
+                    labelpred = str(target) + "_ts"
                     df[labelpred] = compare(X, y, T, False).autots()
 
             else:
@@ -84,11 +86,11 @@ class execute:
                 if self.group == "ml":
                     pred_df = compare(X, y, T, True).compare_ml()
 
-                    n_y = target + "_Y"
-                    n_gpr = target + "_GPR"
-                    n_svr = target + "_MLP"
-                    n_xgb = target + "_XGB"
-                    n_mlp = target + "_SVR"
+                    n_y = str(target) + "_Y"
+                    n_gpr = str(target) + "_GPR"
+                    n_svr = str(target) + "_MLP"
+                    n_xgb = str(target) + "_XGB"
+                    n_mlp = str(target) + "_SVR"
 
                     df = pd.concat([df, pred_df], axis=1)
                     df = df.rename(
@@ -182,8 +184,8 @@ class compare:
 
         if self.charts == True:
             print(" ")
-            df.plot(figsize=(30, 30), kind="line")
-            df.plot(figsize=(30, 30), kind="bar", stacked=False)
+            df.plot(figsize=(20, 20), kind="line")
+            df.plot(figsize=(20, 20), kind="bar", stacked=False)
             print(" ")
 
         return df
