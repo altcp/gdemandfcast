@@ -48,7 +48,7 @@ Generic Python Package for Time Series Forecasting
 </div>
 
 You can see the list of available releases on the [GitHub Releases](https://github.com/altcp/gdemandfcast/releases) page. &nbsp;
-We use [`Release Drafter`](https://github.com/marketplace/actions/release-drafter). As pull requests are merged, a draft release is kept up-to-date listing the changes, ready to publish when you’re ready. With the categories option, you can categorize pull requests in release notes using labels.
+We use [`Release Drafter`](https://github.com/marketplace/actions/release-drafter). As pull requests are merged, a draft release is kept up-to-date listing the changes.
 <p>&nbsp;</p>
 
 

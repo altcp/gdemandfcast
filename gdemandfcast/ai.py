@@ -252,8 +252,8 @@ class compare:
         # See Magnitude of Absolute Difference
         if self.charts == True:
             print(" ")
-            df.plot(figsize=(12, 12), kind="line")
-            df.plot(figsize=(12, 12), kind="bar", stacked=False)
+            df.plot(figsize=(15, 10), kind="line")
+            df.plot(figsize=(15, 10), kind="bar", stacked=False)
             print(" ")
 
         return df
@@ -284,8 +284,8 @@ class compare:
         # See Magnitude of Absolute Difference
         if self.charts == True:
             print(" ")
-            df.plot(figsize=(12, 12), kind="line")
-            df.plot(figsize=(12, 12), kind="bar", stacked=False)
+            df.plot(figsize=(15, 10), kind="line")
+            df.plot(figsize=(15, 10), kind="bar", stacked=False)
             print(" ")
 
         return df
@@ -299,6 +299,7 @@ class compare:
         best_mape = 100
         best_model = "XGB"
         df = self.compare_ml()
+        print(df)
 
         for col in df.columns:
             if col != "Y":
@@ -310,8 +311,8 @@ class compare:
         # See Magnitude of Absolute Difference
         if self.charts == True:
             print(" ")
-            df.plot(figsize=(12, 12), kind="line")
-            df.plot(figsize=(12, 12), kind="bar", stacked=False)
+            df.plot(figsize=(15, 10), kind="line")
+            df.plot(figsize=(15, 10), kind="bar", stacked=False)
             print("Selected ML Model: " + col + " , MAPE: " + str(best_mape))
             print(" ")
 
