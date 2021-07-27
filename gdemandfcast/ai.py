@@ -247,7 +247,7 @@ class compare:
         for model, name in (m1, m2, m3, m4):
             mf = model.predict(self.test_X)
             # Remove Last Element to Match Truth
-            df[name] = mf[:-1].to_frame()
+            df[name] = mf[:-1].tolist()
 
         # See Magnitude of Absolute Difference
         if self.charts == True:
@@ -279,7 +279,7 @@ class compare:
         for model, name in (m1, m2, m3, m4):
             mf = model.predict(self.test_X)
             # Remove Last Element to Match Truth
-            df[name] = mf[:-1].to_frame()
+            df[name] = mf[:-1].tolist()
 
         # See Magnitude of Absolute Difference
         if self.charts == True:
