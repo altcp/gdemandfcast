@@ -149,6 +149,7 @@ class compare:
         self.charts = charts
 
     def compare_ml(self):
+
         warnings.filterwarnings("ignore")
 
         m1 = mlmodels(self.X, self.y, False).gpr_model()
@@ -156,8 +157,10 @@ class compare:
         m3 = mlmodels(self.X, self.y, False).xgb_model()
         m4 = mlmodels(self.X, self.y, False).svr_model()
 
-        df = pd.DataFrame()
-        df["Test"] = self.T
+        column_names = ["Y", "GPR", "MLP", "XGB", "SVR"]
+        df = pd.DataFrame(columns=column_names)
+
+        df["Y"] = self.y
 
         for model, name in (m1, m2, m3, m4):
             df[name] = model.predict(self.T)
@@ -174,8 +177,17 @@ class compare:
         m3 = dlmodels(3, self.X, self.y, False).run()
         m4 = dlmodels(4, self.X, self.y, False).run()
 
+        column_names = [
+            "Y",
+            "GDF-BI_GRU_LTSM",
+            "GDF-BI_LSTM",
+            "GDF-GRU_LSTM",
+            "GDF_LSTM",
+        ]
+        df = pd.DataFrame(columns=column_names)
+
         df = pd.DataFrame()
-        df["Test"] = self.T
+        df["Y"] = self.y
 
         for model, name in (m1, m2, m3, m4):
             df[name] = model.predict(self.T)
