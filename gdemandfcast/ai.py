@@ -298,7 +298,8 @@ class compare:
 
         best_mape = 100
         best_model = "XGB"
-        df = self.compare_ml()
+        df1 = self.compare_ml()
+        df = df1.to_frame()
 
         for col in df.columns:
             if col != "Y":
