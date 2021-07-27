@@ -76,7 +76,7 @@ class execute:
                     pred_df, percentage_accurate = compare(
                         train_X, train_y, test_X, test_y, True
                     ).automl()
-                    for col in pred_df.df.columns:
+                    for col in pred_df.columns:
                         if col != "Y":
                             n_y = str(target) + "_Y"
                             n_1 = str(target) + "_" + col
@@ -95,7 +95,7 @@ class execute:
                     pred_df, percentage_accurate = compare(
                         train_X, train_y, test_X, test_y, False
                     ).autodl()
-                    for col in pred_df.df.columns:
+                    for col in pred_df.columns:
                         if col != "Y":
                             n_y = str(target) + "_Y"
                             n_1 = str(target) + "_" + col
@@ -299,6 +299,7 @@ class compare:
     def automl(self):
 
         best_mape = 100
+        best_model = "XGB"
         df = self.compare_ml()
 
         for col in df.columns:
