@@ -86,7 +86,7 @@ class execute:
                 else:
                     pred_df = compare(X, y, T, True).compare_ts()
 
-            df = pd.conat([df, pred_df], axis=1)
+            df = pd.concat([df, pred_df], axis=1)
             df = df.rename(
                 columns={
                     "Y": target + "_Y",
