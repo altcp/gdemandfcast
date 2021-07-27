@@ -184,8 +184,8 @@ class compare:
 
         if self.charts == True:
             print(" ")
-            df.plot(figsize=(20, 20), kind="line")
-            df.plot(figsize=(20, 20), kind="bar", stacked=False)
+            df.plot(figsize=(12, 12), kind="line")
+            df.plot(figsize=(12, 12), kind="bar", stacked=False)
             print(" ")
 
         return df
