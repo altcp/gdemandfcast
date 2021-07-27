@@ -2,6 +2,8 @@
 # To add a new markdown cell, type '# %% [markdown]'
 # %%
 
+from typing import no_type_check
+
 import gc
 import math
 import warnings
@@ -81,21 +83,28 @@ class execute:
 
                 if self.group == "ml":
                     pred_df = compare(X, y, T, True).compare_ml()
+
+                    n_y = target + "_Y"
+                    n_gpr = target + "_GPR"
+                    n_svr = target + "_MLP"
+                    n_xgb = target + "_XGB"
+                    n_mlp = target + "_SVR"
+
+                    df = pd.concat([df, pred_df], axis=1)
+                    df = df.rename(
+                        columns={
+                            "Y": n_y,
+                            "GPR": n_gpr,
+                            "MLP": n_mlp,
+                            "XGB": n_xgb,
+                            "SVR": n_svr,
+                        }
+                    )
+
                 elif self.group == "dl":
                     pred_df = compare(X, y, T, True).compare_dl()
                 else:
                     pred_df = compare(X, y, T, True).compare_ts()
-
-            df = pd.concat([df, pred_df], axis=1)
-            df = df.rename(
-                columns={
-                    "Y": target + "_Y",
-                    "GPR": target + "_GPR",
-                    "MLP": target + "_MLP",
-                    "XGB": target + "_XGB",
-                    "SVR": target + "_SVR",
-                }
-            )
 
         return df
 
@@ -172,7 +181,10 @@ class compare:
             )
 
         if self.charts == True:
-            df.plot.line()
+            print(" ")
+            df.plot(figsize=(30, 30)).line()
+            df.plot(figsize=(30, 30), kind="bar", stacked=False)
+            print(" ")
 
         return df
 
