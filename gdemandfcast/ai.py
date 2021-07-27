@@ -244,11 +244,8 @@ class compare:
         df["Y"] = self.test_y
 
         for model, name in (m1, m2, m3, m4):
-            df[name] = (
-                pd.DataFrame(model.predict(self.test_X), columns=[name])
-                .head(len(df))
-                .reset_index(drop=True)
-            )
+            mf = model.predict(self.test_X)
+            df[name] = mf.loc[:-1].to_frame()
 
         # See Magnitude of Absolute Difference
         if self.charts == True:
@@ -277,11 +274,8 @@ class compare:
         df["Y"] = self.test_y
 
         for model, name in (m1, m2, m3, m4):
-            df[name] = (
-                pd.DataFrame(model.predict(self.test_X), columns=[name])
-                .head(len(df))
-                .reset_index(drop=True)
-            )
+            mf = model.predict(self.test_X)
+            df[name] = mf.loc[:-1].to_frame()
 
         # See Magnitude of Absolute Difference
         if self.charts == True:
