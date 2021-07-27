@@ -2,8 +2,6 @@
 # To add a new markdown cell, type '# %% [markdown]'
 # %%
 
-from typing import no_type_check
-
 import gc
 import math
 import warnings
@@ -15,10 +13,13 @@ import pandas as pd
 import pmdarima as pm
 import sklearn.gaussian_process as gp
 import tensorflow as tf
-from numpy.core.arrayprint import str_format
 from scipy import stats
 from sklearn import model_selection
-from sklearn.metrics import mean_absolute_percentage_error
+from sklearn.metrics import (
+    mean_absolute_error,
+    mean_absolute_percentage_error,
+    r2_score,
+)
 from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.neural_network import MLPRegressor
 from sklearn.pipeline import Pipeline
@@ -31,12 +32,12 @@ from xgboost import XGBRegressor
 
 
 class execute:
-    def __init__(self, train, test, lags, group="ml", runtype="manual"):
+    def __init__(self, train, test, lags, gear="manual", shift="ml"):
         self.train = train
         self.test = test
         self.lags = lags
-        self.group = group
-        self.runtype = runtype
+        self.gear = gear
+        self.shift = shift
 
     def frm(self):
 
@@ -57,56 +58,123 @@ class execute:
                 .dropna()
                 .reset_index(drop=True)
             )
-            T = (
+
+            test_X = (
                 preprocessing(test2, target, self.lags, True)
                 .run_univariate()
                 .dropna()
                 .reset_index(drop=True)
             )
 
-            y = df2["Y"]
-            X = df2.loc[:, df2.columns != "Y"]
+            test_y = test2[target].tail(len(test_X)).reset_index(drop=True)
+            train_y = df2["Y"]
+            train_X = df2.loc[:, df2.columns != "Y"]
 
-            if self.runtype == "auto":
+            if self.gear == "auto":
 
-                if self.group == "ml":
-                    labelpred = str(target) + "_ml"
-                    df[labelpred] = compare(X, y, T, False).automl()
-
-                elif self.group == "dl":
-                    labelpred = str(target) + "_dl"
-                    df[labelpred] = compare(X, y, T, False).autodl()
-
-                else:
-                    labelpred = str(target) + "_ts"
-                    df[labelpred] = compare(X, y, T, False).autots()
-
-            else:
-
-                if self.group == "ml":
-                    pred_df = compare(X, y, T, True).compare_ml()
-
-                    n_y = str(target) + "_Y"
-                    n_gpr = str(target) + "_GPR"
-                    n_svr = str(target) + "_MLP"
-                    n_xgb = str(target) + "_XGB"
-                    n_mlp = str(target) + "_SVR"
+                if self.shift == "ml":
+                    pred_df, percentage_accurate = compare(
+                        train_X, train_y, test_X, test_y, True
+                    ).automl()
+                    for col in pred_df.df.columns:
+                        if col != "Y":
+                            n_y = str(target) + "_Y"
+                            n_1 = str(target) + "_" + col
+                            last_col = col
 
                     df = pd.concat([df, pred_df], axis=1)
                     df = df.rename(
                         columns={
                             "Y": n_y,
-                            "GPR": n_gpr,
-                            "MLP": n_mlp,
-                            "XGB": n_xgb,
-                            "SVR": n_svr,
+                            last_col: n_1,
+                        }
+                    )
+                    print("% Accuracy: " + str(percentage_accurate))
+
+                elif self.shift == "dl":
+                    pred_df, percentage_accurate = compare(
+                        train_X, train_y, test_X, test_y, False
+                    ).autodl()
+                    for col in pred_df.df.columns:
+                        if col != "Y":
+                            n_y = str(target) + "_Y"
+                            n_1 = str(target) + "_" + col
+                            last_col = col
+
+                    df = pd.concat([df, pred_df], axis=1)
+                    df = df.rename(
+                        columns={
+                            "Y": n_y,
+                            last_col: n_1,
+                        }
+                    )
+                    print("% Accuracy: " + str(percentage_accurate))
+
+                elif self.shift == "ts":
+                    pred_df, percentage_accurate = compare(
+                        train_X, train_y, test_X, test_y, False
+                    ).autots()
+
+                else:
+                    pred_df, percentage_accurate = compare(
+                        train_X, train_y, test_X, test_y, False
+                    ).auto()
+
+            else:
+
+                if self.shift == "ml":
+                    pred_df = compare(
+                        train_X, train_y, test_X, test_y, True
+                    ).compare_ml()
+
+                    n_y = str(target) + "_Y"
+                    n_1 = str(target) + "_GPR"
+                    n_2 = str(target) + "_MLP"
+                    n_3 = str(target) + "_XGB"
+                    n_4 = str(target) + "_SVR"
+
+                    df = pd.concat([df, pred_df], axis=1)
+                    df = df.rename(
+                        columns={
+                            "Y": n_y,
+                            "GPR": n_1,
+                            "MLP": n_2,
+                            "XGB": n_3,
+                            "SVR": n_4,
                         }
                     )
 
-                elif self.group == "dl":
-                    pred_df = compare(X, y, T, True).compare_dl()
+                elif self.shift == "dl":
+                    pred_df = compare(
+                        train_X, train_y, test_X, test_y, True
+                    ).compare_dl()
+
+                    n_y = str(target) + "_Y"
+                    n_1 = str(target) + "_BI_GRU_LTSM"
+                    n_2 = str(target) + "_BI_LSTM"
+                    n_3 = str(target) + "_GRU_LSTM"
+                    n_4 = str(target) + "_LSTM"
+
+                    df = pd.concat([df, pred_df], axis=1)
+                    df = df.rename(
+                        columns={
+                            "Y": n_y,
+                            "GDF-BI_GRU_LTSM": n_1,
+                            "GDF-BI_LSTM": n_2,
+                            "GDF-GRU_LSTM": n_3,
+                            "GDF_LSTM": n_4,
+                        }
+                    )
+
+                elif self.shift == "ts":
+                    pred_df = compare(
+                        train_X, train_y, test_X, test_y, True
+                    ).compare_ts()
+
                 else:
-                    pred_df = compare(X, y, T, True).compare_ts()
+                    pred_df = compare(
+                        train_X, train_y, test_X, test_y, True
+                    ).compare_auto()
 
         return df
 
@@ -155,33 +223,34 @@ class preprocessing:
 
 
 class compare:
-    def __init__(self, X, y, T, charts):
-        self.X = X
-        self.y = y
-        self.T = T
+    def __init__(self, train_X, train_y, test_X, test_y, charts):
+        self.train_X = train_X
+        self.train_y = train_y
+        self.test_X = test_X
+        self.test_y = test_y
         self.charts = charts
 
     def compare_ml(self):
 
         warnings.filterwarnings("ignore")
 
-        m1 = mlmodels(self.X, self.y, False).gpr_model()
-        m2 = mlmodels(self.X, self.y, False).mlp_model()
-        m3 = mlmodels(self.X, self.y, False).xgb_model()
-        m4 = mlmodels(self.X, self.y, False).svr_model()
+        m1 = mlmodels(self.train_X, self.train_y, False).gpr_model()
+        m2 = mlmodels(self.train_X, self.train_y, False).mlp_model()
+        m3 = mlmodels(self.train_X, self.train_y, False).xgb_model()
+        m4 = mlmodels(self.train_X, self.train_y, False).svr_model()
 
         column_names = ["Y", "GPR", "MLP", "XGB", "SVR"]
         df = pd.DataFrame(columns=column_names)
-
-        df["Y"] = self.y
+        df["Y"] = self.test_y
 
         for model, name in (m1, m2, m3, m4):
             df[name] = (
-                pd.DataFrame(model.predict(self.T), columns=[name])
+                pd.DataFrame(model.predict(self.test_X), columns=[name])
                 .head(len(df))
                 .reset_index(drop=True)
             )
 
+        # See Magnitude of Absolute Difference
         if self.charts == True:
             print(" ")
             df.plot(figsize=(12, 12), kind="line")
@@ -205,19 +274,21 @@ class compare:
             "GDF_LSTM",
         ]
         df = pd.DataFrame(columns=column_names)
-
-        df = pd.DataFrame()
-        df["Y"] = self.y
+        df["Y"] = self.test_y
 
         for model, name in (m1, m2, m3, m4):
             df[name] = (
-                pd.DataFrame(model.predict(self.T), columns=[name])
+                pd.DataFrame(model.predict(self.test_X), columns=[name])
                 .head(len(df))
                 .reset_index(drop=True)
             )
 
+        # See Magnitude of Absolute Difference
         if self.charts == True:
-            df.plot.line()
+            print(" ")
+            df.plot(figsize=(12, 12), kind="line")
+            df.plot(figsize=(12, 12), kind="bar", stacked=False)
+            print(" ")
 
         return df
 
@@ -225,15 +296,38 @@ class compare:
         # Todo: Rewrite
         pass
 
-    def autots(self):
-        # Todo: Rewrite
-        pass
-
     def automl(self):
-        # Todo: Rewrite
-        pass
+
+        best_mape = 100
+        df = self.compare_ml()
+
+        for col in df.columns:
+            if col != "Y":
+                mape = mean_absolute_percentage_error(df["Y"], df[col])
+                if mape < best_mape:
+                    best_mape = round(mape, 4)
+                    best_model = col
+
+        # See Magnitude of Absolute Difference
+        if self.charts == True:
+            print(" ")
+            df.plot(figsize=(12, 12), kind="line")
+            df.plot(figsize=(12, 12), kind="bar", stacked=False)
+            print("Selected ML Model: " + col + " , MAPE: " + str(best_mape))
+            print(" ")
+
+            if best_mape > 1:
+                percentage_accurate = 0
+            else:
+                percentage_accurate = (1 - best_mape) * 100
+
+        return df[best_model], percentage_accurate
 
     def autodl(self):
+        # Todo: Rewrite
+        pass
+
+    def autots(self):
         # Todo: Rewrite
         pass
 
