@@ -62,7 +62,8 @@ class execute:
             X = df2.loc[:, df2.columns != "Y"]
 
             label = target + "_test"
-            df[label] = T
+            size = len(T)
+            df[label] = y
 
             if self.runtype == "auto":
 
@@ -82,13 +83,17 @@ class execute:
 
                 if self.group == "ml":
                     labelpred = target + "_ml"
-                    df = compare(X, y, T, True).compare_ml()
+                    pred_df = compare(X, y, T, True).compare_ml()
+                    df[labelpred] = pred_df.head(size)
                 elif self.group == "dl":
                     labelpred = target + "_dl"
-                    df[labelpred] = compare(X, y, T, True).compare_dl()
+                    pred_df = compare(X, y, T, True).compare_dl()
+                    df[labelpred] = pred_df.head(size)
+
                 else:
                     labelpred = target + "_ts"
-                    df[labelpred] = compare(X, y, T, True).compare_ts()
+                    pred_df = compare(X, y, T, True).compare_ts()
+                    df[labelpred] = pred_df.head(size)
 
         return df
 
