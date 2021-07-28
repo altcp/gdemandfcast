@@ -2,8 +2,8 @@ import streamlit as st
 
 from gdemandfcast import ai as gdf
 
-st.title("Demand Forecasting")
-st.subheader("Proof of Concept Demostration by Zaident")
+st.title("Time Series Forecasting")
+st.subheader("Proof of Concept Demostration")
 st.markdown("***")
 st.markdown("***")
 gear = st.radio("Model Selection::", ("Compare", "Auto"))
