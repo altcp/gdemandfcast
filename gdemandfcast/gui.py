@@ -36,10 +36,11 @@ else:
 
     submit = st.button("Run Demo")
     if submit:
+
         st.write("Demostration Based on Seen Data.")
         train = "./gdemandfcast/data/Train Data.xlsx"
         test = "./gdemandfcast/data/Test Data.xlsx"
-        df = gdf.execute(train, test, 3, "auto", "ml", "fast", False).frm()
+        df = gdf.execute(train, test, lags, gear, shift, "fast", False).frm()
 
         if shift == "auto":
             a = 1
