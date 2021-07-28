@@ -15,7 +15,14 @@ import scipy.stats as sps
 import tensorflow as tf
 from sklearn import model_selection
 from sklearn.gaussian_process import GaussianProcessRegressor
-from sklearn.gaussian_process.kernels import RBF, DotProduct
+from sklearn.gaussian_process.kernels import (
+    RBF,
+    ConstantKernel,
+    DotProduct,
+    ExpSineSquared,
+    RationalQuadratic,
+    WhiteKernel,
+)
 from sklearn.metrics import (
     mean_absolute_error,
     mean_absolute_percentage_error,
@@ -390,7 +397,7 @@ class mlmodels:
             pipe = Pipeline(
                 steps=[
                     ("T", PowerTransformer(method="yeo-johnson")),
-                    ("N", MinMaxScaler()),
+                    ("N", MinMaxScaler((1, 100))),
                     ("M", GaussianProcessRegressor()),
                 ]
             )
@@ -398,26 +405,35 @@ class mlmodels:
             pipe = Pipeline(
                 steps=[
                     ("S", RobustScaler()),
-                    ("N", MinMaxScaler()),
+                    ("N", MinMaxScaler((1, 100))),
                     ("T", PowerTransformer(method="box-cox")),
                     ("M", GaussianProcessRegressor()),
                 ]
             )
 
         if self.speed == "fast":
-            param_grid = {"M__alpha": [0.03, 0.05, 0.07]}
-
+            param_grid = {
+                "M__n_restarts_optimizer": [0, 2, 4, 8],
+                "M__alpha": [1e-10, 1e7, 1e-5, 1e-3],
+            }
         else:
-            param_grid = [
-                {
-                    "M__alpha": [0.01, 0.03, 0.05, 0.07],
-                    "M__kernel": [RBF(i) for i in np.logspace(-2, 1, 2)],
-                },
-                {
-                    "M__alpha": [0.01, 0.03, 0.05, 0.07],
-                    "M__kernel": [DotProduct(i) for i in np.logspace(-2, 1, 2)],
-                },
-            ]
+            ker_rbf = ConstantKernel(1.0, constant_value="fixed") * RBF(
+                1.0, length_scale_bounds="fixed"
+            )
+            ker_rq = ConstantKernel(
+                1.0, constant_value_bounds="fixed"
+            ) * RationalQuadratic(alph=0.1, length_scale=1)
+            ker_ess = ConstantKernel(
+                1.0, constant_value_bounds="fixed"
+            ) * ExpSineSquared(1.0, 5.0, periodicity_bounds=(1e-2, 1e1))
+            ker_wk = DotProduct() + WhiteKernel()
+            kernel_list = [ker_rbf, ker_rq, ker_ess, ker_wk]
+
+            param_grid = {
+                "M__kernel": kernel_list,
+                "M__n_restarts_optimizer": [0, 2, 4, 8],
+                "M__alpha": [1e-10, 1e7, 1e-5, 1e-3],
+            }
 
         search = GridSearchCV(
             pipe, param_grid, cv=5, scoring=self.scoring, n_jobs=self.jobs
@@ -443,7 +459,7 @@ class mlmodels:
             pipe = Pipeline(
                 steps=[
                     ("T", PowerTransformer(method="yeo-johnson")),
-                    ("N", MinMaxScaler()),
+                    ("N", MinMaxScaler((1, 100))),
                     ("M", MLPRegressor()),
                 ]
             )
@@ -451,7 +467,7 @@ class mlmodels:
             pipe = Pipeline(
                 steps=[
                     ("S", RobustScaler()),
-                    ("N", MinMaxScaler()),
+                    ("N", MinMaxScaler((1, 100))),
                     ("T", PowerTransformer(method="box-cox")),
                     ("M", MLPRegressor()),
                 ]
@@ -500,7 +516,7 @@ class mlmodels:
             pipe = Pipeline(
                 steps=[
                     ("T", PowerTransformer(method="yeo-johnson")),
-                    ("N", MinMaxScaler()),
+                    ("N", MinMaxScaler((1, 100))),
                     ("M", XGBRegressor(objective="reg:squarederror")),
                 ]
             )
@@ -508,7 +524,7 @@ class mlmodels:
             pipe = Pipeline(
                 steps=[
                     ("S", RobustScaler()),
-                    ("N", MinMaxScaler()),
+                    ("N", MinMaxScaler((1, 100))),
                     ("T", PowerTransformer(method="box-cox")),
                     ("M", XGBRegressor(objective="reg:squarederror")),
                 ]
@@ -549,7 +565,7 @@ class mlmodels:
             pipe = Pipeline(
                 steps=[
                     ("T", PowerTransformer(method="yeo-johnson")),
-                    ("N", MinMaxScaler()),
+                    ("N", MinMaxScaler((1, 100))),
                     ("M", SVR()),
                 ]
             )
@@ -557,7 +573,7 @@ class mlmodels:
             pipe = Pipeline(
                 steps=[
                     ("S", RobustScaler()),
-                    ("N", MinMaxScaler()),
+                    ("N", MinMaxScaler((1, 100))),
                     ("T", PowerTransformer(method="box-cox")),
                     ("M", SVR()),
                 ]
