@@ -74,53 +74,24 @@ class execute:
 
             if self.gear == "auto":
 
-                if self.shift == "ml":
-                    pred_df, percentage_accurate = compare(
-                        train_X, train_y, test_X, test_y, True
-                    ).automl()
-                    for col in pred_df.columns:
-                        if col != "Y":
-                            n_y = str(target) + "_Y"
-                            n_1 = str(target) + "_" + col
-                            last_col = col
+                pred_df, percentage_accurate = automate(
+                    train_X, train_y, test_X, test_y, self.shift
+                ).run()
 
-                    df = pd.concat([df, pred_df], axis=1)
-                    df = df.rename(
-                        columns={
-                            "Y": n_y,
-                            last_col: n_1,
-                        }
-                    )
-                    print("% Accurate: " + str(percentage_accurate))
+                for col in pred_df.columns:
+                    if col != "Y":
+                        n_y = str(target) + "_Y"
+                        n_1 = str(target) + "_" + col
+                        last_col = col
 
-                elif self.shift == "dl":
-                    pred_df, percentage_accurate = compare(
-                        train_X, train_y, test_X, test_y, False
-                    ).autodl()
-                    for col in pred_df.columns:
-                        if col != "Y":
-                            n_y = str(target) + "_Y"
-                            n_1 = str(target) + "_" + col
-                            last_col = col
-
-                    df = pd.concat([df, pred_df], axis=1)
-                    df = df.rename(
-                        columns={
-                            "Y": n_y,
-                            last_col: n_1,
-                        }
-                    )
-                    print("% Accurate: " + str(percentage_accurate))
-
-                elif self.shift == "ts":
-                    pred_df, percentage_accurate = compare(
-                        train_X, train_y, test_X, test_y, False
-                    ).autots()
-
-                else:
-                    pred_df, percentage_accurate = compare(
-                        train_X, train_y, test_X, test_y, False
-                    ).auto()
+                df = pd.concat([df, pred_df], axis=1)
+                df = df.rename(
+                    columns={
+                        "Y": n_y,
+                        last_col: n_1,
+                    }
+                )
+                print("% Accurate: " + str(percentage_accurate))
 
             else:
 
@@ -231,9 +202,6 @@ class compare:
         self.test_X = test_X
         self.test_y = test_y
         self.charts = charts
-        self.mldf = self.automl()
-        self.dldf = self.autodl()
-        self.tsdf = self.autots()
 
     def compare_ml(self):
 
@@ -299,11 +267,35 @@ class compare:
         # Todo: Rewrite
         pass
 
-    def automl(self):
+    def compare_auto(self):
+        # Todo: Rewrite
+        pass
+
+
+class automate:
+    def __init__(self, train_X, train_y, test_X, test_y, shift):
+        self.train_X = train_X
+        self.train_y = train_y
+        self.test_X = test_X
+        self.test_y = test_y
+        self.shift = shift
+
+    def run(self):
 
         best_mape = 100
-        best_model = "XGB"
-        df = self.mldf
+
+        if self.shift == "ml":
+            best_model = "XGB"
+            df = self.compare_ml()
+        elif self.shift == "dl":
+            best_model = "GDF-LSTM"
+            df = self.compare_dl()
+        elif self.shit == "ts":
+            best_model = "TS-ES-RNN"
+            df = self.compare_ts()
+        else:
+            best_model = "TS-ES-RNN"
+            df = self.compare_auto()
 
         for col in df.columns:
             if col != "Y":
@@ -326,14 +318,6 @@ class compare:
                 percentage_accurate = (1 - best_mape) * 100
 
         return df[["Y", best_model]], percentage_accurate
-
-    def autodl(self):
-        # Todo: Rewrite
-        pass
-
-    def autots(self):
-        # Todo: Rewrite
-        pass
 
 
 # %%
