@@ -11,8 +11,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import pmdarima as pm
+import scipy.stats as sps
 import tensorflow as tf
-from scipy import stats
 from sklearn import model_selection
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import RBF, DotProduct
@@ -33,12 +33,15 @@ from xgboost import XGBRegressor
 
 
 class execute:
-    def __init__(self, train, test, lags, gear="manual", shift="ml", charts=True):
+    def __init__(
+        self, train, test, lags, gear="manual", shift="ml", speed="fast", charts=True
+    ):
         self.train = train
         self.test = test
         self.lags = lags
         self.gear = gear
         self.shift = shift
+        self.speed = speed
         self.charts = charts
 
     def frm(self):
@@ -75,7 +78,13 @@ class execute:
             if self.gear == "auto":
 
                 pred_df, percentage_accurate = automate(
-                    train_X, train_y, test_X, test_y, self.shift, self.charts
+                    train_X,
+                    train_y,
+                    test_X,
+                    test_y,
+                    self.shift,
+                    self.speed,
+                    self.charts,
                 ).run()
 
                 for col in pred_df.columns:
@@ -97,7 +106,7 @@ class execute:
 
                 if self.shift == "ml":
                     pred_df = compare(
-                        train_X, train_y, test_X, test_y, self.charts
+                        train_X, train_y, test_X, test_y, self.speed, self.charts
                     ).compare_ml()
 
                     n_y = str(target) + "_Y"
@@ -146,7 +155,7 @@ class execute:
 
                 else:
                     pred_df = compare(
-                        train_X, train_y, test_X, test_y, self.charts
+                        train_X, train_y, test_X, test_y, self.speed, self.charts
                     ).compare_auto()
 
         return df
@@ -192,25 +201,47 @@ class preprocessing:
         return df1
 
 
+class distribution:
+    def __init__(self, y):
+        self.y = y
+
+    def aware(self):
+        data = []
+        data = self.y
+        shapiro_test = sps.shapiro(data)
+        lilliefors_test = sps.diagnostic.lilliefors(data)
+
+        if shapiro_test.pvalue > 0.05:
+            if lilliefors_test.pvalue < 0.05:
+                distribution = "alt"
+            else:
+                distribution = "norm"
+        else:
+            distribution = "alt"
+
+        return distribution
+
+
 # %%
 
 
 class compare:
-    def __init__(self, train_X, train_y, test_X, test_y, charts):
+    def __init__(self, train_X, train_y, test_X, test_y, speed, charts):
         self.train_X = train_X
         self.train_y = train_y
         self.test_X = test_X
         self.test_y = test_y
+        self.speed = speed
         self.charts = charts
 
     def compare_ml(self):
 
         warnings.filterwarnings("ignore")
 
-        m1 = mlmodels(self.train_X, self.train_y, False).gpr_model()
-        m2 = mlmodels(self.train_X, self.train_y, False).mlp_model()
-        m3 = mlmodels(self.train_X, self.train_y, False).xgb_model()
-        m4 = mlmodels(self.train_X, self.train_y, False).svr_model()
+        m1 = mlmodels(self.train_X, self.train_y, self.speed, False).gpr_model()
+        m2 = mlmodels(self.train_X, self.train_y, self.speed, False).mlp_model()
+        m3 = mlmodels(self.train_X, self.train_y, self.speed, False).xgb_model()
+        m4 = mlmodels(self.train_X, self.train_y, self.speed, False).svr_model()
 
         column_names = ["Y", "GPR", "MLP", "XGB", "SVR"]
         df = pd.DataFrame(columns=column_names)
@@ -273,12 +304,13 @@ class compare:
 
 
 class automate:
-    def __init__(self, train_X, train_y, test_X, test_y, shift, charts):
+    def __init__(self, train_X, train_y, test_X, test_y, shift, speed, charts):
         self.train_X = train_X
         self.train_y = train_y
         self.test_X = test_X
         self.test_y = test_y
         self.shift = shift
+        self.speed = speed
         self.charts = charts
 
     def run(self):
@@ -288,22 +320,22 @@ class automate:
         if self.shift == "ml":
             best_model = "XGB"
             df = compare(
-                self.train_X, self.train_y, self.test_X, self.test_y, False
+                self.train_X, self.train_y, self.test_X, self.test_y, self.speed, False
             ).compare_ml()
         elif self.shift == "dl":
             best_model = "GDF-LSTM"
             df = compare(
-                self.train_X, self.train_y, self.test_X, self.test_y, False
+                self.train_X, self.train_y, self.test_X, self.test_y, self.speed, False
             ).compare_dl()
         elif self.shit == "ts":
             best_model = "TS-ES-RNN"
             df = compare(
-                self.train_X, self.train_y, self.test_X, self.test_y, False
+                self.train_X, self.train_y, self.test_X, self.test_y, self.speed, False
             ).compare_ts()
         else:
             best_model = "TS-ES-RNN"
             df = compare(
-                self.train_X, self.train_y, self.test_X, self.test_y, False
+                self.train_X, self.train_y, self.test_X, self.test_y, self.speed, False
             ).compare_auto()
 
         for col in df.columns:
@@ -340,36 +372,20 @@ class automate:
 
 
 class mlmodels:
-    def __init__(self, X, y, validate, speed="fast"):
+    def __init__(self, X, y, speed, validate):
         self.x = X
         self.y = y
-        self.validate = validate
         self.speed = speed
+        self.validate = validate
 
         self.jobs = -1
         self.scoring = "r2"
-        self.distribution = self.aware()
-
-    def aware(self):
-        data = []
-        data = self.y
-        shapiro_test = stats.shapiro(data)
-        lilliefors_test = stats.diagnostic.lilliefors(data)
-
-        if shapiro_test.pvalue > 0.05:
-            if lilliefors_test.pvalue < 0.05:
-                distribution = "alt"
-            else:
-                distribution = "norm"
-        else:
-            distribution = "alt"
-
-        return distribution
 
     def gpr_model(self):
 
         gc.collect()
-        if self.distribution == "norm":
+        dist = distribution(self.y).aware()
+        if dist == "norm":
             pipe = Pipeline(
                 steps=[
                     ("T", PowerTransformer(method="yeo-johnson")),
@@ -421,8 +437,8 @@ class mlmodels:
 
     def mlp_model(self):
 
-        gc.collect()
-        if self.distribution == "mean":
+        dist = distribution(self.y).aware()
+        if dist == "norm":
             pipe = Pipeline(
                 steps=[
                     ("T", PowerTransformer(method="yeo-johnson")),
@@ -478,8 +494,8 @@ class mlmodels:
 
     def xgb_model(self):
 
-        gc.collect()
-        if self.distribution == "mean":
+        dist = distribution(self.y).aware()
+        if dist == "norm":
             pipe = Pipeline(
                 steps=[
                     ("T", PowerTransformer(method="yeo-johnson")),
@@ -527,8 +543,8 @@ class mlmodels:
 
     def svr_model(self):
 
-        gc.collect()
-        if self.distribution == "mean":
+        dist = distribution(self.y).aware()
+        if dist == "norm":
             pipe = Pipeline(
                 steps=[
                     ("T", PowerTransformer(method="yeo-johnson")),
@@ -798,6 +814,8 @@ class dlmodels:
             epochs=30,
             batch_size=32,
             verbose=0,
+            # Set to True if GPU or TPU
+            use_multiprocessing=False,
         )
         scores = model.evaluate(test_x, test_y, verbose=0)
 
