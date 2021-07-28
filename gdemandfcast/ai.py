@@ -11,10 +11,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import pmdarima as pm
-import sklearn.gaussian_process as gp
 import tensorflow as tf
 from scipy import stats
 from sklearn import model_selection
+from sklearn.gaussian_process import GaussianProcessRegressor
+from sklearn.gaussian_process.kernels import RBF, DotProduct
 from sklearn.metrics import (
     mean_absolute_error,
     mean_absolute_percentage_error,
@@ -23,7 +24,7 @@ from sklearn.metrics import (
 from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.neural_network import MLPRegressor
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import MinMaxScaler, RobustScaler, StandardScaler
+from sklearn.preprocessing import MinMaxScaler, PowerTransformer, RobustScaler
 from sklearn.svm import SVR
 from tensorflow import keras
 from xgboost import XGBRegressor
@@ -229,6 +230,9 @@ class compare:
         self.test_X = test_X
         self.test_y = test_y
         self.charts = charts
+        self.mldf = self.automl
+        self.dldf = self.autodl
+        self.tsdf = self.autots
 
     def compare_ml(self):
 
@@ -298,8 +302,7 @@ class compare:
 
         best_mape = 100
         best_model = "XGB"
-        df = self.compare_ml()
-        print(df)
+        df = self.mldf
 
         for col in df.columns:
             if col != "Y":
@@ -336,42 +339,42 @@ class compare:
 
 
 class mlmodels:
-    def __init__(self, X, y, validate, aware="mean", speed="fast"):
+    def __init__(self, X, y, validate, speed="fast"):
         self.x = X
         self.y = y
-        self.aware = aware
-        self.speed = speed
         self.validate = validate
+        self.speed = speed
 
         self.jobs = -1
-        self.seed = 232
         self.scoring = "r2"
+        self.distribution = self.aware()
 
     def gpr_model(self):
 
         gc.collect()
-        if self.aware == "mean":
+        if self.distribution == "mean":
             pipe = Pipeline(
                 steps=[
-                    ("SCAL", StandardScaler()),
-                    ("NORM", MinMaxScaler()),
-                    ("GPR", gp.GaussianProcessRegressor()),
+                    ("T", PowerTransformer(method="yeo-johnson")),
+                    ("N", MinMaxScaler()),
+                    ("M", GaussianProcessRegressor()),
                 ]
             )
         else:
             pipe = Pipeline(
                 steps=[
-                    ("SCAL", RobustScaler()),
-                    ("NORM", MinMaxScaler()),
-                    ("GPR", gp.GaussianProcessRegressor()),
+                    ("S", RobustScaler()),
+                    ("N", MinMaxScaler()),
+                    ("T", PowerTransformer(method="box-cox")),
+                    ("M", GaussianProcessRegressor()),
                 ]
             )
 
         if self.speed == "fast":
-            param_grid = {"GPR__alpha": [0.03, 0.05, 0.07]}
+            param_grid = {"M__alpha": [0.03, 0.05, 0.07]}
 
         else:
-            param_grid = {"GPR__alpha": [0.03, 0.05, 0.07]}
+            param_grid = {"M__alpha": [0.01, 0.03, 0.05, 0.07]}
 
         search = GridSearchCV(
             pipe, param_grid, cv=5, scoring=self.scoring, n_jobs=self.jobs
@@ -393,43 +396,41 @@ class mlmodels:
     def mlp_model(self):
 
         gc.collect()
-        if self.aware == "mean":
+        if self.distribution == "mean":
             pipe = Pipeline(
                 steps=[
-                    ("SCAL", StandardScaler()),
-                    ("NORM", MinMaxScaler()),
-                    ("MLP", MLPRegressor()),
+                    ("T", PowerTransformer(method="yeo-johnson")),
+                    ("N", MinMaxScaler()),
+                    ("M", MLPRegressor()),
                 ]
             )
         else:
             pipe = Pipeline(
                 steps=[
-                    ("SCAL", RobustScaler()),
-                    ("NORM", MinMaxScaler()),
-                    ("MLP", MLPRegressor()),
+                    ("S", RobustScaler()),
+                    ("N", MinMaxScaler()),
+                    ("T", PowerTransformer(method="box-cox")),
+                    ("M", MLPRegressor()),
                 ]
             )
 
         if self.speed == "fast":
             param_grid = {
-                "MLP__hidden_layer_sizes": [(12, 4), (10,)],
-                "MLP__activation": ["tanh", "relu"],
-                "MLP__solver": ["sgd", "adam"],
-                "MLP__alpha": [0.001, 0.005, 0.01],
-                "MLP__learning_rate": ["constant", "adaptive"],
-                "MLP__early_stopping": [True],
-                "MLP__random_state": [self.seed],
+                "M__hidden_layer_sizes": [(12, 4), (10,)],
+                "M__activation": ["relu"],
+                "M__solver": ["adam"],
+                "M__alpha": [0.001, 0.005, 0.01],
+                "M__learning_rate": ["adaptive"],
+                "M__early_stopping": [True],
             }
-
         else:
             param_grid = {
-                "MLP__hidden_layer_sizes": [(12, 4), (10,)],
-                "MLP__activation": ["tanh", "relu"],
-                "MLP__solver": ["sgd", "adam"],
-                "MLP__alpha": [0.001, 0.005, 0.01],
-                "MLP__learning_rate": ["constant", "adaptive"],
-                "MLP__early_stopping": [True],
-                "MLP__random_state": [self.seed],
+                "M__hidden_layer_sizes": [(3, 3, 3), (12, 4), (10,)],
+                "M__activation": ["tanh", "relu"],
+                "M__solver": ["sgd", "adam"],
+                "M__alpha": [0.001, 0.005, 0.01],
+                "M__learning_rate": ["constant", "adaptive"],
+                "M__early_stopping": [True],
             }
 
         search = GridSearchCV(
@@ -452,31 +453,35 @@ class mlmodels:
     def xgb_model(self):
 
         gc.collect()
-        if self.aware == "mean":
+        if self.distribution == "mean":
             pipe = Pipeline(
                 steps=[
-                    ("SCAL", StandardScaler()),
-                    ("NORM", MinMaxScaler()),
-                    ("XGB", XGBRegressor(objective="reg:squarederror")),
+                    ("T", PowerTransformer(method="yeo-johnson")),
+                    ("N", MinMaxScaler()),
+                    ("M", XGBRegressor(objective="reg:squarederror")),
                 ]
             )
         else:
             pipe = Pipeline(
                 steps=[
-                    ("SCAL", RobustScaler()),
-                    ("NORM", MinMaxScaler()),
-                    ("XGB", XGBRegressor(objective="reg:squarederror")),
+                    ("S", RobustScaler()),
+                    ("N", MinMaxScaler()),
+                    ("T", PowerTransformer(method="box-cox")),
+                    ("M", XGBRegressor(objective="reg:squarederror")),
                 ]
             )
 
         if self.speed == "fast":
             param_grid = {
-                "XGB__max_depth": [3, 7],
+                "M__C": [1, 3, 5, 7],
+                "M__epsilon": [0.001, 0.003, 0.005, 0.01],
             }
-
         else:
             param_grid = {
-                "XGB__max_depth": [3, 7],
+                "M__kernel": ["rbf", "poly"],
+                "M__Degree": [0, 1, 2, 3],
+                "M__C": [1, 3, 5, 7],
+                "M__epsilon": [0.001, 0.003, 0.005, 0.01],
             }
 
         search = GridSearchCV(
@@ -499,12 +504,36 @@ class mlmodels:
     def svr_model(self):
 
         gc.collect()
-        pipe = Pipeline(steps=[("STD", StandardScaler()), ("SVR", SVR())])
-        param_grid = {
-            "SVR__kernel": ["rbf", "poly"],
-            "SVR__C": [1, 50, 100],
-            "SVR__epsilon": [0.0001, 0.0005, 0.001],
-        }
+        if self.distribution == "mean":
+            pipe = Pipeline(
+                steps=[
+                    ("T", PowerTransformer(method="yeo-johnson")),
+                    ("N", MinMaxScaler()),
+                    ("M", SVR()),
+                ]
+            )
+        else:
+            pipe = Pipeline(
+                steps=[
+                    ("S", RobustScaler()),
+                    ("N", MinMaxScaler()),
+                    ("T", PowerTransformer(method="box-cox")),
+                    ("M", SVR()),
+                ]
+            )
+
+        if self.speed == "fast":
+            param_grid = {
+                "M__C": [1, 3, 5, 7],
+                "M__epsilon": [0.001, 0.003, 0.005, 0.01],
+            }
+        else:
+            param_grid = {
+                "M__kernel": ["rbf", "poly"],
+                "M__Degree": [0, 1, 2, 3],
+                "M__C": [1, 3, 5, 7],
+                "M__epsilon": [0.001, 0.003, 0.005, 0.01],
+            }
 
         search = GridSearchCV(
             pipe, param_grid, cv=5, scoring=self.scoring, n_jobs=self.jobs
