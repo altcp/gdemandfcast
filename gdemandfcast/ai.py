@@ -904,8 +904,8 @@ class ModelTuner(kt.Tuner):
 
                 data = []
                 data = real_y - pred_y
-                shapiro_test = stats.shapiro(data)
-                lilliefors_test = stats.diagnostic.lilliefors(data)
+                shapiro_test = sps.shapiro(data)
+                lilliefors_test = sps.diagnostic.lilliefors(data)
 
                 dev = []
                 dev = abs(real_y - pred_y)
