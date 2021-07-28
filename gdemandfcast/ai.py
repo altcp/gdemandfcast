@@ -13,7 +13,6 @@ import pandas as pd
 import pmdarima as pm
 import tensorflow as tf
 from scipy import stats
-from scipy.stats import distributions
 from sklearn import model_selection
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import RBF, DotProduct
@@ -34,12 +33,13 @@ from xgboost import XGBRegressor
 
 
 class execute:
-    def __init__(self, train, test, lags, gear="manual", shift="ml"):
+    def __init__(self, train, test, lags, gear="manual", shift="ml", charts=True):
         self.train = train
         self.test = test
         self.lags = lags
         self.gear = gear
         self.shift = shift
+        self.charts = charts
 
     def frm(self):
 
@@ -75,7 +75,7 @@ class execute:
             if self.gear == "auto":
 
                 pred_df, percentage_accurate = automate(
-                    train_X, train_y, test_X, test_y, self.shift
+                    train_X, train_y, test_X, test_y, self.shift, self.charts
                 ).run()
 
                 for col in pred_df.columns:
@@ -97,7 +97,7 @@ class execute:
 
                 if self.shift == "ml":
                     pred_df = compare(
-                        train_X, train_y, test_X, test_y, True
+                        train_X, train_y, test_X, test_y, self.charts
                     ).compare_ml()
 
                     n_y = str(target) + "_Y"
@@ -119,7 +119,7 @@ class execute:
 
                 elif self.shift == "dl":
                     pred_df = compare(
-                        train_X, train_y, test_X, test_y, True
+                        train_X, train_y, test_X, test_y, self.charts
                     ).compare_dl()
 
                     n_y = str(target) + "_Y"
@@ -141,12 +141,12 @@ class execute:
 
                 elif self.shift == "ts":
                     pred_df = compare(
-                        train_X, train_y, test_X, test_y, True
+                        train_X, train_y, test_X, test_y, self.charts
                     ).compare_ts()
 
                 else:
                     pred_df = compare(
-                        train_X, train_y, test_X, test_y, True
+                        train_X, train_y, test_X, test_y, self.charts
                     ).compare_auto()
 
         return df
@@ -273,12 +273,13 @@ class compare:
 
 
 class automate:
-    def __init__(self, train_X, train_y, test_X, test_y, shift):
+    def __init__(self, train_X, train_y, test_X, test_y, shift, charts):
         self.train_X = train_X
         self.train_y = train_y
         self.test_X = test_X
         self.test_y = test_y
         self.shift = shift
+        self.charts = charts
 
     def run(self):
 
@@ -286,16 +287,24 @@ class automate:
 
         if self.shift == "ml":
             best_model = "XGB"
-            df = self.compare_ml()
+            df = compare(
+                self.train_X, self.train_y, self.test_X, self.test_y, False
+            ).compare_ml()
         elif self.shift == "dl":
             best_model = "GDF-LSTM"
-            df = self.compare_dl()
+            df = compare(
+                self.train_X, self.train_y, self.test_X, self.test_y, False
+            ).compare_dl()
         elif self.shit == "ts":
             best_model = "TS-ES-RNN"
-            df = self.compare_ts()
+            df = compare(
+                self.train_X, self.train_y, self.test_X, self.test_y, False
+            ).compare_ts()
         else:
             best_model = "TS-ES-RNN"
-            df = self.compare_auto()
+            df = compare(
+                self.train_X, self.train_y, self.test_X, self.test_y, False
+            ).compare_auto()
 
         for col in df.columns:
             if col != "Y":
@@ -309,7 +318,14 @@ class automate:
             print(" ")
             df.plot(figsize=(15, 10), kind="line")
             df.plot(figsize=(15, 10), kind="bar", stacked=False)
-            print("Selected ML Model: " + col + " , MAPE: " + str(best_mape))
+            print(
+                "Selected"
+                + self.shift.upper()
+                + "Model: "
+                + col
+                + " , MAPE: "
+                + str(best_mape)
+            )
             print(" ")
 
             if best_mape > 1:
