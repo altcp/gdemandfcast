@@ -17,12 +17,14 @@ def create():
     train = st.file_uploader("Upload Training Data: ")
     test = st.file_uploader("Uploat Testing Data: ")
     st.markdown("***")
+    gear = gear.lower()
+    shift = shift.lower()
 
     if train is not None and test is not None:
 
-        df = execute(
-            train, test, lags, gear.lower(), shift.lower(), speed="fast", charts=False
-        ).frm()
+        gear = gear.lower()
+        shift = shift.lower()
+        df = execute(train, test, lags, gear, shift, "fast", False).frm()
 
         if shift == "auto":
             a = 1
@@ -38,15 +40,7 @@ def create():
         submit = st.button("Run Demo")
         if submit:
             st.write("Demostration Based on Seen Data.")
-            df = execute(
-                train,
-                test,
-                lags,
-                gear.lower(),
-                shift.lower(),
-                speed="fast",
-                charts=False,
-            ).frm()
+            df = execute(train, test, lags, gear, shift, "fast", False).frm()
 
             if shift == "auto":
                 a = 1

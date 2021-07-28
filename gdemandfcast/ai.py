@@ -41,9 +41,7 @@ from xgboost import XGBRegressor
 
 
 class execute:
-    def __init__(
-        self, train, test, lags, gear="manual", shift="ml", speed="fast", charts=True
-    ):
+    def __init__(self, train, test, lags, gear, shift, speed, charts):
         self.train = train
         self.test = test
         self.lags = lags
