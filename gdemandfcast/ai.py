@@ -374,7 +374,16 @@ class mlmodels:
             param_grid = {"M__alpha": [0.03, 0.05, 0.07]}
 
         else:
-            param_grid = {"M__alpha": [0.01, 0.03, 0.05, 0.07]}
+            param_grid = [
+                {
+                    "M__alpha": [0.01, 0.03, 0.05, 0.07],
+                    "M__kernel": [RBF(i) for i in np.logspace(-2, 1, 2)],
+                },
+                {
+                    "M__alpha": [0.01, 0.03, 0.05, 0.07],
+                    "M__kernel": [DotProduct(i) for i in np.logspace(-2, 1, 2)],
+                },
+            ]
 
         search = GridSearchCV(
             pipe, param_grid, cv=5, scoring=self.scoring, n_jobs=self.jobs
