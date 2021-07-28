@@ -26,6 +26,7 @@ from sklearn.neural_network import MLPRegressor
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import MinMaxScaler, PowerTransformer, RobustScaler
 from sklearn.svm import SVR
+from statsmodels.stats import diagnostic
 from tensorflow import keras
 from xgboost import XGBRegressor
 
@@ -209,7 +210,7 @@ class distribution:
         data = []
         data = self.y
         shapiro_test = sps.shapiro(data)
-        lilliefors_test = sps.diagnostic.lilliefors(data)
+        lilliefors_test = diagnostic.lilliefors(data)
 
         if shapiro_test.pvalue > 0.05:
             if lilliefors_test.pvalue < 0.05:
@@ -905,7 +906,7 @@ class ModelTuner(kt.Tuner):
                 data = []
                 data = real_y - pred_y
                 shapiro_test = sps.shapiro(data)
-                lilliefors_test = sps.diagnostic.lilliefors(data)
+                lilliefors_test = diagnostic.lilliefors(data)
 
                 dev = []
                 dev = abs(real_y - pred_y)
