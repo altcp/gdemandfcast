@@ -413,7 +413,7 @@ typing-extensions = {version = ">=3.7.4.3", markers = "python_version < \"3.10\"
 
 [[package]]
 name = "google-auth"
-version = "1.33.1"
+version = "1.34.0"
 description = "Google Authentication Library"
 category = "main"
 optional = false
@@ -1596,7 +1596,7 @@ pbr = ">=2.0.0,<2.1.0 || >2.1.0"
 
 [[package]]
 name = "streamlit"
-version = "0.85.0"
+version = "0.85.1"
 description = "The fastest way to build data apps in Python"
 category = "main"
 optional = false
@@ -2258,8 +2258,8 @@ gitpython = [
     {file = "GitPython-3.1.19.tar.gz", hash = "sha256:18f4039b96b5567bc4745eb851737ce456a2d499cecd71e84f5c0950e92d0e53"},
 ]
 google-auth = [
-    {file = "google-auth-1.33.1.tar.gz", hash = "sha256:7665c04f2df13cc938dc7d9066cddb1f8af62b038bc8b2306848c1b23121865f"},
-    {file = "google_auth-1.33.1-py2.py3-none-any.whl", hash = "sha256:036dd68c1e8baa422b6b61619b8e02793da2e20f55e69514612de6c080468755"},
+    {file = "google-auth-1.34.0.tar.gz", hash = "sha256:f1094088bae046fb06f3d1a3d7df14717e8d959e9105b79c57725bd4e17597a2"},
+    {file = "google_auth-1.34.0-py2.py3-none-any.whl", hash = "sha256:bd6aa5916970a823e76ffb3d5c3ad3f0bedafca0a7fa53bc15149ab21cb71e05"},
 ]
 google-auth-oauthlib = [
     {file = "google-auth-oauthlib-0.4.4.tar.gz", hash = "sha256:09832c6e75032f93818edf1affe4746121d640c625a5bef9b5c96af676e98eee"},
@@ -3176,8 +3176,8 @@ stevedore = [
     {file = "stevedore-3.3.0.tar.gz", hash = "sha256:3a5bbd0652bf552748871eaa73a4a8dc2899786bc497a2aa1fcb4dcdb0debeee"},
 ]
 streamlit = [
-    {file = "streamlit-0.85.0-py2.py3-none-any.whl", hash = "sha256:9e126d46b2e806422cba87e4ea9f0d2f9a3a61d20d45c2c97aff1f2f228c2220"},
-    {file = "streamlit-0.85.0.tar.gz", hash = "sha256:8647248747f50e8567218c78ecab94b54c2a092977c74b90c33a1b68e7fe2090"},
+    {file = "streamlit-0.85.1-py2.py3-none-any.whl", hash = "sha256:a39832915624641482878558bf366be99d40fd460167e24c204e4c12f64fcf4f"},
+    {file = "streamlit-0.85.1.tar.gz", hash = "sha256:b94b1ab701fee40826927834a080e35e16ef507d5b421132863a2e4c9d850429"},
 ]
 tensorboard = [
     {file = "tensorboard-2.5.0-py3-none-any.whl", hash = "sha256:e167460085b6528956b33bab1c970c989cdce47a6616273880733f5e7bde452e"},
