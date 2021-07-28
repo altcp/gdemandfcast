@@ -9,23 +9,53 @@ def create():
 
     st.title("Univariate Forecasting")
     st.subheader("Proof of Concept Demostration")
+    st.markdown("***")
+    st.markdown("***")
+    gear = st.radio("Model Selection::", ("Compare", "Auto"))
+    shift = st.selectbox("Type of Models:", ("ML", "TS", "DL"))
+    lags = st.slider("Number of Previous Timsteps to Consider:", 1, 5, 3, 1)
+    train = st.file_uploader("Upload Training Data: ")
+    test = st.file_uploader("Uploat Testing Data: ")
+    st.markdown("***")
 
-    gear = st.radio("Model Selection::", ("Auto", "Compare"))
-    shift = st.selectbox("Type of Models:", ("ML", "TS", "AUTO"))
-    lags = st.slider("Number of Previous Timsteps to Consider:", (1, 5))
-    uploaded_train = st.file_uploader("Upload Training Data: ")
-    uploaded_test = st.file_uploader("Uploat Testing Data: ")
+    if train is not None and test is not None:
 
-    df = execute(train, test, lags, gear, shift, speed="fast", charts=False).frm()
+        df = execute(
+            train, test, lags, gear.lower(), shift.lower(), speed="fast", charts=False
+        ).frm()
 
-    if shift == "auto":
-        a = 1
+        if shift == "auto":
+            a = 1
+        else:
+            a = 4
+
+        for i in range(len(df)):
+            st.line_chart(df.loc[:, i : i + a])
+            st.bar_chart(df.loc[:, i : i + a])
+
     else:
-        a = 4
 
-    for i in range(len(df)):
-        st.line_chart(df.loc[:, i : i + a])
-        st.bar_chart(df.loc[:, i : i + a])
+        submit = st.button("Run Demo")
+        if submit:
+            st.write("Demostration Based on Seen Data.")
+            df = execute(
+                train,
+                test,
+                lags,
+                gear.lower(),
+                shift.lower(),
+                speed="fast",
+                charts=False,
+            ).frm()
+
+            if shift == "auto":
+                a = 1
+            else:
+                a = 4
+
+            for i in range(len(df)):
+                st.line_chart(df.loc[:, i : i + a])
+                st.bar_chart(df.loc[:, i : i + a])
 
     return None
 
