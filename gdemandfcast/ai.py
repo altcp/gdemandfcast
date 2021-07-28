@@ -472,16 +472,14 @@ class mlmodels:
             )
 
         if self.speed == "fast":
-            param_grid = {
-                "M__C": [1, 3, 5, 7],
-                "M__epsilon": [0.001, 0.003, 0.005, 0.01],
-            }
+            param_grid = {"M__max_depth": [4, 6, 8], "M__eta": [0.05, 0.1, 0.2, 0.3]}
         else:
             param_grid = {
-                "M__kernel": ["rbf", "poly"],
-                "M__Degree": [0, 1, 2, 3],
-                "M__C": [1, 3, 5, 7],
-                "M__epsilon": [0.001, 0.003, 0.005, 0.01],
+                "M__booster": ["gbtree", "gblinear"],
+                "M__max_depth": [4, 6, 8],
+                "M__eta": [0.05, 0.1, 0.2, 0.3],
+                "M__alpha": [0.1, 0.3, 0.5, 0.7],
+                "M__lambda": [1, 1.5, 3.0, 4.5],
             }
 
         search = GridSearchCV(
