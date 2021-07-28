@@ -13,6 +13,7 @@ import pandas as pd
 import pmdarima as pm
 import tensorflow as tf
 from scipy import stats
+from scipy.stats import distributions
 from sklearn import model_selection
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import RBF, DotProduct
@@ -230,9 +231,9 @@ class compare:
         self.test_X = test_X
         self.test_y = test_y
         self.charts = charts
-        self.mldf = self.automl
-        self.dldf = self.autodl
-        self.tsdf = self.autots
+        self.mldf = self.automl()
+        self.dldf = self.autodl()
+        self.tsdf = self.autots()
 
     def compare_ml(self):
 
@@ -349,10 +350,26 @@ class mlmodels:
         self.scoring = "r2"
         self.distribution = self.aware()
 
+    def aware(self):
+        data = []
+        data = self.y
+        shapiro_test = stats.shapiro(data)
+        lilliefors_test = stats.diagnostic.lilliefors(data)
+
+        if shapiro_test.pvalue > 0.05:
+            if lilliefors_test.pvalue < 0.05:
+                distribution = "alt"
+            else:
+                distribution = "norm"
+        else:
+            distribution = "alt"
+
+        return distribution
+
     def gpr_model(self):
 
         gc.collect()
-        if self.distribution == "mean":
+        if self.distribution == "norm":
             pipe = Pipeline(
                 steps=[
                     ("T", PowerTransformer(method="yeo-johnson")),
