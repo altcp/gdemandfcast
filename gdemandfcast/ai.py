@@ -160,7 +160,6 @@ class execute:
 
 class automate(execute):
     def __init__(self, train_X, train_y, test_X, test_y, gear, shift, speed, charts):
-        super().__init__(train_X, train_y, test_X, test_y, gear, shift, speed, charts)
         self.train_X = train_X
         self.train_y = train_y
         self.test_X = test_X
