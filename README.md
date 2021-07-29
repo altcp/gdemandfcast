@@ -9,7 +9,7 @@
 
 </div>
 
-Generic Python Package for Time Series Forecasting that seeks to include the latest and making it easy to use. Thus, creating a current and stable standard.
+Generic Python Package for Time Series Forecasting that seeks to include the latest and making it easy to use. Thus, creating a current and stable standard that is good enough for non-profit or social use.
 <p>&nbsp;</p>
 
 
@@ -26,6 +26,7 @@ Generic Python Package for Time Series Forecasting that seeks to include the lat
 * Distribution Aware Auto Differentiation applied on Gradient Descent.
 * Preprocessing of Walk Forward Validation.
 * Preprocessing of Time Lags.
+* Frequency Aggregation.
 * Time Series Forecasting.
 <p>&nbsp;</p>
 
