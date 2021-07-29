@@ -223,10 +223,10 @@ class automate(execute):
                 )
                 print(" ")
 
-                if best_mape > 1:
-                    percentage_accurate = 0
-                else:
-                    percentage_accurate = (1 - best_mape) * 100
+            if best_mape > 1:
+                percentage_accurate = 0
+            else:
+                percentage_accurate = (1 - best_mape) * 100
 
         else:
 
