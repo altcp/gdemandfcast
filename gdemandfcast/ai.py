@@ -253,7 +253,6 @@ class automate(execute):
 
 class compare(automate):
     def __init__(self, train_X, train_y, test_X, test_y, speed):
-        super().__init__(train_X, train_y, test_X, test_y, speed)
         self.train_X = train_X
         self.train_y = train_y
         self.test_X = test_X
@@ -361,7 +360,6 @@ class distribution:
 
 class mlmodels(compare):
     def __init__(self, train_X, train_y, speed, validate):
-        super().__init__(train_X, train_y, speed, validate)
         self.x = train_X
         self.y = train_y
         self.speed = speed
@@ -596,7 +594,6 @@ class mlmodels(compare):
 
 class dlmodels(compare):
     def __init__(self, i, train_X, train_y, speed, validate):
-        super().__init__(train_X, train_y, speed, validate)
         self.i = i
         self.X = train_X
         self.y = train_y
