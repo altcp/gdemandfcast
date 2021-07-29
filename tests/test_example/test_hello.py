@@ -7,7 +7,7 @@ def test_execute_manualml():
 
     train = "./gdemandfcast/data/Train Data.xlsx"
     test = "./gdemandfcast/data/Test Data.xlsx"
-    df = execute(train, test, 3, "auto", "ml", "fast", False).frm()
+    df = execute(train, test, 3, "manual", "ml", "fast", False).frm()
     assert not df.empty
 
 
