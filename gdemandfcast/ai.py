@@ -159,7 +159,7 @@ class execute:
         return df
 
 
-class automate(execute):
+class automate:
     def __init__(
         self, train_X, train_y, test_X, test_y, lags, gear, shift, speed, charts
     ):
@@ -263,7 +263,7 @@ class automate(execute):
         return return_df, percentage_accurate
 
 
-class compare(automate):
+class compare:
     def __init__(self, train_X, train_y, test_X, test_y, speed):
         self.train_X = train_X
         self.train_y = train_y
@@ -356,7 +356,7 @@ class distribution:
 # %%
 
 
-class mlmodels(compare):
+class mlmodels:
     def __init__(self, train_X, train_y, speed, validate):
         self.x = train_X
         self.y = train_y
@@ -590,7 +590,7 @@ class mlmodels(compare):
 # %%
 
 
-class dlmodels(compare):
+class dlmodels:
     def __init__(self, i, train_X, train_y, speed, validate):
         self.i = i
         self.X = train_X
