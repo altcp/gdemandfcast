@@ -9,7 +9,7 @@
 
 </div>
 
-Generic Python Package for Time Series Forecasting
+Generic Python Package for Time Series Forecasting that seeks to include the latest and making it easy to use. Thus, creating a current and stable standard.
 <p>&nbsp;</p>
 
 
