@@ -283,13 +283,6 @@ class compare(automate):
             # Remove Last Element to Match Truth
             df[name] = mf[:-1].tolist()
 
-        # See Magnitude of Absolute Difference
-        if self.charts == True:
-            print(" ")
-            df.plot(figsize=(15, 10), kind="line")
-            df.plot(figsize=(15, 10), kind="bar", stacked=False)
-            print(" ")
-
         return df
 
     def compare_dl(self):
