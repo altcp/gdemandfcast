@@ -123,11 +123,6 @@ class execute:
                 train_y,
                 test_X,
                 test_y,
-                self.lags,
-                self.gear,
-                self.shift,
-                self.speed,
-                self.charts,
             ).run()
 
             if self.gear == "auto":
@@ -159,15 +154,13 @@ class execute:
         return df
 
 
-class automate:
-    def __init__(
-        self, train_X, train_y, test_X, test_y, lags, gear, shift, speed, charts
-    ):
+class automate(execute):
+    def __init__(self, train_X, train_y, test_X, test_y, gear, shift, speed, charts):
+        super().__init__(gear, shift, speed, charts)
         self.train_X = train_X
         self.train_y = train_y
         self.test_X = test_X
         self.test_y = test_y
-        self.lags = lags
         self.gear = gear
         self.shift = shift
         self.speed = speed
@@ -265,6 +258,7 @@ class automate:
 
 class compare:
     def __init__(self, train_X, train_y, test_X, test_y, speed):
+        super().__init__(train_X, train_y, test_X, test_y, speed)
         self.train_X = train_X
         self.train_y = train_y
         self.test_X = test_X
@@ -294,10 +288,10 @@ class compare:
 
     def compare_dl(self):
 
-        m1 = dlmodels(1, self.X, self.y, False).run()
-        m2 = dlmodels(2, self.X, self.y, False).run()
-        m3 = dlmodels(3, self.X, self.y, False).run()
-        m4 = dlmodels(4, self.X, self.y, False).run()
+        m1 = dlmodels(1, self.train_X, self.train_y, False).run()
+        m2 = dlmodels(2, self.train_X, self.train_y, False).run()
+        m3 = dlmodels(3, self.train_X, self.train_y, False).run()
+        m4 = dlmodels(4, self.train_X, self.train_y, False).run()
 
         column_names = [
             "Y",
@@ -358,6 +352,7 @@ class distribution:
 
 class mlmodels:
     def __init__(self, train_X, train_y, speed, validate):
+        super().__init__(train_X, train_y, speed)
         self.x = train_X
         self.y = train_y
         self.speed = speed
@@ -592,6 +587,7 @@ class mlmodels:
 
 class dlmodels:
     def __init__(self, i, train_X, train_y, speed, validate):
+        super().__init__(train_X, train_y, speed)
         self.i = i
         self.X = train_X
         self.y = train_y

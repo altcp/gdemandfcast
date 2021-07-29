@@ -15,10 +15,11 @@ st.markdown("***")
 gear = gear.lower()
 shift = shift.lower()
 
+print(gear)
+print(shift)
+
 if train is not None and test is not None:
 
-    gear = gear.lower()
-    shift = shift.lower()
     df = gdf.execute(train, test, lags, gear, shift, "fast", False).frm()
 
     if shift == "auto":
