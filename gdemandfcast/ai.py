@@ -204,6 +204,26 @@ class automate(execute):
 
             return_df = df[["Y", best_model]]
 
+            # See Magnitude of Absolute Difference
+            if self.charts == True:
+                print(" ")
+                return_df.plot(figsize=(15, 10), kind="line")
+                return_df.plot(figsize=(15, 10), kind="bar", stacked=False)
+                print(
+                    "Selected"
+                    + self.shift.upper()
+                    + "Model: "
+                    + col
+                    + " , MAPE: "
+                    + str(best_mape)
+                )
+                print(" ")
+
+                if best_mape > 1:
+                    percentage_accurate = 0
+                else:
+                    percentage_accurate = (1 - best_mape) * 100
+
         else:
 
             if self.shift == "ml":
@@ -226,29 +246,14 @@ class automate(execute):
                     self.train_X, self.train_y, self.test_X, self.test_y, self.speed
                 ).compare_auto()
 
+            # See Magnitude of Absolute Difference
+            if self.charts == True:
+                print(" ")
+                df.plot(figsize=(15, 10), kind="line")
+                df.plot(figsize=(15, 10), kind="bar", stacked=False)
+                print(" ")
+
             return_df = pred_df
-
-        # See Magnitude of Absolute Difference
-        if self.charts == True:
-            print(" ")
-            df.plot(figsize=(15, 10), kind="line")
-            df.plot(figsize=(15, 10), kind="bar", stacked=False)
-            print(
-                "Selected"
-                + self.shift.upper()
-                + "Model: "
-                + col
-                + " , MAPE: "
-                + str(best_mape)
-            )
-            print(" ")
-
-            if best_mape > 1:
-                percentage_accurate = 0
-            else:
-                percentage_accurate = (1 - best_mape) * 100
-
-        return return_df, percentage_accurate
 
 
 class compare(automate):
@@ -309,13 +314,6 @@ class compare(automate):
             mf = model.predict(self.test_X)
             # Remove Last Element to Match Truth
             df[name] = mf[:-1].tolist()
-
-        # See Magnitude of Absolute Difference
-        if self.charts == True:
-            print(" ")
-            df.plot(figsize=(15, 10), kind="line")
-            df.plot(figsize=(15, 10), kind="bar", stacked=False)
-            print(" ")
 
         return df
 
