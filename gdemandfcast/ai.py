@@ -177,42 +177,22 @@ class automate(execute):
             if self.shift == "ml":
                 best_model = "XGB"
                 df = compare(
-                    self.train_X,
-                    self.train_y,
-                    self.test_X,
-                    self.test_y,
-                    self.speed,
-                    False,
+                    self.train_X, self.train_y, self.test_X, self.test_y, self.speed
                 ).compare_ml()
             elif self.shift == "dl":
                 best_model = "GDF-LSTM"
                 df = compare(
-                    self.train_X,
-                    self.train_y,
-                    self.test_X,
-                    self.test_y,
-                    self.speed,
-                    False,
+                    self.train_X, self.train_y, self.test_X, self.test_y, self.speed
                 ).compare_dl()
             elif self.shit == "ts":
                 best_model = "TS-ES-RNN"
                 df = compare(
-                    self.train_X,
-                    self.train_y,
-                    self.test_X,
-                    self.test_y,
-                    self.speed,
-                    False,
+                    self.train_X, self.train_y, self.test_X, self.test_y, self.speed
                 ).compare_ts()
             else:
                 best_model = "TS-ES-RNN"
                 df = compare(
-                    self.train_X,
-                    self.train_y,
-                    self.test_X,
-                    self.test_y,
-                    self.speed,
-                    False,
+                    self.train_X, self.train_y, self.test_X, self.test_y, self.speed
                 ).compare_auto()
 
             for col in df.columns:
@@ -228,42 +208,22 @@ class automate(execute):
 
             if self.shift == "ml":
                 pred_df = compare(
-                    self.train_X,
-                    self.train_y,
-                    self.test_X,
-                    self.test_y,
-                    self.speed,
-                    self.charts,
+                    self.train_X, self.train_y, self.test_X, self.test_y, self.speed
                 ).compare_ml()
 
             elif self.shift == "dl":
                 pred_df = compare(
-                    self.train_X,
-                    self.train_y,
-                    self.test_X,
-                    self.test_y,
-                    self.speed,
-                    self.charts,
+                    self.train_X, self.train_y, self.test_X, self.test_y, self.speed
                 ).compare_dl()
 
             elif self.shift == "ts":
                 pred_df = compare(
-                    self.train_X,
-                    self.train_y,
-                    self.test_X,
-                    self.test_y,
-                    self.speed,
-                    self.charts,
+                    self.train_X, self.train_y, self.test_X, self.test_y, self.speed
                 ).compare_ts()
 
             else:
                 pred_df = compare(
-                    self.train_X,
-                    self.train_y,
-                    self.test_X,
-                    self.test_y,
-                    self.speed,
-                    self.charts,
+                    self.train_X, self.train_y, self.test_X, self.test_y, self.speed
                 ).compare_auto()
 
             return_df = pred_df
@@ -292,15 +252,13 @@ class automate(execute):
 
 
 class compare(automate):
-    def __init__(self, train_X, train_y, test_X, test_y, gear, shift, speed, charts):
-        super().__init__(train_X, train_y, test_X, test_y, gear, shift, speed, charts)
+    def __init__(self, train_X, train_y, test_X, test_y, speed):
+        super().__init__(train_X, train_y, test_X, test_y, speed)
         self.train_X = train_X
         self.train_y = train_y
         self.test_X = test_X
         self.test_y = test_y
-        self.gear = gear
         self.speed = speed
-        self.charts = charts
 
     def compare_ml(self):
 
