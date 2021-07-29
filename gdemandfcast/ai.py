@@ -40,6 +40,43 @@ from xgboost import XGBRegressor
 # %%
 
 
+class preprocessing:
+    def __init__(self, df, target="Y", p=7, create_testset=False):
+        self.df = df
+        self.target = target
+        self.p = p  # Size of Bucket (e.g., Week = 7 or 5, Lag)
+        self.create_testset = create_testset
+
+    def run_univariate(self):
+
+        df1 = pd.DataFrame()
+
+        if self.create_testset == False:
+            P = self.p + 1
+        else:
+            P = self.p
+
+        for i in range(P):
+            if i == 0:
+                if P > self.p:
+                    df1["Y"] = self.df[self.target]
+                else:
+                    df1["X0"] = self.df[self.target]
+            else:
+                column_name = "X" + str(i)
+                df1[column_name] = self.df[self.target].shift(i)
+
+        return df1
+
+    def create_frequency(self):
+
+        df1 = pd.DataFrame()
+        df1 = self.df.groupby(np.arrange(len(self.df)) // self.p).sum()
+        df1.index = self.df.loc[1 :: self.p, self.target]
+
+        return df1
+
+
 class execute:
     def __init__(self, train, test, lags, gear, shift, speed, charts):
         self.train = train
@@ -81,17 +118,18 @@ class execute:
             train_y = df2["Y"]
             train_X = df2.loc[:, df2.columns != "Y"]
 
-            if self.gear == "auto":
+            pred_df, percentage_accurate = automate(
+                train_X,
+                train_y,
+                test_X,
+                test_y,
+                self.gear,
+                self.shift,
+                self.speed,
+                self.charts,
+            ).run()
 
-                pred_df, percentage_accurate = automate(
-                    train_X,
-                    train_y,
-                    test_X,
-                    test_y,
-                    self.shift,
-                    self.speed,
-                    self.charts,
-                ).run()
+            if self.gear == "auto":
 
                 for col in pred_df.columns:
                     if col != "Y":
@@ -110,129 +148,153 @@ class execute:
 
             else:
 
-                if self.shift == "ml":
-                    pred_df = compare(
-                        train_X, train_y, test_X, test_y, self.speed, self.charts
-                    ).compare_ml()
+                df = pd.concat([df, pred_df], axis=1)
+                for col in pred_df.columns:
+                    new_name = str(target) + "_" + col
+                    df.rename(columns={col: new_name})
 
-                    n_y = str(target) + "_Y"
-                    n_1 = str(target) + "_GPR"
-                    n_2 = str(target) + "_MLP"
-                    n_3 = str(target) + "_XGB"
-                    n_4 = str(target) + "_SVR"
-
-                    df = pd.concat([df, pred_df], axis=1)
-                    df = df.rename(
-                        columns={
-                            "Y": n_y,
-                            "GPR": n_1,
-                            "MLP": n_2,
-                            "XGB": n_3,
-                            "SVR": n_4,
-                        }
-                    )
-
-                elif self.shift == "dl":
-                    pred_df = compare(
-                        train_X, train_y, test_X, test_y, self.charts
-                    ).compare_dl()
-
-                    n_y = str(target) + "_Y"
-                    n_1 = str(target) + "_BI_GRU_LTSM"
-                    n_2 = str(target) + "_BI_LSTM"
-                    n_3 = str(target) + "_GRU_LSTM"
-                    n_4 = str(target) + "_LSTM"
-
-                    df = pd.concat([df, pred_df], axis=1)
-                    df = df.rename(
-                        columns={
-                            "Y": n_y,
-                            "GDF-BI_GRU_LTSM": n_1,
-                            "GDF-BI_LSTM": n_2,
-                            "GDF-GRU_LSTM": n_3,
-                            "GDF_LSTM": n_4,
-                        }
-                    )
-
-                elif self.shift == "ts":
-                    pred_df = compare(
-                        train_X, train_y, test_X, test_y, self.charts
-                    ).compare_ts()
-
-                else:
-                    pred_df = compare(
-                        train_X, train_y, test_X, test_y, self.speed, self.charts
-                    ).compare_auto()
+                df = pred_df
 
         return df
 
 
-# %%
+class automate(execute):
+    def __init__(self, train_X, train_y, test_X, test_y, gear, shift, speed, charts):
+        super().__init__(train_X, train_y, test_X, test_y, gear, shift, speed, charts)
+        self.train_X = train_X
+        self.train_y = train_y
+        self.test_X = test_X
+        self.test_y = test_y
+        self.gear = gear
+        self.shift = shift
+        self.speed = speed
+        self.charts = charts
 
+    def run(self):
+        best_mape = 100
 
-class preprocessing:
-    def __init__(self, df, target="Y", p=7, create_testset=False):
-        self.df = df
-        self.target = target
-        self.p = p  # Size of Bucket (e.g., Week = 7 or 5, Lag)
-        self.create_testset = create_testset
+        if self.gear == "auto":
 
-    def run_univariate(self):
-
-        df1 = pd.DataFrame()
-
-        if self.create_testset == False:
-            P = self.p + 1
-        else:
-            P = self.p
-
-        for i in range(P):
-            if i == 0:
-                if P > self.p:
-                    df1["Y"] = self.df[self.target]
-                else:
-                    df1["X0"] = self.df[self.target]
+            if self.shift == "ml":
+                best_model = "XGB"
+                df = compare(
+                    self.train_X,
+                    self.train_y,
+                    self.test_X,
+                    self.test_y,
+                    self.speed,
+                    False,
+                ).compare_ml()
+            elif self.shift == "dl":
+                best_model = "GDF-LSTM"
+                df = compare(
+                    self.train_X,
+                    self.train_y,
+                    self.test_X,
+                    self.test_y,
+                    self.speed,
+                    False,
+                ).compare_dl()
+            elif self.shit == "ts":
+                best_model = "TS-ES-RNN"
+                df = compare(
+                    self.train_X,
+                    self.train_y,
+                    self.test_X,
+                    self.test_y,
+                    self.speed,
+                    False,
+                ).compare_ts()
             else:
-                column_name = "X" + str(i)
-                df1[column_name] = self.df[self.target].shift(i)
+                best_model = "TS-ES-RNN"
+                df = compare(
+                    self.train_X,
+                    self.train_y,
+                    self.test_X,
+                    self.test_y,
+                    self.speed,
+                    False,
+                ).compare_auto()
 
-        return df1
+            for col in df.columns:
+                if col != "Y":
+                    mape = mean_absolute_percentage_error(df["Y"], df[col])
+                    if mape < best_mape:
+                        best_mape = round(mape, 4)
+                        best_model = col
 
-    def create_frequency(self):
+            return_df = df[["Y", best_model]]
 
-        df1 = pd.DataFrame()
-        df1 = self.df.groupby(np.arrange(len(self.df)) // self.p).sum()
-        df1.index = self.df.loc[1 :: self.p, self.target]
-
-        return df1
-
-
-class distribution:
-    def __init__(self, y):
-        self.y = y
-
-    def aware(self):
-        data = []
-        data = self.y
-        shapiro_test = sps.shapiro(data)
-        lilliefors_test = diagnostic.lilliefors(data)
-
-        if shapiro_test.pvalue > 0.05:
-            if lilliefors_test.pvalue < 0.05:
-                distribution = "alt"
-            else:
-                distribution = "norm"
         else:
-            distribution = "alt"
 
-        return distribution
+            if self.shift == "ml":
+                pred_df = compare(
+                    self.train_X,
+                    self.train_y,
+                    self.test_X,
+                    self.test_y,
+                    self.speed,
+                    self.charts,
+                ).compare_ml()
+
+            elif self.shift == "dl":
+                pred_df = compare(
+                    self.train_X,
+                    self.train_y,
+                    self.test_X,
+                    self.test_y,
+                    self.speed,
+                    self.charts,
+                ).compare_dl()
+
+            elif self.shift == "ts":
+                pred_df = compare(
+                    self.train_X,
+                    self.train_y,
+                    self.test_X,
+                    self.test_y,
+                    self.speed,
+                    self.charts,
+                ).compare_ts()
+
+            else:
+                pred_df = compare(
+                    self.train_X,
+                    self.train_y,
+                    self.test_X,
+                    self.test_y,
+                    self.speed,
+                    self.charts,
+                ).compare_auto()
+
+            return_df = pred_df
+
+        # See Magnitude of Absolute Difference
+        if self.charts == True:
+            print(" ")
+            df.plot(figsize=(15, 10), kind="line")
+            df.plot(figsize=(15, 10), kind="bar", stacked=False)
+            print(
+                "Selected"
+                + self.shift.upper()
+                + "Model: "
+                + col
+                + " , MAPE: "
+                + str(best_mape)
+            )
+            print(" ")
+
+            if best_mape > 1:
+                percentage_accurate = 0
+            else:
+                percentage_accurate = (1 - best_mape) * 100
+
+        return return_df, percentage_accurate
 
 
-# %%
-
-
-class compare:
-    def __init__(self, train_X, train_y, test_X, test_y, speed, charts):
+class compare(automate):
+    def __init__(self, train_X, train_y, test_X, test_y, shift, speed, charts):
+        super().__init__(train_X, train_y, test_X, test_y, shift, speed, charts)
         self.train_X = train_X
         self.train_y = train_y
         self.test_X = test_X
@@ -309,78 +371,41 @@ class compare:
         pass
 
 
-class automate:
-    def __init__(self, train_X, train_y, test_X, test_y, shift, speed, charts):
-        self.train_X = train_X
-        self.train_y = train_y
-        self.test_X = test_X
-        self.test_y = test_y
-        self.shift = shift
-        self.speed = speed
-        self.charts = charts
+# %%
 
-    def run(self):
 
-        best_mape = 100
+class distribution:
+    def __init__(self, y):
+        self.y = y
 
-        if self.shift == "ml":
-            best_model = "XGB"
-            df = compare(
-                self.train_X, self.train_y, self.test_X, self.test_y, self.speed, False
-            ).compare_ml()
-        elif self.shift == "dl":
-            best_model = "GDF-LSTM"
-            df = compare(
-                self.train_X, self.train_y, self.test_X, self.test_y, self.speed, False
-            ).compare_dl()
-        elif self.shit == "ts":
-            best_model = "TS-ES-RNN"
-            df = compare(
-                self.train_X, self.train_y, self.test_X, self.test_y, self.speed, False
-            ).compare_ts()
-        else:
-            best_model = "TS-ES-RNN"
-            df = compare(
-                self.train_X, self.train_y, self.test_X, self.test_y, self.speed, False
-            ).compare_auto()
+    def aware(self):
+        data = []
+        data = self.y
+        shapiro_test = sps.shapiro(data)
+        lilliefors_test = diagnostic.lilliefors(data)
 
-        for col in df.columns:
-            if col != "Y":
-                mape = mean_absolute_percentage_error(df["Y"], df[col])
-                if mape < best_mape:
-                    best_mape = round(mape, 4)
-                    best_model = col
-
-        # See Magnitude of Absolute Difference
-        if self.charts == True:
-            print(" ")
-            df.plot(figsize=(15, 10), kind="line")
-            df.plot(figsize=(15, 10), kind="bar", stacked=False)
-            print(
-                "Selected"
-                + self.shift.upper()
-                + "Model: "
-                + col
-                + " , MAPE: "
-                + str(best_mape)
-            )
-            print(" ")
-
-            if best_mape > 1:
-                percentage_accurate = 0
+        if shapiro_test.pvalue > 0.05:
+            if lilliefors_test.pvalue < 0.05:
+                distribution = "alt"
             else:
-                percentage_accurate = (1 - best_mape) * 100
+                distribution = "norm"
+        else:
+            distribution = "alt"
 
-        return df[["Y", best_model]], percentage_accurate
+        return distribution
 
 
 # %%
 
 
-class mlmodels:
-    def __init__(self, X, y, speed, validate):
-        self.x = X
-        self.y = y
+# %%
+
+
+class mlmodels(compare):
+    def __init__(self, train_X, train_y, speed, validate):
+        super().__init__(train_X, train_y, speed, validate)
+        self.x = train_X
+        self.y = train_y
         self.speed = speed
         self.validate = validate
 
@@ -611,12 +636,14 @@ class mlmodels:
 # %%
 
 
-class dlmodels:
-    def __init__(self, i, X, y, validation):
+class dlmodels(compare):
+    def __init__(self, i, train_X, train_y, speed, validate):
+        super().__init__(train_X, train_y, speed, validate)
         self.i = i
-        self.X = X
-        self.y = y
-        self.validation = validation
+        self.X = train_X
+        self.y = train_y
+        self.speed = speed
+        self.validation = validate
 
     def run(self):
         i = self.i
