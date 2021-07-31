@@ -124,10 +124,10 @@ class automate:
         self.speed = speed
 
     def run(self):
-        best_mape = 100
-        df = pd.DataFrame()
 
         if self.gear == "auto":
+            best_mape = 100
+            df = pd.DataFrame()
 
             if self.shift == "ml":
                 best_model = "XGB"
