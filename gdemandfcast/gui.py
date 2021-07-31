@@ -1,5 +1,7 @@
+import pandas as pd
 import streamlit as st
-from ai import execute
+
+from gdemandfcast import ai as gdf
 
 st.title("Time Series Forecasting")
 st.subheader("Proof of Concept Demostration")
@@ -16,10 +18,22 @@ gear = gear.lower()
 shift = shift.lower()
 
 
+def get(train, test, lags):
+    train1 = pd.read_excel(train)
+    test1 = pd.read_excel(test)
+    train2 = train1.fillna(0)
+    test2 = test1.fillna(0)
+    train_X, train_y, test_X, test_y = gdf.execute.get(train2, test2, lags)
+
+    return train_X, train_y, test_X, test_y
+
+
 if train is not None and test is not None:
 
-    df = execute(train, test, lags, gear, shift, speed).frm()
-
+    train_X, train_y, test_X, test_y = get(train, test, lags)
+    df, percentage_accurate = gdf.automate(
+        train_X, train_y, test_X, test_y, gear, shift, speed
+    ).run()
     if gear == "auto":
         a = 1
     else:
@@ -36,8 +50,12 @@ else:
 
         train = "./data/Train Data.xlsx"
         test = "./data/Test Data.xlsx"
-        df = execute(train, test, lags, gear, shift, speed).frm()
+        train_X, train_y, test_X, test_y = get(train, test, lags)
+        df, percentage_accurate = gdf.automate(
+            train_X, train_y, test_X, test_y, gear, shift, speed
+        ).run()
         st.write("Demostration Based on Seen Data.")
+
         print(df)
 
         if gear == "auto":

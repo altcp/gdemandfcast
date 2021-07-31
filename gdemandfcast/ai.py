@@ -78,82 +78,41 @@ class preprocessing:
 
 
 class execute:
-    def __init__(self, train, test, lags, gear, shift, speed):
+    def __init__(self, train, test, lags):
         self.train = train
         self.test = test
         self.lags = lags
-        self.gear = gear
-        self.shift = shift
-        self.speed = speed
 
-    def frm(self):
+    def get(self):
 
-        train1 = pd.read_excel(self.train)
-        test1 = pd.read_excel(self.test)
-        train2 = train1.fillna(0)
-        test2 = test1.fillna(0)
-        gear = self.gear
-        shift = self.shift
-        speed = self.speed
+        df2 = pd.DataFrame()
 
-        df = pd.DataFrame()
-
-        for col in train2.columns:
+        for col in self.train.columns:
 
             target = col
 
             df2 = (
-                preprocessing(train2, target, self.lags, False)
+                preprocessing(self.train, target, self.lags, False)
                 .run_univariate()
                 .dropna()
                 .reset_index(drop=True)
             )
 
             test_X = (
-                preprocessing(test2, target, self.lags, True)
+                preprocessing(self.test, target, self.lags, True)
                 .run_univariate()
                 .dropna()
                 .reset_index(drop=True)
             )
 
-            test_y = test2[target].tail(len(test_X)).reset_index(drop=True)
+            test_y = self.test[target].tail(len(self.test_X)).reset_index(drop=True)
             train_y = df2["Y"]
             train_X = df2.loc[:, df2.columns != "Y"]
 
-            pred_df, percentage_accurate = automate(
-                train_X, train_y, test_X, test_y, gear, shift, speed
-            ).run()
-
-            if self.gear == "auto":
-
-                for col in pred_df.columns:
-                    if col != "Y":
-                        n_y = str(target) + "_Y"
-                        n_1 = str(target) + "_" + col
-                        last_col = col
-
-                df = pd.concat([df, pred_df], axis=1)
-                df = df.rename(
-                    columns={
-                        "Y": n_y,
-                        last_col: n_1,
-                    }
-                )
-                print("% Accurate: " + str(percentage_accurate))
-
-            else:
-
-                df = pd.concat([df, pred_df], axis=1)
-                for col in pred_df.columns:
-                    new_name = str(target) + "_" + col
-                    df.rename(columns={col: new_name})
-
-                df = pred_df
-
-        return df
+        return train_X, train_y, test_X, test_y
 
 
-class automate(execute):
+class automate:
     def __init__(self, train_X, train_y, test_X, test_y, gear, shift, speed):
         self.train_X = train_X
         self.train_y = train_y
