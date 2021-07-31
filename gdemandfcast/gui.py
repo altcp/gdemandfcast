@@ -1,6 +1,7 @@
 import pandas as pd
 import streamlit as st
-from ai import automate, execute
+
+from gdemandfcast import ai
 
 st.title("Time Series Forecasting")
 st.subheader("Proof of Concept Demostration")
@@ -22,7 +23,7 @@ def get(train, test, lags):
     test1 = pd.read_excel(test)
     train2 = train1.fillna(0)
     test2 = test1.fillna(0)
-    train_X, train_y, test_X, test_y = execute(train2, test2, lags).get()
+    train_X, train_y, test_X, test_y = ai.execute(train2, test2, lags).get()
 
     return train_X, train_y, test_X, test_y
 
@@ -30,7 +31,7 @@ def get(train, test, lags):
 if train is not None and test is not None:
 
     train_X, train_y, test_X, test_y = get(train, test, lags)
-    df, percentage_accurate = automate(
+    df, percentage_accurate = ai.automate(
         train_X, train_y, test_X, test_y, gear, shift, speed
     ).run()
     if gear == "auto":
@@ -50,7 +51,7 @@ else:
         train = "./data/Train Data.xlsx"
         test = "./data/Test Data.xlsx"
         train_X, train_y, test_X, test_y = get(train, test, lags)
-        df, percentage_accurate = automate(
+        df, percentage_accurate = ai.automate(
             train_X, train_y, test_X, test_y, gear, shift, speed
         ).run()
         st.write("Demostration Based on Seen Data.")
