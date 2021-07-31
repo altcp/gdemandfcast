@@ -426,11 +426,10 @@ class mlmodels:
             )
 
         if self.speed == "fast":
-            param_grid = {"M__max_depth": [4, 6, 8], "M__eta": [0.05, 0.1, 0.2, 0.3]}
+            param_grid = {"M__eta": [0.05, 0.1, 0.2, 0.3]}
         else:
             param_grid = {
                 "M__booster": ["gbtree", "gblinear"],
-                "M__max_depth": [4, 6, 8],
                 "M__eta": [0.05, 0.1, 0.2, 0.3],
                 "M__alpha": [0.1, 0.3, 0.5, 0.7],
                 "M__lambda": [1, 1.5, 3.0, 4.5],
