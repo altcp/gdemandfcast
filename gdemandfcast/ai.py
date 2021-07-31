@@ -105,7 +105,7 @@ class execute:
                 .reset_index(drop=True)
             )
 
-            test_y = self.test[target].tail(len(self.test_X)).reset_index(drop=True)
+            test_y = self.test[target].tail(len(test_X)).reset_index(drop=True)
             train_y = df2["Y"]
             train_X = df2.loc[:, df2.columns != "Y"]
 
@@ -321,12 +321,12 @@ class mlmodels:
                 "M__alpha": [1e-10, 1e7, 1e-5, 1e-3],
             }
         else:
-            ker_rbf = ConstantKernel(1.0, constant_value="fixed") * RBF(
+            ker_rbf = ConstantKernel(1.0, constant_value_bounds="fixed") * RBF(
                 1.0, length_scale_bounds="fixed"
             )
             ker_rq = ConstantKernel(
                 1.0, constant_value_bounds="fixed"
-            ) * RationalQuadratic(alph=0.1, length_scale=1)
+            ) * RationalQuadratic(alpha=0.1, length_scale=1)
             ker_ess = ConstantKernel(
                 1.0, constant_value_bounds="fixed"
             ) * ExpSineSquared(1.0, 5.0, periodicity_bounds=(1e-2, 1e1))
