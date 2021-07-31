@@ -78,14 +78,13 @@ class preprocessing:
 
 
 class execute:
-    def __init__(self, train, test, lags, gear, shift, speed, charts):
+    def __init__(self, train, test, lags, gear, shift, speed):
         self.train = train
         self.test = test
         self.lags = lags
         self.gear = gear
         self.shift = shift
         self.speed = speed
-        self.charts = charts
 
     def frm(self):
 
@@ -93,6 +92,9 @@ class execute:
         test1 = pd.read_excel(self.test)
         train2 = train1.fillna(0)
         test2 = test1.fillna(0)
+        gear = self.gear
+        shift = self.shift
+        speed = self.speed
 
         df = pd.DataFrame()
 
@@ -119,10 +121,7 @@ class execute:
             train_X = df2.loc[:, df2.columns != "Y"]
 
             pred_df, percentage_accurate = automate(
-                train_X,
-                train_y,
-                test_X,
-                test_y,
+                train_X, train_y, test_X, test_y, gear, shift, speed
             ).run()
 
             if self.gear == "auto":
@@ -155,8 +154,7 @@ class execute:
 
 
 class automate(execute):
-    def __init__(self, train_X, train_y, test_X, test_y, gear, shift, speed, charts):
-        super().__init__(gear, shift, speed, charts)
+    def __init__(self, train_X, train_y, test_X, test_y, gear, shift, speed):
         self.train_X = train_X
         self.train_y = train_y
         self.test_X = test_X
@@ -164,7 +162,6 @@ class automate(execute):
         self.gear = gear
         self.shift = shift
         self.speed = speed
-        self.charts = charts
 
     def run(self):
         best_mape = 100
@@ -201,21 +198,6 @@ class automate(execute):
 
             return_df = df[["Y", best_model]]
 
-            # See Magnitude of Absolute Difference
-            if self.charts == True:
-                print(" ")
-                return_df.plot(figsize=(15, 10), kind="line")
-                return_df.plot(figsize=(15, 10), kind="bar", stacked=False)
-                print(
-                    "Selected"
-                    + self.shift.upper()
-                    + "Model: "
-                    + col
-                    + " , MAPE: "
-                    + str(best_mape)
-                )
-                print(" ")
-
             if best_mape > 1:
                 percentage_accurate = 0
             else:
@@ -243,13 +225,6 @@ class automate(execute):
                     self.train_X, self.train_y, self.test_X, self.test_y, self.speed
                 ).compare_auto()
 
-            # See Magnitude of Absolute Difference
-            if self.charts == True:
-                print(" ")
-                df.plot(figsize=(15, 10), kind="line")
-                df.plot(figsize=(15, 10), kind="bar", stacked=False)
-                print(" ")
-
             return_df = pred_df
             percentage_accurate = 0
 
@@ -258,7 +233,6 @@ class automate(execute):
 
 class compare:
     def __init__(self, train_X, train_y, test_X, test_y, speed):
-        super().__init__(train_X, train_y, test_X, test_y, speed)
         self.train_X = train_X
         self.train_y = train_y
         self.test_X = test_X
@@ -352,7 +326,6 @@ class distribution:
 
 class mlmodels:
     def __init__(self, train_X, train_y, speed, validate):
-        super().__init__(train_X, train_y, speed)
         self.x = train_X
         self.y = train_y
         self.speed = speed

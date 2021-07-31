@@ -1,28 +1,26 @@
 import streamlit as st
-
-from gdemandfcast import ai as gdf
+from ai import execute
 
 st.title("Time Series Forecasting")
 st.subheader("Proof of Concept Demostration")
 st.markdown("***")
 st.markdown("***")
+lags = st.slider("Number of Previous Timsteps to Consider:", 1, 5, 3, 1)
 gear = st.radio("Model Selection::", ("Compare", "Auto"))
 shift = st.selectbox("Type of Models:", ("ML", "TS", "DL"))
-lags = st.slider("Number of Previous Timsteps to Consider:", 1, 5, 3, 1)
+speed = st.radio("Fast or Slow ML Tuning:", ("Fast", "Slow"))
 train = st.file_uploader("Upload Training Data: ")
 test = st.file_uploader("Uploat Testing Data: ")
 st.markdown("***")
 gear = gear.lower()
 shift = shift.lower()
 
-print(gear)
-print(shift)
 
 if train is not None and test is not None:
 
-    df = gdf.execute(train, test, lags, gear, shift, "fast", False).frm()
+    df = execute(train, test, lags, gear, shift, speed).frm()
 
-    if shift == "auto":
+    if gear == "auto":
         a = 1
     else:
         a = 4
@@ -36,12 +34,13 @@ else:
     submit = st.button("Run Demo")
     if submit:
 
+        train = "./data/Train Data.xlsx"
+        test = "./data/Test Data.xlsx"
+        df = execute(train, test, lags, gear, shift, speed).frm()
         st.write("Demostration Based on Seen Data.")
-        train = "./gdemandfcast/data/Train Data.xlsx"
-        test = "./gdemandfcast/data/Test Data.xlsx"
-        df = gdf.execute(train, test, lags, gear, shift, "fast", False).frm()
+        print(df)
 
-        if shift == "auto":
+        if gear == "auto":
             a = 1
         else:
             a = 4
