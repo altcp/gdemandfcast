@@ -13,6 +13,7 @@ import pandas as pd
 import pmdarima as pm
 import scipy.stats as sps
 import tensorflow as tf
+from pandas.core.frame import DataFrame
 from sklearn import model_selection
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import (
@@ -124,6 +125,7 @@ class automate:
 
     def run(self):
         best_mape = 100
+        df = pd.DataFrame()
 
         if self.gear == "auto":
 
@@ -148,6 +150,7 @@ class automate:
                     self.train_X, self.train_y, self.test_X, self.test_y, self.speed
                 ).compare_auto()
 
+            df = df.dropna().reset_index(drop=True)
             for col in df.columns:
                 if col != "Y":
                     mape = mean_absolute_percentage_error(df["Y"], df[col])
