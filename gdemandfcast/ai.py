@@ -150,13 +150,14 @@ class automate:
                     self.train_X, self.train_y, self.test_X, self.test_y, self.speed
                 ).compare_auto()
 
-            df = df.dropna().reset_index(drop=True)
-            for col in df.columns:
-                if col != "Y":
-                    mape = mean_absolute_percentage_error(df["Y"], df[col])
-                    if mape < best_mape:
-                        best_mape = round(mape, 4)
-                        best_model = col
+            print(df)
+
+            # for col in df.columns:
+            # if col != "Y":
+            # mape = mean_absolute_percentage_error(df["Y"], df[col])
+            # if mape < best_mape:
+            # best_mape = round(mape, 4)
+            # best_model = col
 
             return_df = df[["Y", best_model]]
 
@@ -399,7 +400,7 @@ class mlmodels:
         )
 
         if self.validate == False:
-            return search, "MLP"
+            return search, "KNN"
         else:
             return round((np.nanmean(results) * 100.0), 2)
 
