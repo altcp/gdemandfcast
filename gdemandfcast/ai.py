@@ -29,7 +29,7 @@ from sklearn.metrics import (
     r2_score,
 )
 from sklearn.model_selection import GridSearchCV, train_test_split
-from sklearn.neighborors import KNeighborsRegressor
+from sklearn.neighbors import KNeighborsRegressor
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import MinMaxScaler, PowerTransformer, RobustScaler
 from sklearn.svm import SVR
@@ -317,10 +317,11 @@ class mlmodels:
 
         if self.speed == "fast":
             param_grid = {
-                "M__n_restarts_optimizer": [0, 2, 4, 8],
-                "M__alpha": [1e-10, 1e7, 1e-5, 1e-3],
+                "M__n_restarts_optimizer": [2, 4, 8],
+                "M__alpha": [1e5, 1e-3, 1e-1],
             }
         else:
+
             ker_rbf = ConstantKernel(1.0, constant_value_bounds="fixed") * RBF(
                 1.0, length_scale_bounds="fixed"
             )
