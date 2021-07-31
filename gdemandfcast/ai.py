@@ -29,7 +29,7 @@ from sklearn.metrics import (
     r2_score,
 )
 from sklearn.model_selection import GridSearchCV, train_test_split
-from sklearn.neural_network import MLPRegressor
+from sklearn.neighborors import KNeighborsRegressor
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import MinMaxScaler, PowerTransformer, RobustScaler
 from sklearn.svm import SVR
@@ -203,11 +203,11 @@ class compare:
         warnings.filterwarnings("ignore")
 
         m1 = mlmodels(self.train_X, self.train_y, self.speed, False).gpr_model()
-        m2 = mlmodels(self.train_X, self.train_y, self.speed, False).mlp_model()
+        m2 = mlmodels(self.train_X, self.train_y, self.speed, False).knn_model()
         m3 = mlmodels(self.train_X, self.train_y, self.speed, False).xgb_model()
         m4 = mlmodels(self.train_X, self.train_y, self.speed, False).svr_model()
 
-        column_names = ["Y", "GPR", "MLP", "XGB", "SVR"]
+        column_names = ["Y", "GPR", "KNN", "XGB", "SVR"]
         df = pd.DataFrame(columns=column_names)
         # Remove First Element to Match Prediction
         df["Y"] = self.test_y.loc[1:]
@@ -356,7 +356,7 @@ class mlmodels:
         else:
             return round((np.nanmean(results) * 100.0), 2)
 
-    def mlp_model(self):
+    def knn_model(self):
 
         dist = distribution(self.y).aware()
         if dist == "norm":
@@ -364,7 +364,7 @@ class mlmodels:
                 steps=[
                     ("T", PowerTransformer(method="yeo-johnson")),
                     ("N", MinMaxScaler((1, 100))),
-                    ("M", MLPRegressor()),
+                    ("M", KNeighborsRegressor()),
                 ]
             )
         else:
@@ -373,28 +373,14 @@ class mlmodels:
                     ("S", RobustScaler()),
                     ("N", MinMaxScaler((1, 100))),
                     ("T", PowerTransformer(method="box-cox")),
-                    ("M", MLPRegressor()),
+                    ("M", KNeighborsRegressor()),
                 ]
             )
 
         if self.speed == "fast":
-            param_grid = {
-                "M__hidden_layer_sizes": [(12, 4), (10,)],
-                "M__activation": ["relu"],
-                "M__solver": ["adam"],
-                "M__alpha": [0.001, 0.005, 0.01],
-                "M__learning_rate": ["adaptive"],
-                "M__early_stopping": [True],
-            }
+            param_grid = {"M__n_neighbors": [3, 6, 9]}
         else:
-            param_grid = {
-                "M__hidden_layer_sizes": [(3, 3, 3), (12, 4), (10,)],
-                "M__activation": ["tanh", "relu"],
-                "M__solver": ["sgd", "adam"],
-                "M__alpha": [0.001, 0.005, 0.01],
-                "M__learning_rate": ["constant", "adaptive"],
-                "M__early_stopping": [True],
-            }
+            param_grid = {"M__n_neighbors": [1, 3, 5, 7, 9]}
 
         search = GridSearchCV(
             pipe, param_grid, cv=5, scoring=self.scoring, n_jobs=self.jobs
