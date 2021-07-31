@@ -23,7 +23,7 @@ def get(train, test, lags):
     test1 = pd.read_excel(test)
     train2 = train1.fillna(0)
     test2 = test1.fillna(0)
-    train_X, train_y, test_X, test_y = gdf.execute.get(train2, test2, lags)
+    train_X, train_y, test_X, test_y = gdf.execute(train2, test2, lags).get()
 
     return train_X, train_y, test_X, test_y
 
