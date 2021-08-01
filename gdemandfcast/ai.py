@@ -130,27 +130,28 @@ class automate:
             df = pd.DataFrame()
 
             if self.shift == "ml":
-                best_model = "XGB"
+                best_model = "GPR"
                 df = compare(
                     self.train_X, self.train_y, self.test_X, self.test_y, self.speed
                 ).compare_ml()
+
             elif self.shift == "dl":
                 best_model = "GDF-LSTM"
                 df = compare(
                     self.train_X, self.train_y, self.test_X, self.test_y, self.speed
                 ).compare_dl()
+
             elif self.shit == "ts":
                 best_model = "TS-ES-RNN"
                 df = compare(
                     self.train_X, self.train_y, self.test_X, self.test_y, self.speed
                 ).compare_ts()
+
             else:
                 best_model = "TS-ES-RNN"
                 df = compare(
                     self.train_X, self.train_y, self.test_X, self.test_y, self.speed
                 ).compare_auto()
-
-            print(df)
 
             # for col in df.columns:
             # if col != "Y":
@@ -159,7 +160,7 @@ class automate:
             # best_mape = round(mape, 4)
             # best_model = col
 
-            return_df = df[["Y", best_model]]
+            return_df = df[["Y", best_model]].reset_index(drop=True)
 
             if best_mape > 1:
                 percentage_accurate = 0
