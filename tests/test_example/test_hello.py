@@ -1,7 +1,7 @@
 """Tests for hello function."""
 import pandas as pd
 
-from gdemandfcast import ai
+from gdemandfcast.ai import automate, execute
 
 
 # Get
@@ -10,7 +10,7 @@ def get(train, test, lags):
     test1 = pd.read_excel(test)
     train2 = train1.fillna(0)
     test2 = test1.fillna(0)
-    train_X, train_y, test_X, test_y = ai.execute(train2, test2, lags).get()
+    train_X, train_y, test_X, test_y = execute(train2, test2, lags).get()
 
     return train_X, train_y, test_X, test_y
 
@@ -21,7 +21,7 @@ def test_execute_manualml():
     train = "./gdemandfcast/data/Train Data.xlsx"
     test = "./gdemandfcast/data/Test Data.xlsx"
     train_X, train_y, test_X, test_y = get(train, test, 3)
-    df, percentage_accurate = ai.automate(
+    df, percentage_accurate = automate(
         train_X, train_y, test_X, test_y, "manual", "ml", "fast"
     ).run()
     assert not df.empty
@@ -33,7 +33,7 @@ def test_execute_automl():
     train = "./gdemandfcast/data/Train Data.xlsx"
     test = "./gdemandfcast/data/Test Data.xlsx"
     train_X, train_y, test_X, test_y = get(train, test, 3)
-    df, percentage_accurate = ai.automate(
+    df, percentage_accurate = automate(
         train_X, train_y, test_X, test_y, "auto", "ml", "fast"
     ).run()
     assert not df.empty
