@@ -1,6 +1,7 @@
 import pandas as pd
 import streamlit as st
-from ai import automate, execute
+
+from gdemandfcast.ai import automate, execute
 
 st.title("Time Series Forecasting")
 st.subheader("Proof of Concept Demostration")
