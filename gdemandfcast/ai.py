@@ -38,9 +38,8 @@ from statsmodels.stats import diagnostic
 from tensorflow import keras
 from xgboost import XGBRegressor
 
+
 # %%
-
-
 class preprocessing:
     def __init__(self, df, target="Y", p=7, create_testset=False):
         self.df = df
@@ -78,6 +77,29 @@ class preprocessing:
         return df1
 
 
+# %%
+class distribution:
+    def __init__(self, y):
+        self.y = y
+
+    def aware(self):
+        data = []
+        data = self.y
+        shapiro_test = sps.shapiro(data)
+        lilliefors_test = diagnostic.lilliefors(data)
+
+        if shapiro_test.pvalue > 0.05:
+            if lilliefors_test.pvalue < 0.05:
+                distribution = "alt"
+            else:
+                distribution = "norm"
+        else:
+            distribution = "alt"
+
+        return distribution
+
+
+# %%
 class execute:
     def __init__(self, train, test, lags):
         self.train = train
@@ -86,29 +108,25 @@ class execute:
 
     def get(self):
 
+        target = self.train.columns[0]
+
         df2 = pd.DataFrame()
+        df2 = (
+            preprocessing(self.train, target, self.lags, False)
+            .run_univariate()
+            .dropna()
+            .reset_index(drop=True)
+        )
+        test_X = (
+            preprocessing(self.test, target, self.lags, True)
+            .run_univariate()
+            .dropna()
+            .reset_index(drop=True)
+        )
 
-        for col in self.train.columns:
-
-            target = col
-
-            df2 = (
-                preprocessing(self.train, target, self.lags, False)
-                .run_univariate()
-                .dropna()
-                .reset_index(drop=True)
-            )
-
-            test_X = (
-                preprocessing(self.test, target, self.lags, True)
-                .run_univariate()
-                .dropna()
-                .reset_index(drop=True)
-            )
-
-            test_y = self.test[target].tail(len(test_X)).reset_index(drop=True)
-            train_y = df2["Y"]
-            train_X = df2.loc[:, df2.columns != "Y"]
+        test_y = self.test[target].tail(len(test_X)).reset_index(drop=True)
+        train_y = df2["Y"]
+        train_X = df2.loc[:, df2.columns != "Y"]
 
         return train_X, train_y, test_X, test_y
 
@@ -259,35 +277,6 @@ class compare:
 
 
 # %%
-
-
-class distribution:
-    def __init__(self, y):
-        self.y = y
-
-    def aware(self):
-        data = []
-        data = self.y
-        shapiro_test = sps.shapiro(data)
-        lilliefors_test = diagnostic.lilliefors(data)
-
-        if shapiro_test.pvalue > 0.05:
-            if lilliefors_test.pvalue < 0.05:
-                distribution = "alt"
-            else:
-                distribution = "norm"
-        else:
-            distribution = "alt"
-
-        return distribution
-
-
-# %%
-
-
-# %%
-
-
 class mlmodels:
     def __init__(self, train_X, train_y, speed, validate):
         self.x = train_X
@@ -321,10 +310,9 @@ class mlmodels:
             )
 
         if self.speed == "fast":
-            param_grid = {
-                "M__n_restarts_optimizer": [2, 4, 8],
-                "M__alpha": [1e5, 1e-3, 1e-1],
-            }
+
+            param_grid = {"M__n_restarts_optimizer": [2, 4, 8]}
+
         else:
 
             ker_rbf = ConstantKernel(1.0, constant_value_bounds="fixed") * RBF(
@@ -506,8 +494,6 @@ class mlmodels:
 
 
 # %%
-
-
 class dlmodels:
     def __init__(self, i, train_X, train_y, speed, validate):
         super().__init__(train_X, train_y, speed)
@@ -761,8 +747,6 @@ class dlmodels:
 
 
 # %%
-
-
 class visualization:
     def __init__(self, history, score, model):
         self.history = history
@@ -785,8 +769,6 @@ class visualization:
 
 
 # %%
-
-
 class ModelTuner(kt.Tuner):
     def run_trial(self, trial, x_train, y_train):
         batch_size = 32

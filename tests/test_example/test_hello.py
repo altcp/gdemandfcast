@@ -20,10 +20,20 @@ def test_execute_manualml():
 
     train = "./gdemandfcast/data/Train Data.xlsx"
     test = "./gdemandfcast/data/Test Data.xlsx"
-    train_X, train_y, test_X, test_y = get(train, test, 3)
-    df, percentage_accurate = automate(
-        train_X, train_y, test_X, test_y, "manual", "ml", "fast"
-    ).run()
+    df_train = pd.read_excel(train).fillna(0)
+    df_test = pd.read_excel(test).fillna(0)
+
+    for col in df_train.columns:
+
+        train = df_train[[col]].reset_index(drop=True)
+        test = df_test[[col]].reset_index(drop=True)
+        # st.write(train)
+
+        train_X, train_y, test_X, test_y = execute(train, test, 3).get()
+        df, percentage_accurate = automate(
+            train_X, train_y, test_X, test_y, "manual", "ml", "fast"
+        ).run()
+
     assert not df.empty
 
 
@@ -32,8 +42,18 @@ def test_execute_automl():
 
     train = "./gdemandfcast/data/Train Data.xlsx"
     test = "./gdemandfcast/data/Test Data.xlsx"
-    train_X, train_y, test_X, test_y = get(train, test, 3)
-    df, percentage_accurate = automate(
-        train_X, train_y, test_X, test_y, "auto", "ml", "fast"
-    ).run()
+    df_train = pd.read_excel(train).fillna(0)
+    df_test = pd.read_excel(test).fillna(0)
+
+    for col in df_train.columns:
+
+        train = df_train[[col]].reset_index(drop=True)
+        test = df_test[[col]].reset_index(drop=True)
+        # st.write(train)
+
+        train_X, train_y, test_X, test_y = execute(train, test, 3).get()
+        df, percentage_accurate = automate(
+            train_X, train_y, test_X, test_y, "auto", "ml", "fast"
+        ).run()
+
     assert not df.empty
