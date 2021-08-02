@@ -1,7 +1,7 @@
 """Tests for hello function."""
 import pandas as pd
 
-from gdemandfcast.ai import automate, execute
+from gdemandfcast.ai import automate, execute, regress
 
 
 # Get
@@ -51,5 +51,41 @@ def test_execute_automl():
 
         train_X, train_y, test_X, test_y = execute(train, test, 3).get()
         df = automate(train_X, train_y, test_X, test_y, "auto", "ml", "fast").run()
+
+    assert not df.empty
+
+
+# Test Manual SM
+def test_execute_manualsm():
+
+    train = "./gdemandfcast/data/Train Data.xlsx"
+    test = "./gdemandfcast/data/Test Data.xlsx"
+    df_train = pd.read_excel(train).fillna(0)
+    df_test = pd.read_excel(test).fillna(0)
+
+    for col in df_train.columns:
+
+        train = df_train[[col]].reset_index(drop=True)
+        test = df_test[[col]].reset_index(drop=True)
+        # st.write(train)
+        df = regress(train, test).manual_sm()
+
+    assert not df.empty
+
+
+# Test Auto SM
+def test_execute_autosm():
+
+    train = "./gdemandfcast/data/Train Data.xlsx"
+    test = "./gdemandfcast/data/Test Data.xlsx"
+    df_train = pd.read_excel(train).fillna(0)
+    df_test = pd.read_excel(test).fillna(0)
+
+    for col in df_train.columns:
+
+        train = df_train[[col]].reset_index(drop=True)
+        test = df_test[[col]].reset_index(drop=True)
+        # st.write(train)
+        df = regress(train, test).auto_sm()
 
     assert not df.empty
