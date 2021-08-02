@@ -30,9 +30,7 @@ def test_execute_manualml():
         # st.write(train)
 
         train_X, train_y, test_X, test_y = execute(train, test, 3).get()
-        df, percentage_accurate = automate(
-            train_X, train_y, test_X, test_y, "manual", "ml", "fast"
-        ).run()
+        df = automate(train_X, train_y, test_X, test_y, "manual", "ml", "fast").run()
 
     assert not df.empty
 
@@ -52,8 +50,6 @@ def test_execute_automl():
         # st.write(train)
 
         train_X, train_y, test_X, test_y = execute(train, test, 3).get()
-        df, percentage_accurate = automate(
-            train_X, train_y, test_X, test_y, "auto", "ml", "fast"
-        ).run()
+        df = automate(train_X, train_y, test_X, test_y, "auto", "ml", "fast").run()
 
     assert not df.empty
