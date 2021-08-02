@@ -375,11 +375,10 @@ class smmodels:
 
 
 class mlmodels:
-    def __init__(self, train_X, train_y, speed, validate):
+    def __init__(self, train_X, train_y, speed):
         self.x = train_X
         self.y = train_y
         self.speed = speed
-        self.validate = validate
 
         self.jobs = -1
         self.scoring = "r2"
@@ -546,13 +545,13 @@ class mlmodels:
 
 # %%
 class damodels:
-    def __init__(self, i, train_X, train_y, speed, validate):
+    def __init__(self, i, train_X, train_y, speed, validation):
         super().__init__(train_X, train_y, speed)
         self.i = i
         self.X = train_X
         self.y = train_y
         self.speed = speed
-        self.validation = validate
+        self.validation = validation
 
     def run(self):
         i = self.i
