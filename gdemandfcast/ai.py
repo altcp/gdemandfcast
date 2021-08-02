@@ -347,34 +347,22 @@ class smmodels:
 
     def farima(self):
 
-        kpss_test = pm.arima.ndiffs(self.y, alpha=self.alpha, test="kpss", max_d=4)
-        adf_test = pm.arima.ndiffs(self.y, alpha=self.alpha, test="adf", max_d=4)
-        num_of_diffs = max(kpss_test, adf_test)
-
-        pipeline = Pipeline(
-            steps=[
-                ("fourier", pm.preprocessing.FourierFeaturizer(k=3, m=12)),
+        pipe = Pipeline(
+            [
+                ("fourier", pm.preprocessing.FourierFeaturizer(m=12, k=4)),
                 (
                     "arima",
-                    pm.auto_arima(
-                        self.y,
-                        d=num_of_diffs,
-                        start_p=0,
-                        start_q=0,
-                        start_P=0,
-                        max_P=4,
-                        max_q=4,
-                        trace=False,
-                        seasonal=self.seasonal,
+                    pm.arima.AutoARIMA(
+                        stepwise=True,
+                        trace=1,
                         error_action="ignore",
-                        random_state=self.seed,
+                        seasonal=False,
                         suppress_warnings=True,
                     ),
                 ),
             ]
         )
-
-        search = pipeline.fit(self.y)
+        search = pipe.fit(self.y)
 
         return search, "FARIMA"
 
