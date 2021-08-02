@@ -322,7 +322,7 @@ class smmodels:
     def arima(self):
 
         kpss_test = pm.arima.ndiffs(self.y, alpha=self.alpha, test="kpss", max_d=4)
-        adf_test = pm.arima.ndiffss(self.y, alpha=self.alpha, test="adf", max_d=4)
+        adf_test = pm.arima.ndiffs(self.y, alpha=self.alpha, test="adf", max_d=4)
         num_of_diffs = max(kpss_test, adf_test)
 
         search = pm.auto_arima(
