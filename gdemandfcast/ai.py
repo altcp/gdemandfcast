@@ -13,8 +13,6 @@ import pandas as pd
 import pmdarima as pm
 import scipy.stats as sps
 import tensorflow as tf
-from pandas.core.frame import DataFrame
-from sklearn import model_selection
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import (
     RBF,
@@ -35,6 +33,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import MinMaxScaler, PowerTransformer, RobustScaler
 from sklearn.svm import SVR
 from statsmodels.stats import diagnostic
+from statsmodels.tsa.arima_model import ARMA
 from tensorflow import keras
 from xgboost import XGBRegressor
 
@@ -182,11 +181,6 @@ class automate:
 
             return_df = df[["Y", best_model]].reset_index(drop=True)
 
-            if best_mape > 1:
-                percentage_accurate = 0
-            else:
-                percentage_accurate = (1 - best_mape) * 100
-
         else:
 
             if self.shift == "ml":
@@ -210,9 +204,8 @@ class automate:
                 ).compare_auto()
 
             return_df = pred_df
-            percentage_accurate = 0
 
-        return return_df, percentage_accurate
+        return return_df
 
 
 class compare:
@@ -227,10 +220,10 @@ class compare:
 
         warnings.filterwarnings("ignore")
 
-        m1 = mlmodels(self.train_X, self.train_y, self.speed, False).gpr_model()
-        m2 = mlmodels(self.train_X, self.train_y, self.speed, False).knn_model()
-        m3 = mlmodels(self.train_X, self.train_y, self.speed, False).xgb_model()
-        m4 = mlmodels(self.train_X, self.train_y, self.speed, False).svr_model()
+        m1 = mlmodels(self.train_X, self.train_y, self.speed).gpr_model()
+        m2 = mlmodels(self.train_X, self.train_y, self.speed).knn_model()
+        m3 = mlmodels(self.train_X, self.train_y, self.speed).xgb_model()
+        m4 = mlmodels(self.train_X, self.train_y, self.speed).svr_model()
 
         column_names = ["Y", "GPR", "KNN", "XGB", "SVR"]
         df = pd.DataFrame(columns=column_names)
@@ -246,16 +239,20 @@ class compare:
 
     def compare_dl(self):
 
-        m1 = dlmodels(1, self.train_X, self.train_y, False).run()
-        m2 = dlmodels(2, self.train_X, self.train_y, False).run()
-        m3 = dlmodels(3, self.train_X, self.train_y, False).run()
-        m4 = dlmodels(4, self.train_X, self.train_y, False).run()
+        m1 = dlmodels(1, self.train_X, self.train_y).run()
+        m2 = dlmodels(
+            2,
+            self.train_X,
+            self.train_y,
+        ).run()
+        m3 = dlmodels(3, self.train_X, self.train_y).run()
+        m4 = dlmodels(4, self.train_X, self.train_y).run()
 
         column_names = [
             "Y",
-            "GDF-BI_GRU_LTSM",
-            "GDF-BI_LSTM",
-            "GDF-GRU_LSTM",
+            "BI_GRU_LTSM",
+            "BI_LSTM",
+            "GRU_LSTM",
             "GDF_LSTM",
         ]
         df = pd.DataFrame(columns=column_names)
@@ -269,16 +266,114 @@ class compare:
 
         return df
 
-    def compare_ts(self):
-        # Todo: Rewrite
-        pass
 
-    def compare_auto(self):
-        # Todo: Rewrite
-        pass
+class regress:
+    def __init__(
+        self,
+        train_df,
+        test_df,
+    ):
+        self.train_y = train_df
+        self.test_X = test_df
+
+    def manual_sm(self):
+
+        m1 = smmodels(self.train_y, False, 123).arma()
+        m2 = smmodels(self.train_y, False, 123).arima()
+        m3 = smmodels(self.train_y, True, 123).arima()
+        m4 = smmodels(self.train_y, False, 123).farima()
+
+        column_names = ["Y", "ARMA", "ARIMA", "SARIMA", "FARIMA"]
+        df = pd.DataFrame(columns=column_names)
+        # Remove First Element to Match Prediction
+        df["Y"] = self.test_X
+
+        for model, name in (m1, m2, m3, m4):
+            mf = model.predict(self.test_X)
+            # Remove Last Element to Match Truth
+            df[name] = mf[:-1].tolist()
+
+        return df
+
+    def auto_sm(self):
+
+        df = self.manual_sm()
+        for col in df.columns:
+
+            if col != "Y":
+                mape = mean_absolute_percentage_error(df["Y"], df[col])
+                if mape < best_mape:
+                    best_mape = round(mape, 4)
+                    best_model = col
+
+        return_df = df[["Y", best_model]].reset_index(drop=True)
+
+        return return_df
 
 
 # %%
+class smmodels:
+    def __init__(self, df, seasonal, seed, alpha=0.05):
+        self.y = df
+        self.seasonal = seasonal
+        self.seed = seed
+        self.alpha = alpha
+
+    def arima(self):
+
+        kpss_test = pm.arima.ndiffs(self.y, alpha=self.alpha, test="kpss", max_d=4)
+        adf_test = pm.arima.ndiffss(self.y, alpha=self.alpha, test="adf", max_d=4)
+        num_of_diffs = max(kpss_test, adf_test)
+
+        search = pm.auto_arima(
+            self.y,
+            d=num_of_diffs,
+            start_p=0,
+            start_q=0,
+            start_P=0,
+            max_P=4,
+            max_q=4,
+            trace=False,
+            seasonal=self.seasonal,
+            error_action="ignore",
+            random_state=self.seed,
+            suppress_warnings=True,
+        )
+
+        if self.seasonal == True:
+            return search, "SARIMA"
+        else:
+            return search, "ARIMA"
+
+    def farima(self):
+
+        pipeline = Pipeline(
+            steps=[
+                ("fourier", pm.preprocessing.FourierFeaturizer(k=3, m=12)),
+                (
+                    "arima",
+                    pm.auto_arima(
+                        seasonal=False,
+                        stepwise=True,
+                        error_action="ignore",
+                        suppress_warnings=True,
+                    ),
+                ),
+            ]
+        )
+
+        search = pipeline.fit(self.y)
+
+        return search, "FARIMA"
+
+    def arma(self):
+
+        model = ARMA(self.y, order=(1, 1))
+        search = model.fit(trend="nc", method="css-mle")
+
+        return search, "ARMA"
+
+
 class mlmodels:
     def __init__(self, train_X, train_y, speed, validate):
         self.x = train_X
@@ -312,11 +407,9 @@ class mlmodels:
             )
 
         if self.speed == "fast":
-
             param_grid = {"M__n_restarts_optimizer": [2, 4, 8]}
 
         else:
-
             ker_rbf = ConstantKernel(1.0, constant_value_bounds="fixed") * RBF(
                 1.0, length_scale_bounds="fixed"
             )
@@ -339,18 +432,7 @@ class mlmodels:
             pipe, param_grid, cv=5, scoring=self.scoring, n_jobs=self.jobs
         )
         search.fit(self.x, self.y)
-        results = model_selection.cross_val_score(
-            search.best_estimator_,
-            self.x,
-            self.y,
-            cv=5,
-            scoring="neg_mean_absolute_percentage_error",
-        )
-
-        if self.validate == False:
-            return search, "GPR"
-        else:
-            return round((np.nanmean(results) * 100.0), 2)
+        return search, "GPR"
 
     def knn_model(self):
 
@@ -382,18 +464,7 @@ class mlmodels:
             pipe, param_grid, cv=5, scoring=self.scoring, n_jobs=self.jobs
         )
         search.fit(self.x, self.y)
-        results = model_selection.cross_val_score(
-            search.best_estimator_,
-            self.x,
-            self.y,
-            cv=5,
-            scoring="neg_mean_absolute_percentage_error",
-        )
-
-        if self.validate == False:
-            return search, "KNN"
-        else:
-            return round((np.nanmean(results) * 100.0), 2)
+        return search, "KNN"
 
     def xgb_model(self):
 
@@ -430,18 +501,7 @@ class mlmodels:
             pipe, param_grid, cv=5, scoring=self.scoring, n_jobs=self.jobs
         )
         search.fit(self.x, self.y)
-        results = model_selection.cross_val_score(
-            search.best_estimator_,
-            self.x,
-            self.y,
-            cv=5,
-            scoring="neg_mean_absolute_percentage_error",
-        )
-
-        if self.validate == False:
-            return search, "XGB"
-        else:
-            return round((np.nanmean(results) * 100.0), 2)
+        return search, "XGB"
 
     def svr_model(self):
 
@@ -481,22 +541,11 @@ class mlmodels:
             pipe, param_grid, cv=5, scoring=self.scoring, n_jobs=self.jobs
         )
         search.fit(self.x, self.y)
-        results = model_selection.cross_val_score(
-            search.best_estimator_,
-            self.x,
-            self.y,
-            cv=5,
-            scoring="neg_mean_absolute_percentage_error",
-        )
-
-        if self.validate == False:
-            return search, "SVR"
-        else:
-            return round((np.nanmean(results) * 100.0), 2)
+        return search, "SVR"
 
 
 # %%
-class dlmodels:
+class damodels:
     def __init__(self, i, train_X, train_y, speed, validate):
         super().__init__(train_X, train_y, speed)
         self.i = i
