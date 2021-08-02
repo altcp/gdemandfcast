@@ -391,7 +391,6 @@ class mlmodels:
             pipe = Pipeline(
                 steps=[
                     ("T", PowerTransformer(method="yeo-johnson")),
-                    ("N", MinMaxScaler((1, 100))),
                     ("M", GaussianProcessRegressor()),
                 ]
             )
@@ -399,8 +398,7 @@ class mlmodels:
             pipe = Pipeline(
                 steps=[
                     ("S", RobustScaler()),
-                    ("N", MinMaxScaler((1, 100))),
-                    ("T", PowerTransformer(method="box-cox")),
+                    ("T", PowerTransformer(method="yeo-johnson")),
                     ("M", GaussianProcessRegressor()),
                 ]
             )
