@@ -362,7 +362,9 @@ class smmodels:
                 ),
             ]
         )
-        search = pipe.fit(self.y)
+
+        train = self.y.to_numpy()
+        search = pipe.fit(train)
 
         return search, "FARIMA"
 
