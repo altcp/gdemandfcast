@@ -279,14 +279,13 @@ class regress:
         m1 = smmodels(self.train_y, False, 123).arma()
         m2 = smmodels(self.train_y, False, 123).arima()
         m3 = smmodels(self.train_y, True, 123).arima()
-        m4 = smmodels(self.train_y, False, 123).farima()
 
-        column_names = ["Y", "ARMA", "ARIMA", "SARIMA", "FARIMA"]
+        column_names = ["Y", "ARMA", "ARIMA", "SARIMA"]
         df = pd.DataFrame(columns=column_names)
         # Remove First Element to Match Prediction
         df["Y"] = self.test_X
 
-        for model, name in (m1, m2, m3, m4):
+        for model, name in (m1, m2, m3):
             mf = model.predict(self.test_X)
             # Remove Last Element to Match Truth
             df[name] = mf[:-1].tolist()
@@ -342,29 +341,6 @@ class smmodels:
             return search, "SARIMA"
         else:
             return search, "ARIMA"
-
-    def farima(self):
-
-        pipe = Pipeline(
-            [
-                ("fourier", pm.preprocessing.FourierFeaturizer(m=12, k=4)),
-                (
-                    "arima",
-                    pm.arima.AutoARIMA(
-                        stepwise=True,
-                        trace=1,
-                        error_action="ignore",
-                        seasonal=False,
-                        suppress_warnings=True,
-                    ),
-                ),
-            ]
-        )
-
-        train = np.asarray(self.y)
-        search = pipe.fit(train)
-
-        return search, "FARIMA"
 
     def arma(self):
 
