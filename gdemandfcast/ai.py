@@ -271,22 +271,22 @@ class regress:
         train_df,
         test_df,
     ):
-        self.train_y = train_df
-        self.test_X = test_df
+        self.train_df = train_df
+        self.test_df = test_df
 
     def manual_sm(self):
 
-        m1 = smmodels(self.train_y, False, 123).arma()
-        m2 = smmodels(self.train_y, False, 123).arima()
-        m3 = smmodels(self.train_y, True, 123).arima()
+        m1 = smmodels(self.train_df, False, 123).arma()
+        m2 = smmodels(self.train_df, False, 123).arima()
+        m3 = smmodels(self.train_df, True, 123).arima()
 
         column_names = ["Y", "ARMA", "ARIMA", "SARIMA"]
         df = pd.DataFrame(columns=column_names)
         # Remove First Element to Match Prediction
-        df["Y"] = self.test_X.iloc[1:].reset_index(drop=True)
+        df["Y"] = self.test_df.iloc[1:].reset_index(drop=True)
 
         for model, name in (m1, m2, m3):
-            mf = model.predict(self.test_X)
+            mf = model.predict(self.test_X.shape[0])
             # Remove Last Element to Match Truth
             df[name] = mf[:-1].tolist()
 
