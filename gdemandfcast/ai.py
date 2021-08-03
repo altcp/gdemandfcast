@@ -283,7 +283,8 @@ class regress:
         column_names = ["Y", "ARMA", "ARIMA", "SARIMA"]
         df = pd.DataFrame(columns=column_names)
         # Remove First Element to Match Prediction
-        df["Y"] = self.test_X.loc[1:]
+        y = self.test_X.tolist()
+        df["Y"] = y[1:]
 
         for model, name in (m1, m2, m3):
             mf = model.predict(self.test_X)
