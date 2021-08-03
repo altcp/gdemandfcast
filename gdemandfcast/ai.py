@@ -361,7 +361,7 @@ class smmodels:
             ]
         )
 
-        train = self.y.to_numpy().reshape(-1)
+        train = np.asarray(self.y)
         search = pipe.fit(train)
 
         return search, "FARIMA"
