@@ -286,7 +286,9 @@ class regress:
         df["Y"] = self.test_df.iloc[1:].reset_index(drop=True)
 
         for model, name in (m1, m2, m3):
-            mf = model.predict(self.test_df.shape[0])
+            for i in range(len(self.test_df)):
+                mf = model.predict(self.test_df.iloc[i])
+
             # Remove Last Element to Match Truth
             df[name] = mf[:-1].tolist()
 
