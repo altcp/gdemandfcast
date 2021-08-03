@@ -199,9 +199,7 @@ class automate:
                 ).compare_ts()
 
             else:
-                pred_df = compare(
-                    self.train_X, self.train_y, self.test_X, self.test_y, self.speed
-                ).compare_auto()
+                pred_df = "Access to Cloud Models Not Ready Yet"
 
             return_df = pred_df
 
@@ -363,7 +361,7 @@ class smmodels:
             ]
         )
 
-        train = self.y.to_numpy()
+        train = self.y.to_numpy().reshape(-1)
         search = pipe.fit(train)
 
         return search, "FARIMA"
