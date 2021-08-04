@@ -198,7 +198,7 @@ class automate:
                 ).compare_ts()
 
             else:
-                pred_df = "Access to Cloud Models Not Ready Yet"
+                pred_df = pd.DataFrame()
 
             return_df = pred_df
 
