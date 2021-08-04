@@ -63,7 +63,7 @@ def test_execute_manualml():
 
         train = df_train[[col]].reset_index(drop=True)
         test = df_test[[col]].reset_index(drop=True)
-        print(train)
+        # print(train)
 
         train_X, train_y, test_X, test_y = execute(train, test, 3).get()
         df = automate(train_X, train_y, test_X, test_y, "manual", "ml", "fast").run()
@@ -72,20 +72,20 @@ def test_execute_manualml():
 
 
 # Test Auto ML
-# def test_execute_automl():
+def test_execute_automl():
 
-# train = "./gdemandfcast/data/Train Data.xlsx"
-# test = "./gdemandfcast/data/Test Data.xlsx"
-# df_train = pd.read_excel(train).fillna(0)
-# df_test = pd.read_excel(test).fillna(0)
+    train = "./gdemandfcast/data/Train Data.xlsx"
+    test = "./gdemandfcast/data/Test Data.xlsx"
+    df_train = pd.read_excel(train).fillna(0)
+    df_test = pd.read_excel(test).fillna(0)
 
-# for col in df_train.columns:
+    for col in df_train.columns:
 
-# train = df_train[[col]].reset_index(drop=True)
-# test = df_test[[col]].reset_index(drop=True)
-# print(train)
+        train = df_train[[col]].reset_index(drop=True)
+        test = df_test[[col]].reset_index(drop=True)
+        # print(train)
 
-# train_X, train_y, test_X, test_y = execute(train, test, 3).get()
-# df = automate(train_X, train_y, test_X, test_y, "auto", "ml", "fast").run()
+        train_X, train_y, test_X, test_y = execute(train, test, 3).get()
+        df = automate(train_X, train_y, test_X, test_y, "auto", "ml", "fast").run()
 
-# assert not df.empty
+    assert not df.empty
