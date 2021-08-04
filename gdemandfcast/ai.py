@@ -25,6 +25,7 @@ from sklearn.gaussian_process.kernels import (
 from sklearn.metrics import (
     mean_absolute_error,
     mean_absolute_percentage_error,
+    mean_squared_error,
     r2_score,
 )
 from sklearn.model_selection import GridSearchCV, train_test_split
@@ -143,7 +144,7 @@ class automate:
 
         if self.gear == "auto":
 
-            best_mape = 100
+            best_rmse = 100000
             df = pd.DataFrame()
 
             if self.shift == "ml":
@@ -173,9 +174,10 @@ class automate:
             for col in df.columns:
 
                 if col != "Y":
-                    mape = mean_absolute_percentage_error(df["Y"], df[col])
-                    if mape < best_mape:
-                        best_mape = round(mape, 4)
+                    mse = mean_squared_error(df["Y"], df[col])
+                    rmse = math.sqrt(mse)
+                    if rmse < best_rmse:
+                        best_rmse = round(rmse, 4)
                         best_model = col
 
             return_df = df[["Y", best_model]].reset_index(drop=True)
@@ -306,24 +308,22 @@ class regress:
 
     def auto_sm(self):
 
-        best_mape = 1000
+        best_rmse = 100000
         best_model = "SARIMA"
 
         df = self.manual_sm()
-
         for col in df.columns:
 
             if col != "Y":
-                mape = mean_absolute_percentage_error(df["Y"], df[[col]])
-                print(mape)
-
-                if mape < best_mape:
-                    best_mape = round(mape, 4)
+                mse = mean_squared_error(df["Y"], df[col])
+                rmse = math.sqrt(mse)
+                if rmse < best_rmse:
+                    best_rmse = round(rmse, 4)
                     best_model = col
 
-        return_df = df[["Y", best_model]].reset_index(drop=True)
+        df1 = df[["Y", best_model]].reset_index(drop=True)
 
-        return return_df
+        return df1
 
 
 # %%
