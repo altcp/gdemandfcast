@@ -180,7 +180,9 @@ class automate:
                         best_rmse = round(rmse, 4)
                         best_model = col
 
-            return_df = df[["Y", best_model]].reset_index(drop=True)
+            df1 = df[["Y", best_model]].reset_index(drop=True)
+            df2 = df1.round(4)
+            return_df = df2
 
         else:
 
@@ -202,7 +204,9 @@ class automate:
             else:
                 pred_df = pd.DataFrame()
 
-            return_df = pred_df
+            df1 = pred_df
+            df2 = df1.round(4)
+            return_df = df2
 
         return return_df
 
@@ -301,10 +305,9 @@ class regress:
         # print(df)
         df["Y"] = df["Y"].shift(-1)
         df1 = df.dropna().reset_index(drop=True)
-        print(" ")
-        # print(df1)
+        df2 = df1.round(4)
 
-        return df1
+        return df2
 
     def auto_sm(self):
 
@@ -322,8 +325,9 @@ class regress:
                     best_model = col
 
         df1 = df[["Y", best_model]].reset_index(drop=True)
+        df2 = df1.round(4)
 
-        return df1
+        return df2
 
 
 # %%
