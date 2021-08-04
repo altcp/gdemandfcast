@@ -10,7 +10,7 @@
 </div>
 
 Generic Python Package for Time Series Forecasting that seeks to include the latest over time and making it easy to use. &nbsp;
-Thus, creating a current and stable standard that is good enough for non-profit or social use.
+Thus, creating something that is current and stable for non-profit or social use.
 <p>&nbsp;</p>
 
 
