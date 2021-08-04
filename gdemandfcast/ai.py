@@ -33,7 +33,6 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import MinMaxScaler, PowerTransformer, RobustScaler
 from sklearn.svm import SVR
 from statsmodels.stats import diagnostic
-from statsmodels.tsa.arima_model import ARMA
 from tensorflow import keras
 from xgboost import XGBRegressor
 
@@ -276,30 +275,39 @@ class regress:
 
     def manual_sm(self):
 
-        m1 = smmodels(self.train_df, False, 123).arma()
-        m2 = smmodels(self.train_df, False, 123).arima()
-        m3 = smmodels(self.train_df, True, 123).arima()
-
         column_names = ["Y", "ARMA", "ARIMA", "SARIMA"]
         df = pd.DataFrame(columns=column_names)
-        # Remove First Element to Match Prediction
-        df["Y"] = self.test_df.iloc[1:].reset_index(drop=True)
+        df["Y"] = self.test_df
 
-        for model, name in (m1, m2, m3):
+        mt = self.train_df
+        for i in range(len(self.test_df)):
 
-            mf = []
+            p1 = smmodels(mt, False, 123).arma()
+            p2 = smmodels(mt, False, 123).arima()
+            p3 = smmodels(mt, True, 123).arima()
 
-            for i in range(len(self.test_df)):
-                sample = self.test_df.iloc[i]
-                mf[i] = model.predict(sample)
+            df.at[i, "ARMA"] = p1
+            df.at[i, "ARIMA"] = p2
+            df.at[i, "SARIMA"] = p3
 
-            # Remove Last Element to Match Truth
-            df[name] = mf[:-1].tolist()
+            sample = df.iloc[i]["Y"]
 
-        return df
+            pos = len(mt) + i
+            mt.at[pos, mt.columns[0]] = sample
+            # print(mt)
+
+        # print(df)
+        df["Y"] = df["Y"].shift(-1)
+        df1 = df.dropna().reset_index(drop=True)
+        print(" ")
+        # print(df1)
+
+        return df1
 
     def auto_sm(self):
 
+        best_mape = 1000
+        best_model = "SARIMA"
         df = self.manual_sm()
         for col in df.columns:
 
@@ -334,7 +342,7 @@ class smmodels:
             start_p=0,
             start_q=0,
             start_P=0,
-            max_P=4,
+            max_p=4,
             max_q=4,
             trace=False,
             seasonal=self.seasonal,
@@ -343,17 +351,38 @@ class smmodels:
             suppress_warnings=True,
         )
 
-        if self.seasonal == True:
-            return search, "SARIMA"
-        else:
-            return search, "ARIMA"
+        try:
+            e_mu = search.predict(n_periods=1)
+            e_mu = e_mu[0]
+        except:
+            e_mu = 0
+
+        return e_mu
 
     def arma(self):
 
-        model = ARMA(self.y, order=(1, 1))
-        search = model.fit(trend="nc", method="css-mle")
+        search = pm.auto_arima(
+            self.y,
+            d=0,
+            start_p=0,
+            start_q=0,
+            start_P=0,
+            max_p=4,
+            max_q=4,
+            trace=False,
+            seasonal=self.seasonal,
+            error_action="ignore",
+            random_state=self.seed,
+            suppress_warnings=True,
+        )
 
-        return search, "ARMA"
+        try:
+            e_mu = search.predict(n_periods=1)
+            e_mu = e_mu[0]
+        except:
+            e_mu = 0
+
+        return e_mu
 
 
 class mlmodels:
