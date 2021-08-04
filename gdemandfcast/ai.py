@@ -538,14 +538,14 @@ class mlmodels:
 
         if self.speed == "fast":
             param_grid = {
-                "M__C": [1, 3, 5, 7],
+                "M__C": [0.7, 1.0, 1.3],
                 "M__epsilon": [0.001, 0.003, 0.005, 0.01],
             }
         else:
             param_grid = {
                 "M__kernel": ["rbf", "poly"],
                 "M__Degree": [0, 1, 2, 3],
-                "M__C": [1, 3, 5, 7],
+                "M__C": [0.7, 1.0, 1.3],
                 "M__epsilon": [0.001, 0.003, 0.005, 0.01],
             }
 
