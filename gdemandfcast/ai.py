@@ -13,6 +13,7 @@ import pandas as pd
 import pmdarima as pm
 import scipy.stats as sps
 import tensorflow as tf
+from pmdarima.arima.auto import AutoARIMA
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import (
     RBF,
@@ -22,12 +23,7 @@ from sklearn.gaussian_process.kernels import (
     RationalQuadratic,
     WhiteKernel,
 )
-from sklearn.metrics import (
-    mean_absolute_error,
-    mean_absolute_percentage_error,
-    mean_squared_error,
-    r2_score,
-)
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.pipeline import Pipeline
@@ -153,23 +149,11 @@ class automate:
                     self.train_X, self.train_y, self.test_X, self.test_y, self.speed
                 ).compare_ml()
 
-            elif self.shift == "dl":
+            else:
                 best_model = "GDF-LSTM"
                 df = compare(
                     self.train_X, self.train_y, self.test_X, self.test_y, self.speed
                 ).compare_dl()
-
-            elif self.shit == "ts":
-                best_model = "TS-ES-RNN"
-                df = compare(
-                    self.train_X, self.train_y, self.test_X, self.test_y, self.speed
-                ).compare_ts()
-
-            else:
-                best_model = "TS-ES-RNN"
-                df = compare(
-                    self.train_X, self.train_y, self.test_X, self.test_y, self.speed
-                ).compare_auto()
 
             for col in df.columns:
 
@@ -191,18 +175,10 @@ class automate:
                     self.train_X, self.train_y, self.test_X, self.test_y, self.speed
                 ).compare_ml()
 
-            elif self.shift == "dl":
+            else:
                 pred_df = compare(
                     self.train_X, self.train_y, self.test_X, self.test_y, self.speed
                 ).compare_dl()
-
-            elif self.shift == "ts":
-                pred_df = compare(
-                    self.train_X, self.train_y, self.test_X, self.test_y, self.speed
-                ).compare_ts()
-
-            else:
-                pred_df = pd.DataFrame()
 
             df1 = pred_df
             df2 = df1.round(4)
@@ -243,11 +219,7 @@ class compare:
     def compare_dl(self):
 
         m1 = dlmodels(1, self.train_X, self.train_y).run()
-        m2 = dlmodels(
-            2,
-            self.train_X,
-            self.train_y,
-        ).run()
+        m2 = dlmodels(2, self.train_X, self.train_y).run()
         m3 = dlmodels(3, self.train_X, self.train_y).run()
         m4 = dlmodels(4, self.train_X, self.train_y).run()
 
@@ -291,10 +263,12 @@ class regress:
             p1 = smmodels(mt, False, 123).arma()
             p2 = smmodels(mt, False, 123).arima()
             p3 = smmodels(mt, True, 123).arima()
+            p4 = smmodels(mt, True, 123).frima()
 
             df.at[i, "ARMA"] = p1
             df.at[i, "ARIMA"] = p2
             df.at[i, "SARIMA"] = p3
+            df.at[i, "FRIMA"] = p4
 
             sample = df.iloc[i]["Y"]
 
@@ -332,10 +306,11 @@ class regress:
 
 # %%
 class smmodels:
-    def __init__(self, df, seasonal, seed, alpha=0.05):
+    def __init__(self, df, seasonal, seed, periodicity=12, alpha=0.05):
         self.y = df
         self.seasonal = seasonal
         self.seed = seed
+        self.periodicity = periodicity
         self.alpha = alpha
 
     def arima(self):
@@ -361,6 +336,35 @@ class smmodels:
 
         try:
             e_mu = search.predict(n_periods=1)
+            e_mu = e_mu[0]
+        except:
+            e_mu = 0
+
+        return e_mu
+
+    def frima(self):
+
+        pipe = Pipeline(
+            [
+                (
+                    "fourier",
+                    pm.preprocessing.FourierFeatureizer(m=self.periodicity, k=4),
+                ),
+                (
+                    "arima",
+                    AutoARIMA(
+                        stepwise=True,
+                        trace=1,
+                        error_action="ignore",
+                        seasonal=False,
+                        suppress_warnings=True,
+                    ),
+                ),
+            ]
+        )
+
+        try:
+            e_mu = pipe.predict(n_periods=1)
             e_mu = e_mu[0]
         except:
             e_mu = 0
@@ -409,15 +413,17 @@ class mlmodels:
         if dist == "norm":
             pipe = Pipeline(
                 steps=[
-                    ("T", PowerTransformer(method="yeo-johnson")),
+                    ("N", MinMaxScaler(1, 100))(
+                        "T", PowerTransformer(method="yeo-johnson")
+                    ),
                     ("M", GaussianProcessRegressor()),
                 ]
             )
         else:
             pipe = Pipeline(
                 steps=[
-                    ("S", RobustScaler()),
-                    ("T", PowerTransformer(method="yeo-johnson")),
+                    ("N", MinMaxScaler(1, 100))("S", RobustScaler()),
+                    ("T", PowerTransformer(method="box-cox")),
                     ("M", GaussianProcessRegressor()),
                 ]
             )
@@ -452,24 +458,12 @@ class mlmodels:
 
     def knn_model(self):
 
-        dist = distribution(self.y).aware()
-        if dist == "norm":
-            pipe = Pipeline(
-                steps=[
-                    ("T", PowerTransformer(method="yeo-johnson")),
-                    ("N", MinMaxScaler((1, 100))),
-                    ("M", KNeighborsRegressor()),
-                ]
-            )
-        else:
-            pipe = Pipeline(
-                steps=[
-                    ("S", RobustScaler()),
-                    ("N", MinMaxScaler((1, 100))),
-                    ("T", PowerTransformer(method="box-cox")),
-                    ("M", KNeighborsRegressor()),
-                ]
-            )
+        pipe = Pipeline(
+            steps=[
+                ("N", MinMaxScaler((1, 100))),
+                ("M", KNeighborsRegressor()),
+            ]
+        )
 
         if self.speed == "fast":
             param_grid = {"M__n_neighbors": [3, 6, 9]}
@@ -521,24 +515,12 @@ class mlmodels:
 
     def svr_model(self):
 
-        dist = distribution(self.y).aware()
-        if dist == "norm":
-            pipe = Pipeline(
-                steps=[
-                    ("T", PowerTransformer(method="yeo-johnson")),
-                    ("N", MinMaxScaler((1, 100))),
-                    ("M", SVR()),
-                ]
-            )
-        else:
-            pipe = Pipeline(
-                steps=[
-                    ("S", RobustScaler()),
-                    ("N", MinMaxScaler((1, 100))),
-                    ("T", PowerTransformer(method="box-cox")),
-                    ("M", SVR()),
-                ]
-            )
+        pipe = Pipeline(
+            steps=[
+                ("N", MinMaxScaler((1, 100))),
+                ("M", SVR()),
+            ]
+        )
 
         if self.speed == "fast":
             param_grid = {"M__epsilon": [0.001, 0.003, 0.005, 0.01]}
