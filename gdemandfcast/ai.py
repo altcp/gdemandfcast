@@ -348,7 +348,7 @@ class smmodels:
             [
                 (
                     "fourier",
-                    pm.preprocessing.FourierFeatureizer(m=self.periodicity, k=4),
+                    pm.preprocessing.FourierFeaturizer(m=self.periodicity, k=4),
                 ),
                 (
                     "arima",
@@ -413,16 +413,16 @@ class mlmodels:
         if dist == "norm":
             pipe = Pipeline(
                 steps=[
-                    ("N", MinMaxScaler(1, 100))(
-                        "T", PowerTransformer(method="yeo-johnson")
-                    ),
+                    ("N", MinMaxScaler(1, 100)),
+                    ("T", PowerTransformer(method="yeo-johnson")),
                     ("M", GaussianProcessRegressor()),
                 ]
             )
         else:
             pipe = Pipeline(
                 steps=[
-                    ("N", MinMaxScaler(1, 100))("S", RobustScaler()),
+                    ("N", MinMaxScaler(1, 100)),
+                    ("S", RobustScaler()),
                     ("T", PowerTransformer(method="box-cox")),
                     ("M", GaussianProcessRegressor()),
                 ]
