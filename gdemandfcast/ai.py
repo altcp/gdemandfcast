@@ -308,11 +308,15 @@ class regress:
 
         best_mape = 1000
         best_model = "SARIMA"
+
         df = self.manual_sm()
+
         for col in df.columns:
 
             if col != "Y":
-                mape = mean_absolute_percentage_error(df["Y"], df[col])
+                mape = mean_absolute_percentage_error(df["Y"], df[[col]])
+                print(mape)
+
                 if mape < best_mape:
                     best_mape = round(mape, 4)
                     best_model = col
