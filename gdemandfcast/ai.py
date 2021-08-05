@@ -525,8 +525,9 @@ class mlmodels:
         else:
             param_grid = {
                 "M__kernel": ["rbf", "poly"],
-                "M__Degree": [0, 1, 2, 3],
-                "M__epsilon": [0.001, 0.003, 0.005, 0.01],
+                "M__C": [0.5, 1.0, 1.5, 2.0],
+                "M__degree": [0, 1, 2, 3],
+                "M__epsilon": [0.001, 0.003, 0.005, 0.007, 0.01],
             }
 
         search = GridSearchCV(
