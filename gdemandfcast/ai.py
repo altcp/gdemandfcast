@@ -263,7 +263,7 @@ class regress:
             p1 = smmodels(mt, False, 123).arma()
             p2 = smmodels(mt, False, 123).arima()
             p3 = smmodels(mt, True, 123).arima()
-            p4 = smmodels(mt, True, 123).frima()
+            p4 = smmodels(mt, False, 123).frima()
 
             df.at[i, "ARMA"] = p1
             df.at[i, "ARIMA"] = p2
@@ -356,7 +356,7 @@ class smmodels:
                         stepwise=True,
                         trace=1,
                         error_action="ignore",
-                        seasonal=False,
+                        seasonal=self.seasonal,
                         suppress_warnings=True,
                     ),
                 ),
@@ -427,7 +427,10 @@ class mlmodels:
             )
 
         if self.speed == "fast":
-            param_grid = {"M__n_restarts_optimizer": [2, 4, 8]}
+            param_grid = {
+                "M__n_restarts_optimizer": [2, 4, 8],
+                "M__random_state": [232],
+            }
 
         else:
             ker_rbf = ConstantKernel(1.0, constant_value_bounds="fixed") * RBF(
@@ -476,24 +479,12 @@ class mlmodels:
 
     def xgb_model(self):
 
-        dist = distribution(self.y).aware()
-        if dist == "norm":
-            pipe = Pipeline(
-                steps=[
-                    ("T", PowerTransformer(method="yeo-johnson")),
-                    ("N", MinMaxScaler((1, 100))),
-                    ("M", XGBRegressor(objective="reg:squarederror")),
-                ]
-            )
-        else:
-            pipe = Pipeline(
-                steps=[
-                    ("S", RobustScaler()),
-                    ("N", MinMaxScaler((1, 100))),
-                    ("T", PowerTransformer(method="box-cox")),
-                    ("M", XGBRegressor(objective="reg:squarederror")),
-                ]
-            )
+        pipe = Pipeline(
+            steps=[
+                ("N", MinMaxScaler((1, 100))),
+                ("M", XGBRegressor(objective="reg:squarederror")),
+            ]
+        )
 
         if self.speed == "fast":
             param_grid = {"M__eta": [0.05, 0.1, 0.2, 0.3]}
