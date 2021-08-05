@@ -243,13 +243,11 @@ class compare:
 
 
 class regress:
-    def __init__(
-        self,
-        train_df,
-        test_df,
-    ):
+    def __init__(self, train_df, test_df, horizon=1, seed=232):
         self.train_df = train_df
         self.test_df = test_df
+        self.horizon = horizon
+        self.seed = seed
 
     def manual_sm(self):
 
@@ -260,10 +258,10 @@ class regress:
         mt = self.train_df
         for i in range(len(self.test_df)):
 
-            p1 = smmodels(mt, False, 123).arma()
-            p2 = smmodels(mt, False, 123).arima()
-            p3 = smmodels(mt, True, 123).arima()
-            p4 = smmodels(mt, False, 123).frima()
+            p1 = smmodels(mt, False, self.horizon, self.seed).arma()
+            p2 = smmodels(mt, False, self.horizon, self.seed).arima()
+            p3 = smmodels(mt, True, self.horizon, self.seed).arima()
+            p4 = smmodels(mt, False, self.horizon, self.seed).frima()
 
             df.at[i, "ARMA"] = p1
             df.at[i, "ARIMA"] = p2
@@ -306,9 +304,10 @@ class regress:
 
 # %%
 class smmodels:
-    def __init__(self, df, seasonal, seed, periodicity=12, alpha=0.05):
+    def __init__(self, df, seasonal, horizon, seed, periodicity=12, alpha=0.05):
         self.y = df
         self.seasonal = seasonal
+        self.horizon = horizon
         self.seed = seed
         self.periodicity = periodicity
         self.alpha = alpha
@@ -335,7 +334,7 @@ class smmodels:
         )
 
         try:
-            e_mu = search.predict(n_periods=1)
+            e_mu = search.predict(n_periods=self.horizon)
             e_mu = e_mu[0]
         except:
             e_mu = 0
@@ -364,7 +363,7 @@ class smmodels:
         )
 
         try:
-            e_mu = pipe.predict(n_periods=1)
+            e_mu = pipe.predict(n_periods=self.horizon)
             e_mu = e_mu[0]
         except:
             e_mu = 0
@@ -389,7 +388,7 @@ class smmodels:
         )
 
         try:
-            e_mu = search.predict(n_periods=1)
+            e_mu = search.predict(n_periods=self.horizon)
             e_mu = e_mu[0]
         except:
             e_mu = 0
