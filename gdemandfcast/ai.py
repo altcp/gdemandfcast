@@ -647,8 +647,7 @@ class dlmodels:
                         project_name="gdf_bi_gru_lstm",
                     )
                     tuner.search(self.X, self.y)
-                    best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
-                    tuned_model = tuner.hypermodel.build(best_hps)
+                    tuned_model = tuner.get_best_models()[0]
 
             elif m == 2:
 
@@ -699,8 +698,7 @@ class dlmodels:
                         project_name="gdf_bi_lstm",
                     )
                     tuner.search(self.X, self.y)
-                    best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
-                    tuned_model = tuner.hypermodel.build(best_hps)
+                    tuned_model = tuner.get_best_models()[0]
 
             elif m == 3:
 
@@ -756,8 +754,7 @@ class dlmodels:
                         project_name="gdf_gru_lstm",
                     )
                     tuner.search(self.X, self.y)
-                    best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
-                    tuned_model = tuner.hypermodel.build(best_hps)
+                    tuned_model = tuner.get_best_models()[0]
 
             else:
 
@@ -806,8 +803,7 @@ class dlmodels:
                         project_name="gdf_gru",
                     )
                     tuner.search(self.X, self.y)
-                    best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
-                    tuned_model = tuner.hypermodel.build(best_hps)
+                    tuned_model = tuner.get_best_models()[0]
 
             return tuned_model
 
