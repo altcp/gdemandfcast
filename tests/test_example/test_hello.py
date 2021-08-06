@@ -108,7 +108,7 @@ def test_execute_manualdl():
         # print(train)
 
         train_X, train_y, test_X, test_y = execute(train, test, 3).rescale()
-        df = automate(train_X, train_y, test_X, test_y, "manual", "dl", "fast").run()
+        df = automate(train_X, train_y, test_X, test_y, "manual", "dl", "fast", 3).run()
 
     assert not df.empty
 

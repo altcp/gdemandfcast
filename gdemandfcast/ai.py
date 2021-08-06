@@ -127,6 +127,7 @@ class execute:
     def rescale(self):
         def create_dataset(dataset, look_back=1):
 
+            dataset = np.asarray(dataset)
             dataX, dataY = list(), list()
 
             for i in range(len(dataset) - look_back):
@@ -146,7 +147,7 @@ class execute:
 
 
 class automate:
-    def __init__(self, train_X, train_y, test_X, test_y, gear, shift, speed):
+    def __init__(self, train_X, train_y, test_X, test_y, gear, shift, speed, lags=3):
         self.train_X = train_X
         self.train_y = train_y
         self.test_X = test_X
@@ -154,6 +155,7 @@ class automate:
         self.gear = gear
         self.shift = shift
         self.speed = speed
+        self.lags = lags
 
     def run(self):
 
@@ -191,12 +193,22 @@ class automate:
 
             if self.shift == "ml":
                 pred_df = compare(
-                    self.train_X, self.train_y, self.test_X, self.test_y, self.speed
+                    self.train_X,
+                    self.train_y,
+                    self.test_X,
+                    self.test_y,
+                    self.speed,
+                    self.lags,
                 ).compare_ml()
 
             else:
                 pred_df = compare(
-                    self.train_X, self.train_y, self.test_X, self.test_y, self.speed
+                    self.train_X,
+                    self.train_y,
+                    self.test_X,
+                    self.test_y,
+                    self.speed,
+                    self.lags,
                 ).compare_dl()
 
             df1 = pred_df
@@ -207,12 +219,13 @@ class automate:
 
 
 class compare:
-    def __init__(self, train_X, train_y, test_X, test_y, speed):
+    def __init__(self, train_X, train_y, test_X, test_y, speed, lags):
         self.train_X = train_X
         self.train_y = train_y
         self.test_X = test_X
         self.test_y = test_y
         self.speed = speed
+        self.lags = lags
 
     def compare_ml(self):
 
@@ -237,10 +250,10 @@ class compare:
 
     def compare_dl(self):
 
-        m1 = dlmodels(1, self.train_X, self.train_y, self.speed).run()
-        m2 = dlmodels(2, self.train_X, self.train_y, self.speed).run()
-        m3 = dlmodels(3, self.train_X, self.train_y, self.speed).run()
-        m4 = dlmodels(4, self.train_X, self.train_y, self.speed).run()
+        m1 = dlmodels(1, self.train_X, self.train_y, self.speed, self.lags).run()
+        m2 = dlmodels(2, self.train_X, self.train_y, self.speed, self.lags).run()
+        m3 = dlmodels(3, self.train_X, self.train_y, self.speed, self.lags).run()
+        m4 = dlmodels(4, self.train_X, self.train_y, self.speed, self.lags).run()
 
         column_names = [
             "Y",
@@ -548,11 +561,12 @@ class mlmodels:
 
 # %%
 class dlmodels:
-    def __init__(self, i, train_X, train_y, speed="fast", validation=False):
+    def __init__(self, i, train_X, train_y, speed="fast", lags=3, validation=False):
         self.i = i
         self.X = train_X
         self.y = train_y
         self.speed = speed
+        self.lags = lags
         self.validation = validation
 
     def run(self):
