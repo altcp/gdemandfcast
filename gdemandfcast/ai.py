@@ -619,7 +619,7 @@ class dlmodels:
                     )
                     model.add(tf.keras.layers.BatchNormalization())
                     model.add(tf.keras.layers.Dense(1))
-                    model.compile(optimizer="rmsprop", loss="mse")
+                    model.compile(optimizer="adam", loss="mse", metrics=["mae"])
                     return model
 
                 if self.speed == "fast":
@@ -671,13 +671,16 @@ class dlmodels:
                     )
                     model.add(tf.keras.layers.BatchNormalization())
                     model.add(tf.keras.layers.Dense(1))
-                    model.compile(optimizer="rmsprop", loss="mse")
+                    model.compile(optimizer="adam", loss="mse", metrics=["mae"])
                     return model
 
                 if self.speed == "fast":
 
                     tuner = kt.Hyperband(
-                        bi_lstm, objective="mse", executions_per_trial=3, max_epochs=10
+                        bi_lstm,
+                        objective="mse",
+                        executions_per_trial=3,
+                        max_epochs=10,
                     )
                     tuned = tuner.search(self.X, self.y)
                     best_hps = tuned.get_best_hyperparameters()[0]
@@ -725,13 +728,16 @@ class dlmodels:
                     )
                     model.add(tf.keras.layers.BatchNormalization())
                     model.add(tf.keras.layers.Dense(1))
-                    model.compile(optimizer="rmsprop", loss="mse")
+                    model.compile(optimizer="adam", loss="mse", metrics=["mae"])
                     return model
 
                 if self.speed == "fast":
 
                     tuner = kt.Hyperband(
-                        gru_lstm, objective="mse", executions_per_trial=3, max_epochs=10
+                        gru_lstm,
+                        objective="mse",
+                        executions_per_trial=3,
+                        max_epochs=10,
                     )
                     tuned = tuner.search(self.X, self.y)
                     best_hps = tuned.get_best_hyperparameters()[0]
@@ -772,13 +778,16 @@ class dlmodels:
                     )
                     model.add(tf.keras.layers.BatchNormalization())
                     model.add(tf.keras.layers.Dense(1))
-                    model.compile(optimizer="rmsprop", loss="mse")
+                    model.compile(optimizer="adam", loss="mse", metrics=["mae"])
                     return model
 
                 if self.speed == "fast":
 
                     tuner = kt.Hyperband(
-                        lstm, objective="mse", executions_per_trial=3, max_epochs=10
+                        lstm,
+                        objective="mse",
+                        executions_per_trial=3,
+                        max_epochs=10,
                     )
                     tuned = tuner.search(self.X, self.y)
                     best_hps = tuned.get_best_hyperparameters()[0]
