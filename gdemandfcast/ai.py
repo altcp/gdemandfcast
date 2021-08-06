@@ -261,16 +261,17 @@ class compare:
             "BI_GRU_LTSM",
             "BI_LSTM",
             "GRU_LSTM",
-            "GDF_GRU",
+            "GRU",
         ]
+
         df = pd.DataFrame(columns=column_names)
         # Remove First Element to Match Prediction
-        df["Y"] = self.test_y.loc[1:]
+        df["Y"] = self.test_y[1:].tolist()
 
         for model, name in (m1, m2, m3, m4):
             mf = model.predict(self.test_X)
             # Remove Last Element to Match Truth
-            mf2 = mf.head(len(mf) - 1)
+            mf2 = mf[:-1]
             df[name] = mf2.tolist()
 
         return df
@@ -850,7 +851,20 @@ class dlmodels:
                 use_multiprocessing=False,
             )
 
-            return model
+            def get_name(m):
+
+                if m == 1:
+                    name = "BI_GRU_LTSM"
+                elif m == 2:
+                    name = "BI_LSTM"
+                elif m == 3:
+                    name = "GRU_LSTM"
+                else:
+                    name = "GRU"
+
+                return name
+
+            return model, get_name(self.i)
 
 
 # %%
