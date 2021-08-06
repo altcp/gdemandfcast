@@ -94,7 +94,6 @@ class distribution:
         return distribution
 
 
-# %%
 class execute:
     def __init__(self, train, test, lags):
         self.train = train
@@ -124,6 +123,26 @@ class execute:
         train_X = df2.loc[:, df2.columns != "Y"]
 
         return train_X, train_y, test_X, test_y
+
+    def rescale(self):
+        def create_dataset(dataset, look_back=1):
+
+            dataX, dataY = list(), list()
+
+            for i in range(len(dataset) - look_back):
+                a = dataset[i : (i + look_back)]
+                dataX.append(a)
+                dataY.append(dataset[i + look_back])
+
+            return np.asarray(dataX), np.asarray(dataY)
+
+        train_X, train_y = create_dataset(self.train, self.lags)
+        test_X, test_y = create_dataset(self.test, self.lags)
+
+        return train_X, train_y, test_X, test_y
+
+
+# %%
 
 
 class automate:
@@ -218,10 +237,10 @@ class compare:
 
     def compare_dl(self):
 
-        m1 = dlmodels(1, self.train_X, self.train_y).run()
-        m2 = dlmodels(2, self.train_X, self.train_y).run()
-        m3 = dlmodels(3, self.train_X, self.train_y).run()
-        m4 = dlmodels(4, self.train_X, self.train_y).run()
+        m1 = dlmodels(1, self.train_X, self.train_y, self.speed).run()
+        m2 = dlmodels(2, self.train_X, self.train_y, self.speed).run()
+        m3 = dlmodels(3, self.train_X, self.train_y, self.speed).run()
+        m4 = dlmodels(4, self.train_X, self.train_y, self.speed).run()
 
         column_names = [
             "Y",
@@ -529,37 +548,16 @@ class mlmodels:
 
 # %%
 class dlmodels:
-    def __init__(
-        self,
-        i,
-        train_X,
-        train_y,
-        speed="Fast",
-        validation=False,
-        samples=4,
-        batch_size=4,
-    ):
+    def __init__(self, i, train_X, train_y, speed="fast", validation=False):
         self.i = i
         self.X = train_X
         self.y = train_y
         self.speed = speed
         self.validation = validation
-        self.samples = samples
-        self.batch_size = batch_size
 
     def run(self):
-        i = self.i
-        X = self.X
-        y = self.y
-        n_input = self.samples
-        bs = self.batch_size
 
-        spilt = round((1 / 5), 2)
-        train_x, test_x, train_y, test_y = train_test_split(
-            X, y, test_size=spilt, random_state=232
-        )
-
-        # Generate Data Inputs & CallBacks
+        # Callbacks
         call_back = [
             tf.keras.callbacks.ReduceLROnPlateau(
                 monitor="loss", factor=0.5, patience=3, verbose=0
@@ -567,17 +565,9 @@ class dlmodels:
             tf.keras.callbacks.EarlyStopping(monitor="loss", patience=3, verbose=0),
         ]
 
-        n_features = train_x.shape[1]
-        generator = tf.keras.preprocessing.sequence.TimeseriesGenerator(
-            X, y, length=n_input, batch_size=bs
-        )
-
-        generator_train = tf.keras.preprocessing.sequence.TimeseriesGenerator(
-            train_x, train_y, length=n_input, batch_size=bs
-        )
-
-        generator_test = tf.keras.preprocessing.sequence.TimeseriesGenerator(
-            test_x, test_y, length=n_input, batch_size=bs
+        # Splits
+        train_X, test_X, train_y, test_y = train_test_split(
+            self.X, self.y, test_size=0.3
         )
 
         def get_model(m):
@@ -593,7 +583,7 @@ class dlmodels:
                                 units=hp.Int("neurons_gru", 4, 10, 1, default=7),
                                 return_sequences=True,
                             ),
-                            input_shape=((n_input, n_features)),
+                            input_shape=(self.lags, 1),
                         )
                     )
                     model.add(tf.keras.layers.BatchNormalization())
@@ -615,23 +605,33 @@ class dlmodels:
                     )
                     model.add(tf.keras.layers.BatchNormalization())
                     model.add(tf.keras.layers.Dense(1))
-                    model.compile(
-                        optimizer=tf.keras.optimizers.Adam(),
-                        loss=tf.keras.losses.MSE(),
-                        metrics=[tf.keras.metrics.MeanAbsolutePercentageError()],
-                    )
+                    model.compile(optimizer="rmsprop", loss="mse")
                     return model
 
-                tuner = ModelTuner(
-                    oracle=kt.oracles.BayesianOptimization(
-                        objective=kt.Objective("loss", "min"), max_trials=3
-                    ),
-                    hypermodel=bi_gru_lstm,
-                    project_name="gdf_bi_gru_lstm",
-                )
-                tuned = tuner.search(generator_train)
-                best_hps = tuned.get_best_hyperparameters()[0]
-                tuned_model = tuned.hypermodel.build(best_hps)
+                if self.speed == "fast":
+
+                    tuner = kt.Hyperband(
+                        bi_gru_lstm,
+                        objective="mse",
+                        executions_per_trial=3,
+                        max_epochs=10,
+                    )
+                    tuned = tuner.search(self.X, self.y)
+                    best_hps = tuned.get_best_hyperparameters()[0]
+                    tuned_model = tuned.hypermodel.build(best_hps)
+
+                else:
+
+                    tuner = ModelTuner(
+                        oracle=kt.oracles.BayesianOptimization(
+                            objective=kt.Objective("loss", "min"), max_trials=3
+                        ),
+                        hypermodel=bi_gru_lstm,
+                        project_name="gdf_bi_gru_lstm",
+                    )
+                    tuned = tuner.search(self.X, self.y)
+                    best_hps = tuned.get_best_hyperparameters()[0]
+                    tuned_model = tuned.hypermodel.build(best_hps)
 
             elif m == 2:
 
@@ -644,7 +644,7 @@ class dlmodels:
                                 units=hp.Int("neurons_lstm", 4, 10, 1, default=7),
                                 return_sequences=True,
                             ),
-                            input_shape=((n_input, n_features)),
+                            input_shape=(self.lags, 1),
                         )
                     )
                     model.add(tf.keras.layers.BatchNormalization())
@@ -657,23 +657,30 @@ class dlmodels:
                     )
                     model.add(tf.keras.layers.BatchNormalization())
                     model.add(tf.keras.layers.Dense(1))
-                    model.compile(
-                        optimizer=tf.keras.optimizers.Adam(),
-                        loss=tf.keras.losses.MSE(),
-                        metrics=[tf.keras.metrics.MeanAbsolutePercentageError()],
-                    )
+                    model.compile(optimizer="rmsprop", loss="mse")
                     return model
 
-                tuner = ModelTuner(
-                    oracle=kt.oracles.BayesianOptimization(
-                        objective=kt.Objective("loss", "min"), max_trials=3
-                    ),
-                    hypermodel=bi_lstm,
-                    project_name="gdf_bi_lstm",
-                )
-                tuned = tuner.search(generator_train)
-                best_hps = tuned.get_best_hyperparameters()[0]
-                tuned_model = tuned.hypermodel.build(best_hps)
+                if self.speed == "fast":
+
+                    tuner = kt.Hyperband(
+                        bi_lstm, objective="mse", executions_per_trial=3, max_epochs=10
+                    )
+                    tuned = tuner.search(self.X, self.y)
+                    best_hps = tuned.get_best_hyperparameters()[0]
+                    tuned_model = tuned.hypermodel.build(best_hps)
+
+                else:
+
+                    tuner = ModelTuner(
+                        oracle=kt.oracles.BayesianOptimization(
+                            objective=kt.Objective("loss", "min"), max_trials=3
+                        ),
+                        hypermodel=bi_lstm,
+                        project_name="gdf_bi_lstm",
+                    )
+                    tuned = tuner.search(self.X, self.y)
+                    best_hps = tuned.get_best_hyperparameters()[0]
+                    tuned_model = tuned.hypermodel.build(best_hps)
 
             elif m == 3:
 
@@ -685,7 +692,7 @@ class dlmodels:
                             units=hp.Int("neurons_gru", 4, 10, 1, default=7),
                             return_sequences=False,
                         ),
-                        input_shape=((n_input, n_features)),
+                        input_shape=(self.lags, 1),
                     )
                     model.add(tf.keras.layers.BatchNormalization())
                     # LSTM
@@ -704,23 +711,30 @@ class dlmodels:
                     )
                     model.add(tf.keras.layers.BatchNormalization())
                     model.add(tf.keras.layers.Dense(1))
-                    model.compile(
-                        optimizer=tf.keras.optimizers.Adam(),
-                        loss=tf.keras.losses.MSE(),
-                        metrics=[tf.keras.metrics.MeanAbsolutePercentageError()],
-                    )
+                    model.compile(optimizer="rmsprop", loss="mse")
                     return model
 
-                tuner = ModelTuner(
-                    oracle=kt.oracles.BayesianOptimization(
-                        objective=kt.Objective("loss", "min"), max_trials=3
-                    ),
-                    hypermodel=gru_lstm,
-                    project_name="gdf_gru_lstm",
-                )
-                tuned = tuner.search(generator_train)
-                best_hps = tuned.get_best_hyperparameters()[0]
-                tuned_model = tuned.hypermodel.build(best_hps)
+                if self.speed == "fast":
+
+                    tuner = kt.Hyperband(
+                        gru_lstm, objective="mse", executions_per_trial=3, max_epochs=10
+                    )
+                    tuned = tuner.search(self.X, self.y)
+                    best_hps = tuned.get_best_hyperparameters()[0]
+                    tuned_model = tuned.hypermodel.build(best_hps)
+
+                else:
+
+                    tuner = ModelTuner(
+                        oracle=kt.oracles.BayesianOptimization(
+                            objective=kt.Objective("loss", "min"), max_trials=3
+                        ),
+                        hypermodel=gru_lstm,
+                        project_name="gdf_gru_lstm",
+                    )
+                    tuned = tuner.search(self.X, self.y)
+                    best_hps = tuned.get_best_hyperparameters()[0]
+                    tuned_model = tuned.hypermodel.build(best_hps)
 
             else:
 
@@ -732,7 +746,7 @@ class dlmodels:
                             units=hp.Int("neurons_lstm", 4, 10, 1, default=7),
                             return_sequences=False,
                         ),
-                        input_shape=((n_input, n_features)),
+                        input_shape=(self.lags, 1),
                     )
                     model.add(tf.keras.layers.BatchNormalization())
                     # DENSE
@@ -744,32 +758,40 @@ class dlmodels:
                     )
                     model.add(tf.keras.layers.BatchNormalization())
                     model.add(tf.keras.layers.Dense(1))
-                    model.compile(
-                        optimizer=tf.keras.optimizers.Adam(),
-                        loss=tf.keras.losses.MSE(),
-                        metrics=[tf.keras.metrics.MeanAbsolutePercentageError()],
-                    )
+                    model.compile(optimizer="rmsprop", loss="mse")
                     return model
 
-                tuner = ModelTuner(
-                    oracle=kt.oracles.BayesianOptimization(
-                        objective=kt.Objective("loss", "min"), max_trials=3
-                    ),
-                    hypermodel=lstm,
-                    project_name="gdf_lstm",
-                )
-                tuned = tuner.search(generator_train)
-                best_hps = tuned.get_best_hyperparameters()[0]
-                tuned_model = tuned.hypermodel.build(best_hps)
+                if self.speed == "fast":
+
+                    tuner = kt.Hyperband(
+                        lstm, objective="mse", executions_per_trial=3, max_epochs=10
+                    )
+                    tuned = tuner.search(self.X, self.y)
+                    best_hps = tuned.get_best_hyperparameters()[0]
+                    tuned_model = tuned.hypermodel.build(best_hps)
+
+                else:
+
+                    tuner = ModelTuner(
+                        oracle=kt.oracles.BayesianOptimization(
+                            objective=kt.Objective("loss", "min"), max_trials=3
+                        ),
+                        hypermodel=lstm,
+                        project_name="gdf_lstm",
+                    )
+                    tuned = tuner.search(self.X, self.y)
+                    best_hps = tuned.get_best_hyperparameters()[0]
+                    tuned_model = tuned.hypermodel.build(best_hps)
 
             return tuned_model
 
         # Print Fit
         if self.validation == True:
 
-            history = get_model(i).fit_generator(
-                generator_train,
-                validation_data=generator_test,
+            history = get_model(self.i).fit(
+                train_X,
+                train_y,
+                validation_data=(test_X, test_y),
                 callbacks=call_back,
                 verbose=0,
                 use_multiprocessing=False,
@@ -795,8 +817,9 @@ class dlmodels:
 
         else:
 
-            model = get_model(i).fit_generator(
-                generator,
+            model = get_model(self.i).fit(
+                self.X,
+                self.y,
                 callbacks=call_back,
                 verbose=0,
                 use_multiprocessing=False,
@@ -823,14 +846,13 @@ class visualization:
 
 # %%
 class ModelTuner(kt.Tuner):
-    def run_trial(self, trial, generator):
-        hp = trial.hyperparameters
-        generator = generator.batch(4)
+    def run_trial(self, trial, x_train, y_train):
 
+        hp = trial.hyperparameters
         model = self.hypermodel.build(trial.hyperparameters)
         epoch_loss_metric = tf.keras.metrics.Mean()
         optimizer = tf.keras.optimizers.Adam(
-            learning_rate=hp.Float(
+            lr=hp.Float(
                 "opt_learn_rate",
                 min_value=1e-4,
                 max_value=1e-2,
@@ -850,7 +872,7 @@ class ModelTuner(kt.Tuner):
 
             with tf.GradientTape() as tape:
 
-                pred_y = model(real_x)
+                pred_y = model.predict(real_x)
 
                 data = []
                 data = real_y - pred_y
@@ -863,17 +885,17 @@ class ModelTuner(kt.Tuner):
                 iqr = q3 - q1
                 d = q3 + (1.5 * iqr)
 
-                huber = tf.keras.losses.Huber(delta=d)
-                mse = tf.keras.losses.MSE()
-
                 # Distribution Aware
                 if shapiro_test.pvalue > 0.05:
                     if lilliefors_test.pvalue < 0.05:
-                        loss = huber(real_y, pred_y)
+                        huber = tf.keras.losses.Huber(delta=d)
+                        loss = huber(real_y, pred_y).numpy()
                     else:
-                        loss = mse(real_y, pred_y)
+                        mse = tf.keras.losses.MeanSquaredError()
+                        loss = mse(real_y, pred_y).numpy()
                 else:
-                    loss = huber(real_y, pred_y)
+                    huber = tf.keras.losses.Huber(delta=d)
+                    loss = huber(real_y, pred_y).numpy()
 
             gradients = tape.gradient(loss, model.trainable_variables)
             optimizer.apply_gradients(zip(gradients, model.trainable_variables))
@@ -882,21 +904,20 @@ class ModelTuner(kt.Tuner):
             return loss
 
         # Calculate number of batches and define number of epochs per Trial
-        num_of_batches = math.floor(len(generator) / 4)
+        batch_size = 4
+        num_of_batches = math.floor(len(x_train) / batch_size)
         epochs = 10
 
         # Run the Trial
         for epoch in range(epochs):
             self.on_epoch_begin(trial, model, epoch, logs={})
             for batch in range(num_of_batches):
-                n = batch * 4
+                n = batch * batch_size
                 self.on_batch_begin(trial, model, batch, logs={})
-                x, y = generator[n : (n + 4)]
-                print(x)
-                print(y)
-                batch_loss = run_train_step(x, y)
-                print(batch_loss)
-                self.on_batch_end(trial, model, batch, logs={"loss": float(batch_loss)})
+                batch_loss = run_train_step(
+                    x_train[n : n + batch_size], y_train[n : n + batch_size]
+                )
+                self.on_batch_end(trial, model, batch, logs={"loss": batch_loss})
 
             epoch_loss = epoch_loss_metric.result().numpy()
             self.on_epoch_end(trial, model, epoch, logs={"loss": epoch_loss})

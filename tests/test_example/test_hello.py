@@ -107,7 +107,7 @@ def test_execute_manualdl():
         test = df_test[[col]].reset_index(drop=True)
         # print(train)
 
-        train_X, train_y, test_X, test_y = execute(train, test, 3).get()
+        train_X, train_y, test_X, test_y = execute(train, test, 3).rescale()
         df = automate(train_X, train_y, test_X, test_y, "manual", "dl", "fast").run()
 
     assert not df.empty
@@ -128,7 +128,7 @@ def test_execute_autodl():
         test = df_test[[col]].reset_index(drop=True)
         # print(train)
 
-        train_X, train_y, test_X, test_y = execute(train, test, 3).get()
+        train_X, train_y, test_X, test_y = execute(train, test, 3).rescale()
         df = automate(train_X, train_y, test_X, test_y, "auto", "dl", "fast").run()
 
     assert not df.empty
