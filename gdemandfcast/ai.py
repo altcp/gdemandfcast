@@ -634,8 +634,7 @@ class dlmodels:
                         max_epochs=10,
                     )
                     tuner.search(self.X, self.y)
-                    best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
-                    tuned_model = tuner.hypermodel.build(best_hps)
+                    tuned_model = tuner.get_best_models()[0]
 
                 else:
 
@@ -685,8 +684,7 @@ class dlmodels:
                         max_epochs=10,
                     )
                     tuner.search(self.X, self.y)
-                    best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
-                    tuned_model = tuner.hypermodel.build(best_hps)
+                    tuned_model = tuner.get_best_models()[0]
 
                 else:
 
@@ -741,8 +739,7 @@ class dlmodels:
                         max_epochs=10,
                     )
                     tuner.search(self.X, self.y)
-                    best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
-                    tuned_model = tuner.hypermodel.build(best_hps)
+                    tuned_model = tuner.get_best_models()[0]
 
                 else:
 
@@ -790,8 +787,7 @@ class dlmodels:
                         max_epochs=10,
                     )
                     tuner.search(self.X, self.y)
-                    best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
-                    tuned_model = tuner.hypermodel.build(best_hps)
+                    tuned_model = tuner.get_best_models()[0]
 
                 else:
 
