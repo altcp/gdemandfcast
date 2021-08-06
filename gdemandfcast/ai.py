@@ -529,27 +529,38 @@ class mlmodels:
 
 # %%
 class dlmodels:
-    def __init__(self, i, train_X, train_y, validation=False, samples=3):
+    def __init__(self, i, train_X, train_y, validation=False, samples=4, batch_size=32):
         self.i = i
         self.X = train_X
         self.y = train_y
         self.validation = validation
         self.samples = samples
+        self.batch_size = batch_size
 
     def run(self):
         i = self.i
         X = self.X
         y = self.y
         n_input = self.samples
+        bs = self.batch_size
 
         spilt = round((1 / 5), 2)
         train_x, test_x, train_y, test_y = train_test_split(
             X, y, test_size=spilt, random_state=232
         )
 
+        # Generate Data Inputs
         n_features = train_x.shape[1]
         generator = tf.keras.preprocessing.sequence.TimeseriesGenerator(
-            train_x, train_y, length=n_input, batch_size=32
+            X, y, length=n_input, batch_size=bs
+        )
+
+        generator_train = tf.keras.preprocessing.sequence.TimeseriesGenerator(
+            train_x, train_y, length=n_input, batch_size=bs
+        )
+
+        generator_test = tf.keras.preprocessing.sequence.TimeseriesGenerator(
+            test_x, test_y, length=n_input, batch_size=bs
         )
 
         def get_tuner(m):
@@ -728,7 +739,7 @@ class dlmodels:
 
             return tuner
 
-        get_tuner(i).search(X, y)
+        get_tuner(i).search(generator_train)
         best_hps = get_tuner(i).get_best_hyperparameters()[0]
         model = get_tuner(i).hypermodel.build(best_hps)
 
@@ -739,23 +750,15 @@ class dlmodels:
             tf.keras.callbacks.EarlyStopping(monitor="loss", patience=3, verbose=0),
         ]
 
-        if (i == 1) or (i == 2):
-            X = X.reshape(X.shape[1], 1)
-            test_x = test_x.reshape(test_x.shape[1], 1)
-        else:
-            X = X.reshape(X.shape[0], X.shape[1], 1)
-            test_x = test_x.reshape(test_x.shape[0], test_x.shape[1], 1)
-
-        history = model.fit_generator(
-            generator,
-            validation_data=(test_x, test_y),
-            callbacks=call_back,
-            verbose=0,
-            use_multiprocessing=False,
-        )
-        scores = model.evaluate(test_x, test_y, verbose=0)
-
         if self.validation == True:
+
+            history = model.fit_generator(
+                generator_train,
+                validation_data=generator_test,
+                callbacks=call_back,
+                verbose=0,
+                use_multiprocessing=False,
+            )
 
             def get_name(m):
 
@@ -770,31 +773,30 @@ class dlmodels:
 
                 return name
 
-            visualization(
-                history, round((scores[1] * 100), 2), get_name(self.i)
-            ).disp_fit()
+            visualization(history, get_name(self.i)).disp_fit()
             print(" ")
             print(" ")
             return None
 
         else:
 
+            model = model.fit_generator(
+                generator,
+                callbacks=call_back,
+                verbose=0,
+                use_multiprocessing=False,
+            )
+
             return model
 
 
 # %%
 class visualization:
-    def __init__(self, history, score, model):
+    def __init__(self, history, model):
         self.history = history
-        self.score = score
         self.model = model
 
     def disp_fit(self):
-
-        print(" ")
-        print(" ")
-        msg = f"{self.model} achieved a MAPE of {self.score} using Distribution Aware Gradient Descent Optimization."
-        print(msg)
 
         plt.plot(self.history.history["loss"])
         plt.plot(self.history.history["val_loss"])
