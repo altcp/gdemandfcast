@@ -708,7 +708,7 @@ class dlmodels:
                     model.add(
                         tf.keras.layers.GRU(
                             units=hp.Int("neurons_gru", 4, 10, 1, default=7),
-                            return_sequences=False,
+                            return_sequences=True,
                             input_shape=(self.lags, 1),
                         ),
                     )
