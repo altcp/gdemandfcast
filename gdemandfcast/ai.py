@@ -709,8 +709,8 @@ class dlmodels:
                         tf.keras.layers.GRU(
                             units=hp.Int("neurons_gru", 4, 10, 1, default=7),
                             return_sequences=False,
+                            input_shape=(self.lags, 1),
                         ),
-                        input_shape=(self.lags, 1),
                     )
                     model.add(tf.keras.layers.BatchNormalization())
                     # LSTM
@@ -766,8 +766,8 @@ class dlmodels:
                         tf.keras.layers.LSTM(
                             units=hp.Int("neurons_lstm", 4, 10, 1, default=7),
                             return_sequences=False,
+                            input_shape=(self.lags, 1),
                         ),
-                        input_shape=(self.lags, 1),
                     )
                     model.add(tf.keras.layers.BatchNormalization())
                     # DENSE
