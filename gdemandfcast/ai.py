@@ -537,7 +537,7 @@ class dlmodels:
         speed="Fast",
         validation=False,
         samples=4,
-        batch_size=32,
+        batch_size=4,
     ):
         self.i = i
         self.X = train_X
@@ -824,8 +824,9 @@ class visualization:
 # %%
 class ModelTuner(kt.Tuner):
     def run_trial(self, trial, generator):
-        batch_size = 32
         hp = trial.hyperparameters
+        generator = generator.batch(4)
+
         model = self.hypermodel.build(trial.hyperparameters)
         epoch_loss_metric = tf.keras.metrics.Mean()
         optimizer = tf.keras.optimizers.Adam(
@@ -881,16 +882,16 @@ class ModelTuner(kt.Tuner):
             return loss
 
         # Calculate number of batches and define number of epochs per Trial
-        num_of_batches = math.floor(len(generator) / batch_size)
+        num_of_batches = math.floor(len(generator) / 4)
         epochs = 10
 
         # Run the Trial
         for epoch in range(epochs):
             self.on_epoch_begin(trial, model, epoch, logs={})
             for batch in range(num_of_batches):
-                n = batch * batch_size
+                n = batch * 4
                 self.on_batch_begin(trial, model, batch, logs={})
-                x, y = generator[n : (n + batch_size)]
+                x, y = generator[n : (n + 4)]
                 print(x)
                 print(y)
                 batch_loss = run_train_step(x, y)
