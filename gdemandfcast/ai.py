@@ -265,12 +265,12 @@ class compare:
         ]
         df = pd.DataFrame(columns=column_names)
         # Remove First Element to Match Prediction
-        df["Y"] = self.test_y.loc[1:]
+        df["Y"] = self.test_y[1:]
 
         for model, name in (m1, m2, m3, m4):
             mf = model.predict(self.test_X)
             # Remove Last Element to Match Truth
-            df[name] = mf[:-1].tolist()
+            df[name] = mf[:-1]
 
         return df
 
