@@ -172,7 +172,7 @@ class automate:
                 ).compare_ml()
 
             else:
-                best_model = "GDF-LSTM"
+                best_model = "GDF-GRU"
                 df = compare(
                     self.train_X, self.train_y, self.test_X, self.test_y, self.speed
                 ).compare_dl()
@@ -261,7 +261,7 @@ class compare:
             "BI_GRU_LTSM",
             "BI_LSTM",
             "GRU_LSTM",
-            "GDF_LSTM",
+            "GDF_GRU",
         ]
         df = pd.DataFrame(columns=column_names)
         # Remove First Element to Match Prediction
@@ -759,12 +759,12 @@ class dlmodels:
 
             else:
 
-                def lstm(hp):
+                def gru(hp):
                     model = tf.keras.Sequential()
-                    # LSTM
+                    # GRU
                     model.add(
-                        tf.keras.layers.LSTM(
-                            units=hp.Int("neurons_lstm", 4, 10, 1, default=7),
+                        tf.keras.layers.GRU(
+                            units=hp.Int("neurons_gru", 4, 10, 1, default=7),
                             return_sequences=False,
                             input_shape=(self.lags, 1),
                         ),
@@ -785,7 +785,7 @@ class dlmodels:
                 if self.speed == "fast":
 
                     tuner = kt.Hyperband(
-                        lstm,
+                        gru,
                         objective="mse",
                         executions_per_trial=3,
                         max_epochs=10,
@@ -800,8 +800,8 @@ class dlmodels:
                         oracle=kt.oracles.BayesianOptimization(
                             objective=kt.Objective("loss", "min"), max_trials=3
                         ),
-                        hypermodel=lstm,
-                        project_name="gdf_lstm",
+                        hypermodel=gru,
+                        project_name="gdf_gru",
                     )
                     tuner.search(self.X, self.y)
                     best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
@@ -830,7 +830,7 @@ class dlmodels:
                 elif m == 3:
                     name = "GDF-GRU_LSTM"
                 else:
-                    name = "GDF_LSTM"
+                    name = "GDF_GRU"
 
                 return name
 
