@@ -529,10 +529,20 @@ class mlmodels:
 
 # %%
 class dlmodels:
-    def __init__(self, i, train_X, train_y, validation=False, samples=4, batch_size=32):
+    def __init__(
+        self,
+        i,
+        train_X,
+        train_y,
+        speed="Fast",
+        validation=False,
+        samples=4,
+        batch_size=32,
+    ):
         self.i = i
         self.X = train_X
         self.y = train_y
+        self.speed = speed
         self.validation = validation
         self.samples = samples
         self.batch_size = batch_size
@@ -549,7 +559,14 @@ class dlmodels:
             X, y, test_size=spilt, random_state=232
         )
 
-        # Generate Data Inputs
+        # Generate Data Inputs & CallBacks
+        call_back = [
+            tf.keras.callbacks.ReduceLROnPlateau(
+                monitor="loss", factor=0.5, patience=3, verbose=0
+            ),
+            tf.keras.callbacks.EarlyStopping(monitor="loss", patience=3, verbose=0),
+        ]
+
         n_features = train_x.shape[1]
         generator = tf.keras.preprocessing.sequence.TimeseriesGenerator(
             X, y, length=n_input, batch_size=bs
@@ -563,7 +580,7 @@ class dlmodels:
             test_x, test_y, length=n_input, batch_size=bs
         )
 
-        def get_tuner(m):
+        def get_model(m):
 
             if m == 1:
 
@@ -610,9 +627,11 @@ class dlmodels:
                         objective=kt.Objective("loss", "min"), max_trials=3
                     ),
                     hypermodel=bi_gru_lstm,
-                    project_name="gdf_bi_gru_ltsm",
+                    project_name="gdf_bi_gru_lstm",
                 )
-                gc.collect()
+                tuned = tuner.search(generator_train)
+                best_hps = tuned.get_best_hyperparameters()[0]
+                tuned_model = tuned.hypermodel.build(best_hps)
 
             elif m == 2:
 
@@ -652,7 +671,9 @@ class dlmodels:
                     hypermodel=bi_lstm,
                     project_name="gdf_bi_lstm",
                 )
-                gc.collect()
+                tuned = tuner.search(generator_train)
+                best_hps = tuned.get_best_hyperparameters()[0]
+                tuned_model = tuned.hypermodel.build(best_hps)
 
             elif m == 3:
 
@@ -697,7 +718,9 @@ class dlmodels:
                     hypermodel=gru_lstm,
                     project_name="gdf_gru_lstm",
                 )
-                gc.collect()
+                tuned = tuner.search(generator_train)
+                best_hps = tuned.get_best_hyperparameters()[0]
+                tuned_model = tuned.hypermodel.build(best_hps)
 
             else:
 
@@ -735,24 +758,16 @@ class dlmodels:
                     hypermodel=lstm,
                     project_name="gdf_lstm",
                 )
-                gc.collect()
+                tuned = tuner.search(generator_train)
+                best_hps = tuned.get_best_hyperparameters()[0]
+                tuned_model = tuned.hypermodel.build(best_hps)
 
-            return tuner
+            return tuned_model
 
-        get_tuner(i).search(generator_train)
-        best_hps = get_tuner(i).get_best_hyperparameters()[0]
-        model = get_tuner(i).hypermodel.build(best_hps)
-
-        call_back = [
-            tf.keras.callbacks.ReduceLROnPlateau(
-                monitor="loss", factor=0.5, patience=3, verbose=0
-            ),
-            tf.keras.callbacks.EarlyStopping(monitor="loss", patience=3, verbose=0),
-        ]
-
+        # Print Fit
         if self.validation == True:
 
-            history = model.fit_generator(
+            history = get_model(i).fit_generator(
                 generator_train,
                 validation_data=generator_test,
                 callbacks=call_back,
@@ -780,7 +795,7 @@ class dlmodels:
 
         else:
 
-            model = model.fit_generator(
+            model = get_model(i).fit_generator(
                 generator,
                 callbacks=call_back,
                 verbose=0,
