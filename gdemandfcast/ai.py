@@ -619,7 +619,7 @@ class dlmodels:
                     )
                     model.add(tf.keras.layers.BatchNormalization())
                     model.add(tf.keras.layers.Dense(1))
-                    model.compile(optimizer="adam", loss="mse", metrics=["mae"])
+                    model.compile(optimizer="adam", loss="mse", metrics=["mse"])
                     return model
 
                 if self.speed == "fast":
@@ -671,7 +671,7 @@ class dlmodels:
                     )
                     model.add(tf.keras.layers.BatchNormalization())
                     model.add(tf.keras.layers.Dense(1))
-                    model.compile(optimizer="adam", loss="mse", metrics=["mae"])
+                    model.compile(optimizer="adam", loss="mse", metrics=["mse"])
                     return model
 
                 if self.speed == "fast":
@@ -728,7 +728,7 @@ class dlmodels:
                     )
                     model.add(tf.keras.layers.BatchNormalization())
                     model.add(tf.keras.layers.Dense(1))
-                    model.compile(optimizer="adam", loss="mse", metrics=["mae"])
+                    model.compile(optimizer="adam", loss="mse", metrics=["mse"])
                     return model
 
                 if self.speed == "fast":
@@ -778,7 +778,7 @@ class dlmodels:
                     )
                     model.add(tf.keras.layers.BatchNormalization())
                     model.add(tf.keras.layers.Dense(1))
-                    model.compile(optimizer="adam", loss="mse", metrics=["mae"])
+                    model.compile(optimizer="adam", loss="mse", metrics=["mse"])
                     return model
 
                 if self.speed == "fast":
