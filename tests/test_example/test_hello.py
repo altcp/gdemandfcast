@@ -89,3 +89,43 @@ def test_execute_automl():
         df = automate(train_X, train_y, test_X, test_y, "auto", "ml", "fast").run()
 
     assert not df.empty
+
+
+# Test Manual DL
+def test_execute_manualdl():
+
+    train = "./gdemandfcast/data/Train Data.xlsx"
+    test = "./gdemandfcast/data/Test Data.xlsx"
+    df_train = pd.read_excel(train).fillna(0)
+    df_test = pd.read_excel(test).fillna(0)
+
+    for col in df_train.columns:
+
+        train = df_train[[col]].reset_index(drop=True)
+        test = df_test[[col]].reset_index(drop=True)
+        # print(train)
+
+        train_X, train_y, test_X, test_y = execute(train, test, 3).get()
+        df = automate(train_X, train_y, test_X, test_y, "manual", "dl", "fast").run()
+
+    assert not df.empty
+
+
+# Test Auto DL
+def test_execute_autodl():
+
+    train = "./gdemandfcast/data/Train Data.xlsx"
+    test = "./gdemandfcast/data/Test Data.xlsx"
+    df_train = pd.read_excel(train).fillna(0)
+    df_test = pd.read_excel(test).fillna(0)
+
+    for col in df_train.columns:
+
+        train = df_train[[col]].reset_index(drop=True)
+        test = df_test[[col]].reset_index(drop=True)
+        # print(train)
+
+        train_X, train_y, test_X, test_y = execute(train, test, 3).get()
+        df = automate(train_X, train_y, test_X, test_y, "auto", "dl", "fast").run()
+
+    assert not df.empty
