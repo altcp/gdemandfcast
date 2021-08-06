@@ -13,6 +13,7 @@ import pandas as pd
 import pmdarima as pm
 import scipy.stats as sps
 import tensorflow as tf
+from keras_tuner import tuners
 from pmdarima.arima.auto import AutoARIMA
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import (
@@ -630,9 +631,9 @@ class dlmodels:
                         executions_per_trial=3,
                         max_epochs=10,
                     )
-                    tuned = tuner.search(self.X, self.y)
-                    best_hps = tuned.get_best_hyperparameters()[0]
-                    tuned_model = tuned.hypermodel.build(best_hps)
+                    tuner.search(self.X, self.y)
+                    best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
+                    tuned_model = tuner.hypermodel.build(best_hps)
 
                 else:
 
@@ -643,9 +644,9 @@ class dlmodels:
                         hypermodel=bi_gru_lstm,
                         project_name="gdf_bi_gru_lstm",
                     )
-                    tuned = tuner.search(self.X, self.y)
-                    best_hps = tuned.get_best_hyperparameters()[0]
-                    tuned_model = tuned.hypermodel.build(best_hps)
+                    tuner.search(self.X, self.y)
+                    best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
+                    tuned_model = tuner.hypermodel.build(best_hps)
 
             elif m == 2:
 
@@ -682,9 +683,9 @@ class dlmodels:
                         executions_per_trial=3,
                         max_epochs=10,
                     )
-                    tuned = tuner.search(self.X, self.y)
-                    best_hps = tuned.get_best_hyperparameters()[0]
-                    tuned_model = tuned.hypermodel.build(best_hps)
+                    tuner.search(self.X, self.y)
+                    best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
+                    tuned_model = tuner.hypermodel.build(best_hps)
 
                 else:
 
@@ -695,9 +696,9 @@ class dlmodels:
                         hypermodel=bi_lstm,
                         project_name="gdf_bi_lstm",
                     )
-                    tuned = tuner.search(self.X, self.y)
-                    best_hps = tuned.get_best_hyperparameters()[0]
-                    tuned_model = tuned.hypermodel.build(best_hps)
+                    tuner.search(self.X, self.y)
+                    best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
+                    tuned_model = tuner.hypermodel.build(best_hps)
 
             elif m == 3:
 
@@ -739,9 +740,9 @@ class dlmodels:
                         executions_per_trial=3,
                         max_epochs=10,
                     )
-                    tuned = tuner.search(self.X, self.y)
-                    best_hps = tuned.get_best_hyperparameters()[0]
-                    tuned_model = tuned.hypermodel.build(best_hps)
+                    tuner.search(self.X, self.y)
+                    best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
+                    tuned_model = tuner.hypermodel.build(best_hps)
 
                 else:
 
@@ -752,9 +753,9 @@ class dlmodels:
                         hypermodel=gru_lstm,
                         project_name="gdf_gru_lstm",
                     )
-                    tuned = tuner.search(self.X, self.y)
-                    best_hps = tuned.get_best_hyperparameters()[0]
-                    tuned_model = tuned.hypermodel.build(best_hps)
+                    tuner.search(self.X, self.y)
+                    best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
+                    tuned_model = tuner.hypermodel.build(best_hps)
 
             else:
 
@@ -789,9 +790,9 @@ class dlmodels:
                         executions_per_trial=3,
                         max_epochs=10,
                     )
-                    tuned = tuner.search(self.X, self.y)
-                    best_hps = tuned.get_best_hyperparameters()[0]
-                    tuned_model = tuned.hypermodel.build(best_hps)
+                    tuner.search(self.X, self.y)
+                    best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
+                    tuned_model = tuner.hypermodel.build(best_hps)
 
                 else:
 
@@ -802,9 +803,9 @@ class dlmodels:
                         hypermodel=lstm,
                         project_name="gdf_lstm",
                     )
-                    tuned = tuner.search(self.X, self.y)
-                    best_hps = tuned.get_best_hyperparameters()[0]
-                    tuned_model = tuned.hypermodel.build(best_hps)
+                    tuner.search(self.X, self.y)
+                    best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
+                    tuned_model = tuner.hypermodel.build(best_hps)
 
             return tuned_model
 
