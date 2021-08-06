@@ -823,7 +823,7 @@ class visualization:
 
 # %%
 class ModelTuner(kt.Tuner):
-    def run_trial(self, trial, x_train, y_train):
+    def run_trial(self, trial, generator):
         batch_size = 32
         hp = trial.hyperparameters
         model = self.hypermodel.build(trial.hyperparameters)
@@ -881,7 +881,7 @@ class ModelTuner(kt.Tuner):
             return loss
 
         # Calculate number of batches and define number of epochs per Trial
-        num_of_batches = math.floor(len(x_train) / batch_size)
+        num_of_batches = math.floor(len(generator) / batch_size)
         epochs = 10
 
         # Run the Trial
@@ -890,10 +890,8 @@ class ModelTuner(kt.Tuner):
             for batch in range(num_of_batches):
                 n = batch * batch_size
                 self.on_batch_begin(trial, model, batch, logs={})
-                batch_loss = run_train_step(
-                    x_train[n : n + batch_size], y_train[n : n + batch_size]
-                )
-                print(float(batch_loss))
+                x, y = generator[n : n + batch_size]
+                batch_loss = run_train_step(x, y)
                 self.on_batch_end(trial, model, batch, logs={"loss": float(batch_loss)})
 
             epoch_loss = epoch_loss_metric.result().numpy()
