@@ -890,8 +890,11 @@ class ModelTuner(kt.Tuner):
             for batch in range(num_of_batches):
                 n = batch * batch_size
                 self.on_batch_begin(trial, model, batch, logs={})
-                x, y = generator[n : n + batch_size]
+                x, y = generator[n : (n + batch_size)]
+                print(x)
+                print(y)
                 batch_loss = run_train_step(x, y)
+                print(batch_loss)
                 self.on_batch_end(trial, model, batch, logs={"loss": float(batch_loss)})
 
             epoch_loss = epoch_loss_metric.result().numpy()
