@@ -528,22 +528,28 @@ class mlmodels:
 
 
 # %%
-class damodels:
-    def __init__(self, i, train_X, train_y, speed, validation):
-        super().__init__(train_X, train_y, speed)
+class dlmodels:
+    def __init__(self, i, train_X, train_y, validation=False, samples=3):
         self.i = i
         self.X = train_X
         self.y = train_y
-        self.speed = speed
         self.validation = validation
+        self.samples = samples
 
     def run(self):
         i = self.i
         X = self.X
         y = self.y
+        n_input = self.samples
+
         spilt = round((1 / 5), 2)
         train_x, test_x, train_y, test_y = train_test_split(
             X, y, test_size=spilt, random_state=232
+        )
+
+        n_features = train_x.shape[1]
+        generator = tf.keras.preprocessing.sequence.TimeseriesGenerator(
+            train_x, train_y, length=n_input, batch_size=32
         )
 
         def get_tuner(m):
@@ -559,7 +565,7 @@ class damodels:
                                 units=hp.Int("neurons_gru", 4, 10, 1, default=7),
                                 return_sequences=True,
                             ),
-                            input_shape=(test_x.shape[1], 1),
+                            input_shape=((n_input, n_features)),
                         )
                     )
                     model.add(tf.keras.layers.BatchNormalization())
@@ -608,7 +614,7 @@ class damodels:
                                 units=hp.Int("neurons_lstm", 4, 10, 1, default=7),
                                 return_sequences=True,
                             ),
-                            input_shape=(test_x.shape[1], 1),
+                            input_shape=((n_input, n_features)),
                         )
                     )
                     model.add(tf.keras.layers.BatchNormalization())
@@ -647,7 +653,7 @@ class damodels:
                             units=hp.Int("neurons_gru", 4, 10, 1, default=7),
                             return_sequences=False,
                         ),
-                        input_shape=(test_x.shape[0], 1),
+                        input_shape=((n_input, n_features)),
                     )
                     model.add(tf.keras.layers.BatchNormalization())
                     # LSTM
@@ -692,7 +698,7 @@ class damodels:
                             units=hp.Int("neurons_lstm", 4, 10, 1, default=7),
                             return_sequences=False,
                         ),
-                        input_shape=(test_x.shape[0], 1),
+                        input_shape=((n_input, n_features)),
                     )
                     model.add(tf.keras.layers.BatchNormalization())
                     # DENSE
@@ -740,15 +746,11 @@ class damodels:
             X = X.reshape(X.shape[0], X.shape[1], 1)
             test_x = test_x.reshape(test_x.shape[0], test_x.shape[1], 1)
 
-        history = model.fit(
-            X,
-            y,
+        history = model.fit_generator(
+            generator,
             validation_data=(test_x, test_y),
             callbacks=call_back,
-            epochs=30,
-            batch_size=32,
             verbose=0,
-            # Set to True if GPU or TPU
             use_multiprocessing=False,
         )
         scores = model.evaluate(test_x, test_y, verbose=0)
