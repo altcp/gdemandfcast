@@ -600,9 +600,9 @@ class dlmodels:
                         tf.keras.layers.Bidirectional(
                             tf.keras.layers.LSTM(
                                 units=hp.Int("neurons_lstm", 4, 10, 1, default=7),
+                                return_sequences=True,
                             ),
                             input_shape=(self.lags, 1),
-                            return_sequences=True,
                         )
                     )
                     model.add(tf.keras.layers.BatchNormalization())
@@ -661,9 +661,9 @@ class dlmodels:
                     model.add(
                         tf.keras.layers.LSTM(
                             units=hp.Int("neurons_lstm", 4, 10, 1, default=7),
-                            input_shape=(self.lags, 1),
                             return_sequences=True,
-                        )
+                            input_shape=(self.lags, 1),
+                        ),
                     )
                     model.add(tf.keras.layers.BatchNormalization())
 
