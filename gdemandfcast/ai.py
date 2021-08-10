@@ -837,14 +837,6 @@ class dlmodels:
 
         else:
 
-            model = get_model(self.i).fit(
-                self.X,
-                self.y,
-                callbacks=call_back,
-                verbose=0,
-                use_multiprocessing=False,
-            )
-
             def get_name(m):
 
                 if m == 1:
@@ -858,7 +850,16 @@ class dlmodels:
 
                 return name
 
-            return model, get_name(self.i)
+            return (
+                get_model(self.i).fit(
+                    self.X,
+                    self.y,
+                    callbacks=call_back,
+                    verbose=0,
+                    use_multiprocessing=False,
+                ),
+                get_name(self.i),
+            )
 
 
 # %%
