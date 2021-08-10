@@ -270,7 +270,7 @@ class compare:
         df["Y"] = self.test_y[1:].tolist()
 
         for model, name in (m1, m2, m3, m4):
-            mf = model(self.test_X)
+            mf = model.predict(self.test_X)
             # Remove Last Element to Match Truth
             mf2 = mf[:-1]
             df[name] = mf2.tolist()
