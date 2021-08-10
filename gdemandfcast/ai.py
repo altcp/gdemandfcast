@@ -268,8 +268,7 @@ class compare:
         for model, name in (m1, m2, m3, m4):
             mf = model.predict(self.test_X)
             # Remove Last Element to Match Truth
-            mf2 = mf[:-1].ravel()
-            df[name] = mf2.tolist()
+            df[name] = mf[:-1].tolist()
 
         return df
 
