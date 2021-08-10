@@ -833,9 +833,19 @@ class dlmodels:
             visualization(history).disp_fit()
             print(" ")
             print(" ")
+
             return None
 
         else:
+
+            model = get_model(self.i)
+            model.fit(
+                train_X,
+                train_y,
+                callbacks=call_back,
+                verbose=0,
+                use_multiprocessing=False,
+            )
 
             def get_name(m):
 
@@ -850,16 +860,7 @@ class dlmodels:
 
                 return name
 
-            return (
-                get_model(self.i).fit(
-                    self.X,
-                    self.y,
-                    callbacks=call_back,
-                    verbose=0,
-                    use_multiprocessing=False,
-                ),
-                get_name(self.i),
-            )
+            return (model, get_name(self.i))
 
 
 # %%
