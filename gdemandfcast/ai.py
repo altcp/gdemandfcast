@@ -700,22 +700,15 @@ class dlmodels:
 
             elif m == 3:
 
-                def gru_lstm(hp):
+                def gru(hp):
                     model = tf.keras.Sequential()
                     # GRU
                     model.add(
                         tf.keras.layers.GRU(
                             units=hp.Int("neurons_gru", 4, 10, 1, default=7),
-                            return_sequences=True,
+                            return_sequences=False,
                             input_shape=(self.lags, 1),
                         ),
-                    )
-                    model.add(tf.keras.layers.BatchNormalization())
-                    # LSTM
-                    model.add(
-                        tf.keras.layers.LSTM(
-                            units=hp.Int("neurons_lstm", 4, 10, 1, default=7)
-                        )
                     )
                     model.add(tf.keras.layers.BatchNormalization())
                     # DENSE
@@ -733,7 +726,7 @@ class dlmodels:
                 if self.speed == "fast":
 
                     tuner = kt.Hyperband(
-                        gru_lstm,
+                        gru,
                         objective="mse",
                         executions_per_trial=3,
                         max_epochs=10,
@@ -747,8 +740,8 @@ class dlmodels:
                         oracle=kt.oracles.BayesianOptimization(
                             objective=kt.Objective("loss", "min"), max_trials=3
                         ),
-                        hypermodel=gru_lstm,
-                        project_name="gdf_gru_lstm",
+                        hypermodel=gru,
+                        project_name="gdf_gru",
                     )
                     tuner.search(self.X, self.y)
                     tuned_model = tuner.get_best_models()[0]

@@ -146,9 +146,9 @@ def test_dl_one():
         test = df_test[[col]].reset_index(drop=True)
         # print(train)
 
-        # 2,3
+        # 1,2,3
 
         train_X, train_y, test_X, test_y = execute(train, test, 3).rescale()
-        m1 = dlmodels(1, train_X, train_y).run()
+        m1 = dlmodels(3, train_X, train_y).run()
 
     assert not m1.empty
