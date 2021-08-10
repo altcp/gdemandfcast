@@ -671,7 +671,7 @@ class dlmodels:
                     model.add(
                         tf.keras.layers.GRU(
                             units=hp.Int("neurons_gru", 4, 10, 1, default=7),
-                            return_sequences=True,
+                            return_sequences=False,
                         ),
                     )
                     model.add(tf.keras.layers.BatchNormalization())
