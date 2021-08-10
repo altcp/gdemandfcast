@@ -663,7 +663,7 @@ class dlmodels:
                     model.add(
                         tf.keras.layers.LSTM(
                             units=hp.Int("neurons_lstm", 4, 10, 1, default=7),
-                            return_sequences=False,
+                            return_sequences=True,
                         )
                     )
 
