@@ -113,7 +113,6 @@ def test_execute_manualdl():
     assert not df.empty
 
 
-"""
 # Test Auto DL
 def test_execute_autodl():
 
@@ -129,29 +128,6 @@ def test_execute_autodl():
         # print(train)
 
         train_X, train_y, test_X, test_y = execute(train, test, 3).rescale()
-        df = automate(train_X, train_y, test_X, test_y, "auto", "dl", "fast").run()
+        df = automate(train_X, train_y, test_X, test_y, "auto", "dl", "fast", 3).run()
 
     assert not df.empty
-"""
-
-"""
-def test_dl_one():
-
-    train = "./gdemandfcast/data/Train Data.xlsx"
-    test = "./gdemandfcast/data/Test Data.xlsx"
-    df_train = pd.read_excel(train).fillna(0)
-    df_test = pd.read_excel(test).fillna(0)
-
-    for col in df_train.columns:
-
-        train = df_train[[col]].reset_index(drop=True)
-        test = df_test[[col]].reset_index(drop=True)
-        # print(train)
-
-        # 1
-
-        train_X, train_y, test_X, test_y = execute(train, test, 3).rescale()
-        m1 = dlmodels(2, train_X, train_y).run()
-
-    assert not m1.empty
-"""
