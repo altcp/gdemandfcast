@@ -260,7 +260,7 @@ class compare:
         column_names = [
             "Y",
             "BI_LTSM_GRU",
-            "LSTM_GRU",
+            "LSTM",
             "BI_GRU",
             "GRU",
         ]
@@ -635,7 +635,7 @@ class dlmodels:
                         objective="mse",
                         executions_per_trial=3,
                         max_epochs=10,
-                        project_name="gdf_lstm_gru_fast",
+                        project_name="gdf_bi_lstm_gru_fast",
                     )
                     tuner.search(self.X, self.y)
                     tuned_model = tuner.get_best_models()[0]
@@ -647,7 +647,7 @@ class dlmodels:
                             objective=kt.Objective("loss", "min"), max_trials=3
                         ),
                         hypermodel=bi_lstm_gru,
-                        project_name="gdf_lstm_gru_slow",
+                        project_name="gdf_bi_lstm_gru_slow",
                     )
                     tuner.search(self.X, self.y)
                     tuned_model = tuner.get_best_models()[0]
@@ -806,7 +806,9 @@ class dlmodels:
         # Print Fit
         if self.validation == True:
 
-            history = get_model(self.i).fit(
+            model = get_model(self.i)
+
+            history = model.fit(
                 train_X,
                 train_y,
                 validation_data=(test_X, test_y),
@@ -820,7 +822,7 @@ class dlmodels:
                 if m == 1:
                     name = "BI_LTSM_GRU"
                 elif m == 2:
-                    name = "LSTM_GRU"
+                    name = "LSTM"
                 elif m == 3:
                     name = "BI_GRU"
                 else:
@@ -828,7 +830,7 @@ class dlmodels:
 
                 return name
 
-            visualization(history, get_name(self.i)).disp_fit()
+            visualization(history).disp_fit()
             print(" ")
             print(" ")
             return None
@@ -848,7 +850,7 @@ class dlmodels:
                 if m == 1:
                     name = "BI_LTSM_GRU"
                 elif m == 2:
-                    name = "LSTM_GRU"
+                    name = "LSTM"
                 elif m == 3:
                     name = "BI_GRU"
                 else:
@@ -861,9 +863,8 @@ class dlmodels:
 
 # %%
 class visualization:
-    def __init__(self, history, model):
+    def __init__(self, history):
         self.history = history
-        self.model = model
 
     def disp_fit(self):
 
