@@ -1,7 +1,7 @@
 """Tests for hello function."""
 import pandas as pd
 
-from gdemandfcast.ai import automate, execute, regress
+from gdemandfcast.ai import automate, dlmodels, execute, regress
 
 
 # Get
@@ -91,7 +91,6 @@ def test_execute_automl():
 
     assert not df.empty
 
-"""
 
 # Test Manual DL
 def test_execute_manualdl():
@@ -112,8 +111,6 @@ def test_execute_manualdl():
 
     assert not df.empty
 
-
-"""
 # Test Auto DL
 def test_execute_autodl():
 
@@ -132,4 +129,24 @@ def test_execute_autodl():
         df = automate(train_X, train_y, test_X, test_y, "auto", "dl", "fast").run()
 
     assert not df.empty
+
 """
+
+
+def test_dl_one():
+
+    train = "./gdemandfcast/data/Train Data.xlsx"
+    test = "./gdemandfcast/data/Test Data.xlsx"
+    df_train = pd.read_excel(train).fillna(0)
+    df_test = pd.read_excel(test).fillna(0)
+
+    for col in df_train.columns:
+
+        train = df_train[[col]].reset_index(drop=True)
+        test = df_test[[col]].reset_index(drop=True)
+        # print(train)
+
+        train_X, train_y, test_X, test_y = execute(train, test, 3).rescale()
+        m1 = dlmodels(4, train_X, train_y).run()
+
+    assert not m1.empty
