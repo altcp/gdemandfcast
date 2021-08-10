@@ -14,6 +14,7 @@ import pmdarima as pm
 import scipy.stats as sps
 import tensorflow as tf
 from keras_tuner import tuners
+from numpy.core.numeric import False_
 from pmdarima.arima.auto import AutoARIMA
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import (
@@ -591,27 +592,24 @@ class dlmodels:
 
             if m == 1:
 
-                def bi_gru_lstm(hp):
+                def gru_lstm(hp):
                     model = tf.keras.Sequential()
                     # GRU
                     model.add(
-                        tf.keras.layers.Bidirectional(
-                            tf.keras.layers.GRU(
-                                units=hp.Int("neurons_gru", 4, 10, 1, default=7),
-                                return_sequences=True,
-                            ),
+                        tf.keras.layers.GRU(
+                            units=hp.Int("neurons_gru", 4, 10, 1, default=7),
                             input_shape=(self.lags, 1),
-                        )
+                        ),
                     )
                     model.add(tf.keras.layers.BatchNormalization())
                     # LSTM
                     model.add(
-                        tf.keras.layers.Bidirectional(
-                            tf.keras.layers.LSTM(
-                                units=hp.Int("neurons_lstm", 4, 10, 1, default=7)
-                            )
+                        tf.keras.layers.LSTM(
+                            units=hp.Int("neurons_lstm", 4, 10, 1, default=7),
+                            return_sequences=False,
                         )
                     )
+
                     model.add(tf.keras.layers.BatchNormalization())
                     # DENSE
                     model.add(
@@ -628,10 +626,11 @@ class dlmodels:
                 if self.speed == "fast":
 
                     tuner = kt.Hyperband(
-                        bi_gru_lstm,
+                        gru_lstm,
                         objective="mse",
                         executions_per_trial=3,
                         max_epochs=10,
+                        project_name="gdf_gru_lstm_fast",
                     )
                     tuner.search(self.X, self.y)
                     tuned_model = tuner.get_best_models()[0]
@@ -642,22 +641,78 @@ class dlmodels:
                         oracle=kt.oracles.BayesianOptimization(
                             objective=kt.Objective("loss", "min"), max_trials=3
                         ),
-                        hypermodel=bi_gru_lstm,
-                        project_name="gdf_bi_gru_lstm",
+                        hypermodel=gru_lstm,
+                        project_name="gdf_gru_lstm_slow",
                     )
                     tuner.search(self.X, self.y)
                     tuned_model = tuner.get_best_models()[0]
 
             elif m == 2:
 
-                def bi_lstm(hp):
+                def gru_lstm(hp):
                     model = tf.keras.Sequential()
+                    # GRU
+                    model.add(
+                        tf.keras.layers.GRU(
+                            units=hp.Int("neurons_gru", 4, 10, 1, default=7),
+                            input_shape=(self.lags, 1),
+                        ),
+                    )
+                    model.add(tf.keras.layers.BatchNormalization())
                     # LSTM
                     model.add(
+                        tf.keras.layers.LSTM(
+                            units=hp.Int("neurons_lstm", 4, 10, 1, default=7),
+                            return_sequences=False,
+                        )
+                    )
+
+                    model.add(tf.keras.layers.BatchNormalization())
+                    # DENSE
+                    model.add(
+                        tf.keras.layers.Dense(
+                            units=hp.Int("neurons_dense", 4, 10, 1, default=7),
+                            activation="relu",
+                        )
+                    )
+                    model.add(tf.keras.layers.BatchNormalization())
+                    model.add(tf.keras.layers.Dense(1))
+                    model.compile(optimizer="adam", loss="mse", metrics=["mse"])
+                    return model
+
+                if self.speed == "fast":
+
+                    tuner = kt.Hyperband(
+                        gru_lstm,
+                        objective="mse",
+                        executions_per_trial=3,
+                        max_epochs=10,
+                        project_name="gdf_gru_lstm_fast",
+                    )
+                    tuner.search(self.X, self.y)
+                    tuned_model = tuner.get_best_models()[0]
+
+                else:
+
+                    tuner = ModelTuner(
+                        oracle=kt.oracles.BayesianOptimization(
+                            objective=kt.Objective("loss", "min"), max_trials=3
+                        ),
+                        hypermodel=gru_lstm,
+                        project_name="gdf_gru_lstm_slow",
+                    )
+                    tuner.search(self.X, self.y)
+                    tuned_model = tuner.get_best_models()[0]
+
+            elif m == 3:
+
+                def bi_gru(hp):
+                    model = tf.keras.Sequential()
+                    # GRU
+                    model.add(
                         tf.keras.layers.Bidirectional(
-                            tf.keras.layers.LSTM(
-                                units=hp.Int("neurons_lstm", 4, 10, 1, default=7),
-                                return_sequences=True,
+                            tf.keras.layers.GRU(
+                                units=hp.Int("neurons_gru", 4, 10, 1, default=7),
                             ),
                             input_shape=(self.lags, 1),
                         )
@@ -678,10 +733,11 @@ class dlmodels:
                 if self.speed == "fast":
 
                     tuner = kt.Hyperband(
-                        bi_lstm,
+                        bi_gru,
                         objective="mse",
                         executions_per_trial=3,
                         max_epochs=10,
+                        project_name="gdf_bi_gru_fast",
                     )
                     tuner.search(self.X, self.y)
                     tuned_model = tuner.get_best_models()[0]
@@ -692,56 +748,8 @@ class dlmodels:
                         oracle=kt.oracles.BayesianOptimization(
                             objective=kt.Objective("loss", "min"), max_trials=3
                         ),
-                        hypermodel=bi_lstm,
-                        project_name="gdf_bi_lstm",
-                    )
-                    tuner.search(self.X, self.y)
-                    tuned_model = tuner.get_best_models()[0]
-
-            elif m == 3:
-
-                def gru(hp):
-                    model = tf.keras.Sequential()
-                    # LSTM
-                    model.add(
-                        tf.keras.layers.LSTM(
-                            units=hp.Int("neurons_gru", 4, 10, 1, default=7),
-                            return_sequences=False,
-                            input_shape=(self.lags, 1),
-                        ),
-                    )
-                    model.add(tf.keras.layers.BatchNormalization())
-                    # DENSE
-                    model.add(
-                        tf.keras.layers.Dense(
-                            units=hp.Int("neurons_dense", 4, 10, 1, default=7),
-                            activation="relu",
-                        )
-                    )
-                    model.add(tf.keras.layers.BatchNormalization())
-                    model.add(tf.keras.layers.Dense(1))
-                    model.compile(optimizer="adam", loss="mse", metrics=["mse"])
-                    return model
-
-                if self.speed == "fast":
-
-                    tuner = kt.Hyperband(
-                        gru,
-                        objective="mse",
-                        executions_per_trial=3,
-                        max_epochs=10,
-                    )
-                    tuner.search(self.X, self.y)
-                    tuned_model = tuner.get_best_models()[0]
-
-                else:
-
-                    tuner = ModelTuner(
-                        oracle=kt.oracles.BayesianOptimization(
-                            objective=kt.Objective("loss", "min"), max_trials=3
-                        ),
-                        hypermodel=gru,
-                        project_name="gdf_gru",
+                        hypermodel=bi_gru,
+                        project_name="gdf_bi_gru_slow",
                     )
                     tuner.search(self.X, self.y)
                     tuned_model = tuner.get_best_models()[0]
@@ -754,7 +762,6 @@ class dlmodels:
                     model.add(
                         tf.keras.layers.GRU(
                             units=hp.Int("neurons_gru", 4, 10, 1, default=7),
-                            return_sequences=False,
                             input_shape=(self.lags, 1),
                         ),
                     )
@@ -778,6 +785,7 @@ class dlmodels:
                         objective="mse",
                         executions_per_trial=3,
                         max_epochs=10,
+                        project_name="gdf_gru_fast",
                     )
                     tuner.search(self.X, self.y)
                     tuned_model = tuner.get_best_models()[0]
@@ -789,7 +797,7 @@ class dlmodels:
                             objective=kt.Objective("loss", "min"), max_trials=3
                         ),
                         hypermodel=gru,
-                        project_name="gdf_gru",
+                        project_name="gdf_gru_slow",
                     )
                     tuner.search(self.X, self.y)
                     tuned_model = tuner.get_best_models()[0]
