@@ -91,7 +91,6 @@ def test_execute_automl():
 
     assert not df.empty
 
-"""
 
 # Test Manual DL
 def test_execute_manualdl():
@@ -108,10 +107,11 @@ def test_execute_manualdl():
         # print(train)
 
         train_X, train_y, test_X, test_y = execute(train, test, 3).rescale()
-        df = automate(train_X, train_y, test_X, test_y, "manual", "dl", "fast", 3).run()
+        df = automate(train_X, train_y, test_X, test_y, "manual", "dl", "fast").run()
 
     assert not df.empty
 
+"""
 
 # Test Auto DL
 def test_execute_autodl():
@@ -128,6 +128,6 @@ def test_execute_autodl():
         # print(train)
 
         train_X, train_y, test_X, test_y = execute(train, test, 3).rescale()
-        df = automate(train_X, train_y, test_X, test_y, "auto", "dl", "fast", 3).run()
+        df = automate(train_X, train_y, test_X, test_y, "auto", "dl", "fast").run()
 
     assert not df.empty

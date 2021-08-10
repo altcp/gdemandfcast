@@ -149,7 +149,7 @@ class execute:
 
 
 class automate:
-    def __init__(self, train_X, train_y, test_X, test_y, gear, shift, speed, lags=3):
+    def __init__(self, train_X, train_y, test_X, test_y, gear, shift, speed):
         self.train_X = train_X
         self.train_y = train_y
         self.test_X = test_X
@@ -157,7 +157,6 @@ class automate:
         self.gear = gear
         self.shift = shift
         self.speed = speed
-        self.lags = lags
 
     def run(self):
 
@@ -173,7 +172,7 @@ class automate:
                 ).compare_ml()
 
             else:
-                best_model = "GDF-GRU"
+                best_model = "GRU"
                 df = compare(
                     self.train_X, self.train_y, self.test_X, self.test_y, self.speed
                 ).compare_dl()
@@ -200,7 +199,6 @@ class automate:
                     self.test_X,
                     self.test_y,
                     self.speed,
-                    self.lags,
                 ).compare_ml()
 
             else:
@@ -210,7 +208,6 @@ class automate:
                     self.test_X,
                     self.test_y,
                     self.speed,
-                    self.lags,
                 ).compare_dl()
 
             df1 = pred_df
@@ -221,13 +218,12 @@ class automate:
 
 
 class compare:
-    def __init__(self, train_X, train_y, test_X, test_y, speed, lags):
+    def __init__(self, train_X, train_y, test_X, test_y, speed):
         self.train_X = train_X
         self.train_y = train_y
         self.test_X = test_X
         self.test_y = test_y
         self.speed = speed
-        self.lags = lags
 
     def compare_ml(self):
 
@@ -252,10 +248,10 @@ class compare:
 
     def compare_dl(self):
 
-        m1 = dlmodels(1, self.train_X, self.train_y, self.speed, self.lags).run()
-        m2 = dlmodels(2, self.train_X, self.train_y, self.speed, self.lags).run()
-        m3 = dlmodels(3, self.train_X, self.train_y, self.speed, self.lags).run()
-        m4 = dlmodels(4, self.train_X, self.train_y, self.speed, self.lags).run()
+        m1 = dlmodels(1, self.train_X, self.train_y, self.speed).run()
+        m2 = dlmodels(2, self.train_X, self.train_y, self.speed).run()
+        m3 = dlmodels(3, self.train_X, self.train_y, self.speed).run()
+        m4 = dlmodels(4, self.train_X, self.train_y, self.speed).run()
 
         column_names = [
             "Y",
