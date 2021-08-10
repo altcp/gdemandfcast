@@ -259,9 +259,9 @@ class compare:
 
         column_names = [
             "Y",
-            "BI_GRU_LTSM",
-            "BI_LSTM",
-            "GRU_LSTM",
+            "BI_LTSM_GRU",
+            "LSTM_GRU",
+            "BI_GRU",
             "GRU",
         ]
 
@@ -592,25 +592,30 @@ class dlmodels:
 
             if m == 1:
 
-                def gru_lstm(hp):
+                def bi_lstm_gru(hp):
                     model = tf.keras.Sequential()
+
+                    # LSTM
+                    model.add(
+                        tf.keras.layers.Bidirectional(
+                            tf.keras.layers.LSTM(
+                                units=hp.Int("neurons_lstm", 4, 10, 1, default=7),
+                            ),
+                            input_shape=(self.lags, 1),
+                            return_sequences=True,
+                        )
+                    )
+                    model.add(tf.keras.layers.BatchNormalization())
+
                     # GRU
                     model.add(
                         tf.keras.layers.GRU(
                             units=hp.Int("neurons_gru", 4, 10, 1, default=7),
-                            input_shape=(self.lags, 1),
+                            return_sequences=True,
                         ),
                     )
                     model.add(tf.keras.layers.BatchNormalization())
-                    # LSTM
-                    model.add(
-                        tf.keras.layers.LSTM(
-                            units=hp.Int("neurons_lstm", 4, 10, 1, default=7),
-                            return_sequences=False,
-                        )
-                    )
 
-                    model.add(tf.keras.layers.BatchNormalization())
                     # DENSE
                     model.add(
                         tf.keras.layers.Dense(
@@ -626,11 +631,11 @@ class dlmodels:
                 if self.speed == "fast":
 
                     tuner = kt.Hyperband(
-                        gru_lstm,
+                        bi_lstm_gru,
                         objective="mse",
                         executions_per_trial=3,
                         max_epochs=10,
-                        project_name="gdf_gru_lstm_fast",
+                        project_name="gdf_lstm_gru_fast",
                     )
                     tuner.search(self.X, self.y)
                     tuned_model = tuner.get_best_models()[0]
@@ -641,33 +646,36 @@ class dlmodels:
                         oracle=kt.oracles.BayesianOptimization(
                             objective=kt.Objective("loss", "min"), max_trials=3
                         ),
-                        hypermodel=gru_lstm,
-                        project_name="gdf_gru_lstm_slow",
+                        hypermodel=bi_lstm_gru,
+                        project_name="gdf_lstm_gru_slow",
                     )
                     tuner.search(self.X, self.y)
                     tuned_model = tuner.get_best_models()[0]
 
             elif m == 2:
 
-                def gru_lstm(hp):
+                def lstm_gru(hp):
                     model = tf.keras.Sequential()
-                    # GRU
-                    model.add(
-                        tf.keras.layers.GRU(
-                            units=hp.Int("neurons_gru", 4, 10, 1, default=7),
-                            input_shape=(self.lags, 1),
-                        ),
-                    )
-                    model.add(tf.keras.layers.BatchNormalization())
+
                     # LSTM
                     model.add(
                         tf.keras.layers.LSTM(
                             units=hp.Int("neurons_lstm", 4, 10, 1, default=7),
+                            input_shape=(self.lags, 1),
                             return_sequences=True,
                         )
                     )
-
                     model.add(tf.keras.layers.BatchNormalization())
+
+                    # GRU
+                    model.add(
+                        tf.keras.layers.GRU(
+                            units=hp.Int("neurons_gru", 4, 10, 1, default=7),
+                            return_sequences=True,
+                        ),
+                    )
+                    model.add(tf.keras.layers.BatchNormalization())
+
                     # DENSE
                     model.add(
                         tf.keras.layers.Dense(
@@ -683,11 +691,11 @@ class dlmodels:
                 if self.speed == "fast":
 
                     tuner = kt.Hyperband(
-                        gru_lstm,
+                        lstm_gru,
                         objective="mse",
                         executions_per_trial=3,
                         max_epochs=10,
-                        project_name="gdf_gru_lstm_fast",
+                        project_name="gdf_lstm_gru_fast",
                     )
                     tuner.search(self.X, self.y)
                     tuned_model = tuner.get_best_models()[0]
@@ -698,8 +706,8 @@ class dlmodels:
                         oracle=kt.oracles.BayesianOptimization(
                             objective=kt.Objective("loss", "min"), max_trials=3
                         ),
-                        hypermodel=gru_lstm,
-                        project_name="gdf_gru_lstm_slow",
+                        hypermodel=lstm_gru,
+                        project_name="gdf_lstm_gru_slow",
                     )
                     tuner.search(self.X, self.y)
                     tuned_model = tuner.get_best_models()[0]
@@ -819,13 +827,13 @@ class dlmodels:
             def get_name(m):
 
                 if m == 1:
-                    name = "GDF-BI_GRU_LTSM"
+                    name = "BI_LTSM_GRU"
                 elif m == 2:
-                    name = "GDF-BI_LSTM"
+                    name = "LSTM_GRU"
                 elif m == 3:
-                    name = "GDF-GRU_LSTM"
+                    name = "BI_GRU"
                 else:
-                    name = "GDF_GRU"
+                    name = "GRU"
 
                 return name
 
@@ -847,11 +855,11 @@ class dlmodels:
             def get_name(m):
 
                 if m == 1:
-                    name = "BI_GRU_LTSM"
+                    name = "BI_LTSM_GRU"
                 elif m == 2:
-                    name = "BI_LSTM"
+                    name = "LSTM_GRU"
                 elif m == 3:
-                    name = "GRU_LSTM"
+                    name = "BI_GRU"
                 else:
                     name = "GRU"
 
