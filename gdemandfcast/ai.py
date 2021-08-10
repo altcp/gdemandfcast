@@ -702,9 +702,9 @@ class dlmodels:
 
                 def gru(hp):
                     model = tf.keras.Sequential()
-                    # GRU
+                    # LSTM
                     model.add(
-                        tf.keras.layers.GRU(
+                        tf.keras.layers.LSTM(
                             units=hp.Int("neurons_gru", 4, 10, 1, default=7),
                             return_sequences=False,
                             input_shape=(self.lags, 1),
