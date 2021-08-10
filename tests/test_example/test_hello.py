@@ -91,6 +91,7 @@ def test_execute_automl():
 
     assert not df.empty
 
+"""
 
 # Test Manual DL
 def test_execute_manualdl():
@@ -112,6 +113,7 @@ def test_execute_manualdl():
     assert not df.empty
 
 
+"""
 # Test Auto DL
 def test_execute_autodl():
 
@@ -132,7 +134,7 @@ def test_execute_autodl():
     assert not df.empty
 """
 
-
+"""
 def test_dl_one():
 
     train = "./gdemandfcast/data/Train Data.xlsx"
@@ -152,3 +154,4 @@ def test_dl_one():
         m1 = dlmodels(2, train_X, train_y).run()
 
     assert not m1.empty
+"""
