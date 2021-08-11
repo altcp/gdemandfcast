@@ -266,7 +266,7 @@ class compare:
         df["Y"] = self.test_y[1:].tolist()
 
         for model, name in (m1, m2, m3, m4):
-            mf = model(self.test_X)
+            mf = model.predict(self.test_X)
             # Remove Last Element to Match Truth
             df[name] = mf[:-1].tolist()
 
@@ -901,7 +901,7 @@ class ModelTuner(kt.Tuner):
 
             with tf.GradientTape() as tape:
 
-                pred_y = model.predict(real_x)
+                pred_y = model(real_x)
 
                 data = []
                 data = real_y - pred_y
