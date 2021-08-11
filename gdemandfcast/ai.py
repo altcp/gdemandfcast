@@ -241,7 +241,7 @@ class compare:
 
         for model, name in (m1, m2, m3, m4):
             mf = model.predict(self.test_X)
-            # Remove Last Element to Match Truth
+            # Remove Last Element to Match Prediction
             df[name] = mf[:-1].tolist()
 
         return df
@@ -266,9 +266,10 @@ class compare:
         df["Y"] = self.test_y[1:].tolist()
 
         for model, name in (m1, m2, m3, m4):
+            # Remove Last Element to Match Prediction
             mf = model.predict(self.test_X)
-            # Remove Last Element to Match Truth
-            df[name] = mf[:-1].tolist()
+            mf2 = mf.ravel()
+            df[name] = mf2[:-1].tolist()
 
         return df
 
@@ -611,14 +612,6 @@ class dlmodels:
                     )
                     model.add(tf.keras.layers.BatchNormalization())
 
-                    # DENSE
-                    model.add(
-                        tf.keras.layers.Dense(
-                            units=hp.Int("neurons_dense", 4, 10, 1, default=7),
-                            activation="relu",
-                        )
-                    )
-                    model.add(tf.keras.layers.BatchNormalization())
                     model.add(tf.keras.layers.Dense(1))
                     model.compile(optimizer="adam", loss="mse", metrics=["mse"])
                     return model
@@ -662,14 +655,6 @@ class dlmodels:
                     )
                     model.add(tf.keras.layers.BatchNormalization())
 
-                    # DENSE
-                    model.add(
-                        tf.keras.layers.Dense(
-                            units=hp.Int("neurons_dense", 4, 10, 1, default=7),
-                            activation="relu",
-                        )
-                    )
-                    model.add(tf.keras.layers.BatchNormalization())
                     model.add(tf.keras.layers.Dense(1))
                     model.compile(optimizer="adam", loss="mse", metrics=["mse"])
                     return model
@@ -904,7 +889,9 @@ class ModelTuner(kt.Tuner):
                 pred_y = model(real_x)
 
                 data = []
-                data = real_y - pred_y
+                data = tf.cast(real_y, dtype="float32") - tf.cast(
+                    pred_y, dtype="float32"
+                )
                 shapiro_test = sps.shapiro(data)
                 lilliefors_test = diagnostic.lilliefors(data)
 

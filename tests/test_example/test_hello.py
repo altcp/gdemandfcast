@@ -1,7 +1,8 @@
-"""Tests for hello function."""
+""" Automated Tests """
+
 import pandas as pd
 
-from gdemandfcast.ai import automate, dlmodels, execute, regress
+from gdemandfcast.ai import automate, execute, regress
 
 
 # Get
@@ -91,8 +92,8 @@ def test_execute_automl():
     assert not df.empty
 
 
-# Test Manual DL
-def test_execute_manualdl():
+# Test Manual DL Standard
+def test_execute_manualdl_fast():
 
     train = "./gdemandfcast/data/Train Data.xlsx"
     test = "./gdemandfcast/data/Test Data.xlsx"
@@ -107,6 +108,26 @@ def test_execute_manualdl():
 
         train_X, train_y, test_X, test_y = execute(train, test, 3).rescale()
         df = automate(train_X, train_y, test_X, test_y, "manual", "dl", "fast").run()
+
+    assert not df.empty
+
+
+# Test Manual DL Custom
+def test_execute_manualdl_fast():
+
+    train = "./gdemandfcast/data/Train Data.xlsx"
+    test = "./gdemandfcast/data/Test Data.xlsx"
+    df_train = pd.read_excel(train).fillna(0)
+    df_test = pd.read_excel(test).fillna(0)
+
+    for col in df_train.columns:
+
+        train = df_train[[col]].reset_index(drop=True)
+        test = df_test[[col]].reset_index(drop=True)
+        # print(train)
+
+        train_X, train_y, test_X, test_y = execute(train, test, 3).rescale()
+        df = automate(train_X, train_y, test_X, test_y, "manual", "dl", "slow").run()
 
     assert not df.empty
 
