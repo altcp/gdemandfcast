@@ -116,6 +116,8 @@ def test_execute_manualdl_fast():
     assert not df.empty
 
 
+"""
+
 # Test Manual DL Custom
 def test_execute_manualdl_fast():
 
@@ -135,8 +137,6 @@ def test_execute_manualdl_fast():
 
     assert not df.empty
 
-
-"""
 
 # Test Auto DL Standard
 def test_execute_autodl():
