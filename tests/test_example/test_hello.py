@@ -2,7 +2,7 @@
 
 import pandas as pd
 
-from gdemandfcast.ai import automate, execute, regress
+from gdemandfcast.ai import automate, dlmodels, execute, regress
 
 
 # Get
@@ -15,6 +15,8 @@ def get(train, test, lags):
 
     return train_X, train_y, test_X, test_y
 
+
+"""
 
 # Test Manual SM
 def test_execute_manualsm():
@@ -91,6 +93,8 @@ def test_execute_automl():
 
     assert not df.empty
 
+"""
+
 
 # Test Manual DL Standard
 def test_execute_manualdl_fast():
@@ -132,9 +136,7 @@ def test_execute_manualdl_fast():
     assert not df.empty
 
 
-"""
-
-# Test Auto DL
+# Test Auto DL Standard
 def test_execute_autodl():
 
     train = "./gdemandfcast/data/Train Data.xlsx"
@@ -150,6 +152,48 @@ def test_execute_autodl():
 
         train_X, train_y, test_X, test_y = execute(train, test, 3).rescale()
         df = automate(train_X, train_y, test_X, test_y, "auto", "dl", "fast").run()
+
+    assert not df.empty
+
+
+# Test Auto DL Custom
+def test_execute_autodl():
+
+    train = "./gdemandfcast/data/Train Data.xlsx"
+    test = "./gdemandfcast/data/Test Data.xlsx"
+    df_train = pd.read_excel(train).fillna(0)
+    df_test = pd.read_excel(test).fillna(0)
+
+    for col in df_train.columns:
+
+        train = df_train[[col]].reset_index(drop=True)
+        test = df_test[[col]].reset_index(drop=True)
+        # print(train)
+
+        train_X, train_y, test_X, test_y = execute(train, test, 3).rescale()
+        df = automate(train_X, train_y, test_X, test_y, "auto", "dl", "slow").run()
+
+    assert not df.empty
+
+
+"""
+
+# Test Manual DL One
+def test_execute_manualdl_one():
+
+    train = "./gdemandfcast/data/Train Data.xlsx"
+    test = "./gdemandfcast/data/Test Data.xlsx"
+    df_train = pd.read_excel(train).fillna(0)
+    df_test = pd.read_excel(test).fillna(0)
+
+    for col in df_train.columns:
+
+        train = df_train[[col]].reset_index(drop=True)
+        test = df_test[[col]].reset_index(drop=True)
+        # print(train)
+
+        train_X, train_y, test_X, test_y = execute(train, test, 3).rescale()
+        df = dlmodels(1, train_X, train_y).run()
 
     assert not df.empty
 

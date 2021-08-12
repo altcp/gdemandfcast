@@ -255,8 +255,8 @@ class compare:
 
         column_names = [
             "Y",
-            "BI_LTSM_GRU",
-            "LSTM",
+            "BI_GRU_GRU",
+            "GRU_GRU",
             "BI_GRU",
             "GRU",
         ]
@@ -267,7 +267,7 @@ class compare:
 
         for model, name in (m1, m2, m3, m4):
             # Remove Last Element to Match Prediction
-            mf = model.predict(self.test_X)
+            mf = model.predict(self.test_X, verbose=0)
             mf2 = mf.ravel()
             df[name] = mf2[:-1].tolist()
 
@@ -588,14 +588,14 @@ class dlmodels:
 
             if m == 1:
 
-                def bi_lstm_gru(hp):
+                def bi_gru_gru(hp):
                     model = tf.keras.Sequential()
 
-                    # LSTM
+                    # GRU
                     model.add(
                         tf.keras.layers.Bidirectional(
-                            tf.keras.layers.LSTM(
-                                units=hp.Int("neurons_lstm", 4, 10, 1, default=7),
+                            tf.keras.layers.GRU(
+                                units=hp.Int("neurons_gru", 4, 10, 1, default=7),
                                 return_sequences=True,
                             ),
                             input_shape=(self.lags, 1),
@@ -607,7 +607,6 @@ class dlmodels:
                     model.add(
                         tf.keras.layers.GRU(
                             units=hp.Int("neurons_gru", 4, 10, 1, default=7),
-                            return_sequences=True,
                         ),
                     )
                     model.add(tf.keras.layers.BatchNormalization())
@@ -619,11 +618,11 @@ class dlmodels:
                 if self.speed == "fast":
 
                     tuner = kt.Hyperband(
-                        bi_lstm_gru,
+                        bi_gru_gru,
                         objective="mse",
                         executions_per_trial=3,
                         max_epochs=10,
-                        project_name="gdf_bi_lstm_gru_fast",
+                        project_name="gdf_bi_gru_gru_fast",
                     )
                     tuner.search(self.X, self.y)
                     tuned_model = tuner.get_best_models()[0]
@@ -634,23 +633,31 @@ class dlmodels:
                         oracle=kt.oracles.BayesianOptimization(
                             objective=kt.Objective("loss", "min"), max_trials=3
                         ),
-                        hypermodel=bi_lstm_gru,
-                        project_name="gdf_bi_lstm_gru_slow",
+                        hypermodel=bi_gru_gru,
+                        project_name="gdf_bi_gru_gru_slow",
                     )
                     tuner.search(self.X, self.y)
                     tuned_model = tuner.get_best_models()[0]
 
             elif m == 2:
 
-                def lstm(hp):
+                def gru_gru(hp):
                     model = tf.keras.Sequential()
 
-                    # LSTM
+                    # GRU
                     model.add(
-                        tf.keras.layers.LSTM(
-                            units=hp.Int("neurons_lstm", 4, 10, 1, default=7),
-                            return_sequences=True,
+                        tf.keras.layers.GRU(
+                            units=hp.Int("neurons_gru", 4, 10, 1, default=7),
                             input_shape=(self.lags, 1),
+                            return_sequences=True,
+                        ),
+                    )
+                    model.add(tf.keras.layers.BatchNormalization())
+
+                    # GRU
+                    model.add(
+                        tf.keras.layers.GRU(
+                            units=hp.Int("neurons_gru", 4, 10, 1, default=7),
                         ),
                     )
                     model.add(tf.keras.layers.BatchNormalization())
@@ -662,11 +669,11 @@ class dlmodels:
                 if self.speed == "fast":
 
                     tuner = kt.Hyperband(
-                        lstm,
+                        gru_gru,
                         objective="mse",
                         executions_per_trial=3,
                         max_epochs=10,
-                        project_name="gdf_lstm_fast",
+                        project_name="gdf_gru_gru_fast",
                     )
                     tuner.search(self.X, self.y)
                     tuned_model = tuner.get_best_models()[0]
@@ -677,8 +684,8 @@ class dlmodels:
                         oracle=kt.oracles.BayesianOptimization(
                             objective=kt.Objective("loss", "min"), max_trials=3
                         ),
-                        hypermodel=lstm,
-                        project_name="gdf_lstm_slow",
+                        hypermodel=gru_gru,
+                        project_name="gdf_gru_gru_slow",
                     )
                     tuner.search(self.X, self.y)
                     tuned_model = tuner.get_best_models()[0]
@@ -800,9 +807,9 @@ class dlmodels:
             def get_name(m):
 
                 if m == 1:
-                    name = "BI_LTSM_GRU"
+                    name = "BI_GRU_GRU"
                 elif m == 2:
-                    name = "LSTM"
+                    name = "GRU_GRU"
                 elif m == 3:
                     name = "BI_GRU"
                 else:
@@ -830,9 +837,9 @@ class dlmodels:
             def get_name(m):
 
                 if m == 1:
-                    name = "BI_LTSM_GRU"
+                    name = "BI_GRU_GRU"
                 elif m == 2:
-                    name = "LSTM"
+                    name = "GRU_GRU"
                 elif m == 3:
                     name = "BI_GRU"
                 else:
