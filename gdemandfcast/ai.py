@@ -263,7 +263,9 @@ class compare:
 
         df = pd.DataFrame(columns=column_names)
         # Remove First Element to Match Prediction
-        df["Y"] = self.test_y[1:].tolist()
+        yf = self.test_y[1:]
+        yf2 = yf.ravel()
+        df["Y"] = yf2.tolist()
 
         for model, name in (m1, m2, m3, m4):
             # Remove Last Element to Match Prediction
