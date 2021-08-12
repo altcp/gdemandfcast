@@ -136,6 +136,8 @@ def test_execute_manualdl_fast():
     assert not df.empty
 
 
+"""
+
 # Test Auto DL Standard
 def test_execute_autodl():
 
@@ -174,9 +176,6 @@ def test_execute_autodl():
         df = automate(train_X, train_y, test_X, test_y, "auto", "dl", "slow").run()
 
     assert not df.empty
-
-
-"""
 
 # Test Manual DL One
 def test_execute_manualdl_one():
