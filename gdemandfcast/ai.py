@@ -895,15 +895,16 @@ class ModelTuner(kt.Tuner):
 
                 pred_y = model(real_x)
 
+                real_y = tf.cast(real_y, dtype="float32")
+                pred_y = tf.cast(pred_y, dtype="float32")
+
                 data = []
-                data = tf.cast(real_y, dtype="float32") - tf.cast(
-                    pred_y, dtype="float32"
-                )
+                data = real_y - pred_y
                 shapiro_test = sps.shapiro(data)
                 lilliefors_test = diagnostic.lilliefors(data)
 
                 dev = []
-                dev = abs(real_y - pred_y)
+                dev = abs(data)
                 q3, q1 = np.percentile(dev, [75, 25])
                 iqr = q3 - q1
                 d = q3 + (1.5 * iqr)
