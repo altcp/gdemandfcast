@@ -16,8 +16,6 @@ def get(train, test, lags):
     return train_X, train_y, test_X, test_y
 
 
-"""
-
 # Test Manual SM
 def test_execute_manualsm():
 
@@ -35,6 +33,8 @@ def test_execute_manualsm():
 
     assert not df.empty
 
+
+"""
 
 # Test Auto SM
 def test_execute_autosm():
@@ -93,8 +93,6 @@ def test_execute_automl():
 
     assert not df.empty
 
-"""
-
 
 # Test Manual DL Standard
 def test_execute_manualdl_fast():
@@ -115,8 +113,6 @@ def test_execute_manualdl_fast():
 
     assert not df.empty
 
-
-"""
 
 # Test Manual DL Custom
 def test_execute_manualdl_fast():
