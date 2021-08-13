@@ -368,12 +368,26 @@ class smmodels:
         )
 
         try:
-            e_mu = search.predict(n_periods=self.horizon)
-            e_mu = e_mu[0]
-        except:
-            e_mu = 0
 
-        return e_mu
+            if self.horizon == 1:
+                e_mu = search.predict(n_periods=1)
+                e_mu = e_mu[0]
+
+                return e_mu
+
+            else:
+                df = pd.DataFrame()
+                for i in range(1, (self.horizon + 1), 1):
+                    e_mu = search.predict(n_periods=i)
+                    e_mu = e_mu[0]
+                    df.append(e_mu)
+
+                return df
+
+        except:
+
+            e_mu = 0
+            return e_mu
 
     def frima(self):
 
@@ -397,12 +411,26 @@ class smmodels:
         )
 
         try:
-            e_mu = pipe.predict(n_periods=self.horizon)
-            e_mu = e_mu[0]
-        except:
-            e_mu = 0
 
-        return e_mu
+            if self.horizon == 1:
+                e_mu = pipe.predict(n_periods=1)
+                e_mu = e_mu[0]
+
+                return e_mu
+
+            else:
+                df = pd.DataFrame()
+                for i in range(1, (self.horizon + 1), 1):
+                    e_mu = pipe.predict(n_periods=i)
+                    e_mu = e_mu[0]
+                    df.append(e_mu)
+
+                return df
+
+        except:
+
+            e_mu = 0
+            return e_mu
 
     def arma(self):
 
@@ -422,12 +450,26 @@ class smmodels:
         )
 
         try:
-            e_mu = search.predict(n_periods=self.horizon)
-            e_mu = e_mu[0]
-        except:
-            e_mu = 0
 
-        return e_mu
+            if self.horizon == 1:
+                e_mu = search.predict(n_periods=1)
+                e_mu = e_mu[0]
+
+                return e_mu
+
+            else:
+                df = pd.DataFrame()
+                for i in range(1, (self.horizon + 1), 1):
+                    e_mu = search.predict(n_periods=i)
+                    e_mu = e_mu[0]
+                    df.append(e_mu)
+
+                return df
+
+        except:
+
+            e_mu = 0
+            return e_mu
 
 
 class mlmodels:
@@ -902,8 +944,6 @@ class ModelTuner(kt.Tuner):
 
                 data = []
                 data = real_y - pred_y
-                shapiro_test = sps.shapiro(data)
-                lilliefors_test = diagnostic.lilliefors(data)
 
                 dev = []
                 dev = abs(data)
@@ -912,13 +952,10 @@ class ModelTuner(kt.Tuner):
                 d = q3 + (1.5 * iqr)
 
                 # Distribution Aware
-                if shapiro_test.pvalue > 0.05:
-                    if lilliefors_test.pvalue < 0.05:
-                        huber = tf.keras.losses.Huber(delta=d)
-                        loss = huber(real_y, pred_y).numpy()
-                    else:
-                        mse = tf.keras.losses.MeanSquaredError()
-                        loss = mse(real_y, pred_y).numpy()
+                dist = distribution(data).aware()
+                if dist == "norm":
+                    mse = tf.keras.losses.MeanAbsoluteError()
+                    loss = mse(real_y, pred_y).numpy()
                 else:
                     huber = tf.keras.losses.Huber(delta=d)
                     loss = huber(real_y, pred_y).numpy()
