@@ -246,16 +246,10 @@ class compare:
 
     def compare_dl(self):
 
-        scaler = MinMaxScaler()
-
-        train_X = scaler.fit_transform(self.train_X)
-        train_y = scaler.fit_transform(self.train_y)
-        test_X = scaler.fit_transform(self.test_X)
-
-        m1 = dlmodels(1, train_X, train_y, self.speed).run()
-        m2 = dlmodels(2, train_X, train_y, self.speed).run()
-        m3 = dlmodels(3, train_X, train_y, self.speed).run()
-        m4 = dlmodels(4, train_X, train_y, self.speed).run()
+        m1 = dlmodels(1, self.train_X, self.train_y, self.speed).run()
+        m2 = dlmodels(2, self.train_X, self.train_y, self.speed).run()
+        m3 = dlmodels(3, self.train_X, self.train_y, self.speed).run()
+        m4 = dlmodels(4, self.train_X, self.train_y, self.speed).run()
 
         column_names = [
             "Y",
@@ -271,13 +265,11 @@ class compare:
         yf2 = yf.ravel()
         df["Y"] = yf2.tolist()
 
-        scaler = MinMaxScaler()
         for model, name in (m1, m2, m3, m4):
             # Remove Last Element to Match Prediction
-            mf = model.predict(test_X, verbose=0)
-            mf2 = scaler.fit_transform(mf)
-            mf3 = mf2.ravel()
-            df[name] = mf3[:-1].tolist()
+            mf = model.predict(self.test_X, verbose=0)
+            mf2 = mf.ravel()
+            df[name] = mf2[:-1].tolist()
 
         return df
 
