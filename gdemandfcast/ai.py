@@ -127,10 +127,7 @@ class execute:
     def rescale(self):
         def create_dataset(data, look_back=1):
 
-            scaler = MinMaxScaler()
-            normalized_data = scaler.fit_transform(data)
-
-            dataset = np.asarray(normalized_data)
+            dataset = np.asarray(data)
             dataX, dataY = list(), list()
 
             for i in range(len(dataset) - look_back):
@@ -249,10 +246,16 @@ class compare:
 
     def compare_dl(self):
 
-        m1 = dlmodels(1, self.train_X, self.train_y, self.speed).run()
-        m2 = dlmodels(2, self.train_X, self.train_y, self.speed).run()
-        m3 = dlmodels(3, self.train_X, self.train_y, self.speed).run()
-        m4 = dlmodels(4, self.train_X, self.train_y, self.speed).run()
+        scaler = MinMaxScaler()
+
+        train_X = scaler.fit_transform(self.train_X)
+        train_y = scaler.fit_transform(self.train_y)
+        test_X = scaler.fit_transform(self.test_X)
+
+        m1 = dlmodels(1, train_X, train_y, self.speed).run()
+        m2 = dlmodels(2, train_X, train_y, self.speed).run()
+        m3 = dlmodels(3, train_X, train_y, self.speed).run()
+        m4 = dlmodels(4, train_X, train_y, self.speed).run()
 
         column_names = [
             "Y",
@@ -271,8 +274,8 @@ class compare:
         scaler = MinMaxScaler()
         for model, name in (m1, m2, m3, m4):
             # Remove Last Element to Match Prediction
-            mf = model.predict(scaled_test, verbose=0)
-            mf2 = scaler.inverse_transform(mf)
+            mf = model.predict(test_X, verbose=0)
+            mf2 = scaler.fit_transform(mf)
             mf3 = mf2.ravel()
             df[name] = mf3[:-1].tolist()
 
