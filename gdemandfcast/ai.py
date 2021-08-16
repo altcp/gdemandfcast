@@ -125,9 +125,12 @@ class execute:
         return train_X, train_y, test_X, test_y
 
     def rescale(self):
-        def create_dataset(dataset, look_back=1):
+        def create_dataset(data, look_back=1):
 
-            dataset = np.asarray(dataset)
+            scaler = MinMaxScaler()
+            normalized_data = scaler.fit_transform(data)
+
+            dataset = np.asarray(normalized_data)
             dataX, dataY = list(), list()
 
             for i in range(len(dataset) - look_back):
@@ -266,8 +269,6 @@ class compare:
         df["Y"] = yf2.tolist()
 
         scaler = MinMaxScaler()
-        scaled_test = scaler.fit_transform(self.test_X)
-
         for model, name in (m1, m2, m3, m4):
             # Remove Last Element to Match Prediction
             mf = model.predict(scaled_test, verbose=0)
@@ -625,13 +626,9 @@ class dlmodels:
             tf.keras.callbacks.EarlyStopping(monitor="loss", patience=3, verbose=0),
         ]
 
-        scaler = MinMaxScaler()
-        scaled_x = scaler.fit_transform(self.X)
-        scaled_y = scaler.fit_transform(self.y)
-
         # Splits
         train_X, test_X, train_y, test_y = train_test_split(
-            scaled_x, scaled_y, test_size=0.3
+            self.X, self.y, test_size=0.3
         )
 
         def get_model(m):
