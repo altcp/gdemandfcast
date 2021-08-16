@@ -13,6 +13,7 @@ import pandas as pd
 import pmdarima as pm
 import scipy.stats as sps
 import tensorflow as tf
+import tensorflow_probability as tfp
 from pmdarima.arima.auto import AutoARIMA
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import (
