@@ -2,7 +2,7 @@
 
 import pandas as pd
 
-from gdemandfcast.ai import automate, dlmodels, execute, regress
+from gdemandfcast.ai import automate, dlmodels, execute, regress, smmodels
 
 
 # Get
@@ -34,8 +34,6 @@ def test_execute_manualsm():
     assert not df.empty
 
 
-"""
-
 # Test Auto SM
 def test_execute_autosm():
 
@@ -53,6 +51,27 @@ def test_execute_autosm():
 
     assert not df.empty
 
+
+# Test Forecast SM
+def test_execute_one():
+
+    train = "./gdemandfcast/data/Train Data.xlsx"
+    test = "./gdemandfcast/data/Test Data.xlsx"
+    df_train = pd.read_excel(train).fillna(0)
+    df_test = pd.read_excel(test).fillna(0)
+
+    data = pd.concat([df_train, df_test], ignore_index=True)
+
+    for col in data.columns:
+        df_train = data[[col]]
+
+        mt = df_train
+        forecast = smmodels(mt, False, 8, 232).arima()
+
+    assert not forecast.empty
+
+
+"""
 
 # Test Manual ML
 def test_execute_manualml():
@@ -93,6 +112,8 @@ def test_execute_automl():
 
     assert not df.empty
 
+"""
+
 
 # Test Manual DL Standard
 def test_execute_manualdl_fast():
@@ -113,6 +134,8 @@ def test_execute_manualdl_fast():
 
     assert not df.empty
 
+
+"""
 
 # Test Manual DL Custom
 def test_execute_manualdl_fast():

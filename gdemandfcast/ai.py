@@ -367,31 +367,27 @@ class smmodels:
             suppress_warnings=True,
         )
 
-        try:
+        if self.horizon == 1:
 
-            if self.horizon == 1:
+            e_mu = search.predict(n_periods=1)
+            e_mu = e_mu[0]
+
+            return e_mu
+
+        else:
+
+            df2 = pd.DataFrame()
+            for i in range(1, (self.horizon + 1), 1):
                 e_mu = search.predict(n_periods=1)
                 e_mu = e_mu[0]
+                df2.loc[(i - 1), "forecast"] = e_mu
+                search.update(e_mu)
 
-                return e_mu
-
-            else:
-                df = pd.DataFrame()
-                for i in range(1, (self.horizon + 1), 1):
-                    e_mu = search.predict(n_periods=i)
-                    e_mu = e_mu[0]
-                    df.append(e_mu)
-
-                return df
-
-        except:
-
-            e_mu = 0
-            return e_mu
+            return df2
 
     def frima(self):
 
-        pipe = Pipeline(
+        search = Pipeline(
             [
                 (
                     "fourier",
@@ -410,27 +406,23 @@ class smmodels:
             ]
         )
 
-        try:
+        if self.horizon == 1:
 
-            if self.horizon == 1:
-                e_mu = pipe.predict(n_periods=1)
-                e_mu = e_mu[0]
+            e_mu = search.predict(n_periods=1)
+            e_mu = e_mu[0]
 
-                return e_mu
-
-            else:
-                df = pd.DataFrame()
-                for i in range(1, (self.horizon + 1), 1):
-                    e_mu = pipe.predict(n_periods=i)
-                    e_mu = e_mu[0]
-                    df.append(e_mu)
-
-                return df
-
-        except:
-
-            e_mu = 0
             return e_mu
+
+        else:
+
+            df2 = pd.DataFrame()
+            for i in range(1, (self.horizon + 1), 1):
+                e_mu = search.predict(n_periods=1)
+                e_mu = e_mu[0]
+                df2.loc[(i - 1), "forecast"] = e_mu
+                search.update(e_mu)
+
+            return df2
 
     def arma(self):
 
@@ -449,27 +441,23 @@ class smmodels:
             suppress_warnings=True,
         )
 
-        try:
+        if self.horizon == 1:
 
-            if self.horizon == 1:
+            e_mu = search.predict(n_periods=1)
+            e_mu = e_mu[0]
+
+            return e_mu
+
+        else:
+
+            df2 = pd.DataFrame()
+            for i in range(1, (self.horizon + 1), 1):
                 e_mu = search.predict(n_periods=1)
                 e_mu = e_mu[0]
+                df2.loc[(i - 1), "forecast"] = e_mu
+                search.update(e_mu)
 
-                return e_mu
-
-            else:
-                df = pd.DataFrame()
-                for i in range(1, (self.horizon + 1), 1):
-                    e_mu = search.predict(n_periods=i)
-                    e_mu = e_mu[0]
-                    df.append(e_mu)
-
-                return df
-
-        except:
-
-            e_mu = 0
-            return e_mu
+            return df2
 
 
 class mlmodels:
