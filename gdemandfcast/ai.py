@@ -13,8 +13,6 @@ import pandas as pd
 import pmdarima as pm
 import scipy.stats as sps
 import tensorflow as tf
-from keras_tuner import tuners
-from numpy.core.numeric import False_
 from pmdarima.arima.auto import AutoARIMA
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import (
@@ -267,11 +265,15 @@ class compare:
         yf2 = yf.ravel()
         df["Y"] = yf2.tolist()
 
+        scaler = MinMaxScaler()
+        scaled_test = scaler.fit_transform(self.test_X)
+
         for model, name in (m1, m2, m3, m4):
             # Remove Last Element to Match Prediction
-            mf = model.predict(self.test_X, verbose=0)
-            mf2 = mf.ravel()
-            df[name] = mf2[:-1].tolist()
+            mf = model.predict(scaled_test, verbose=0)
+            mf2 = scaler.inverse_transform(mf)
+            mf3 = mf2.ravel()
+            df[name] = mf3[:-1].tolist()
 
         return df
 
@@ -623,9 +625,13 @@ class dlmodels:
             tf.keras.callbacks.EarlyStopping(monitor="loss", patience=3, verbose=0),
         ]
 
+        scaler = MinMaxScaler()
+        scaled_x = scaler.fit_transform(self.X)
+        scaled_y = scaler.fit_transform(self.y)
+
         # Splits
         train_X, test_X, train_y, test_y = train_test_split(
-            self.X, self.y, test_size=0.3
+            scaled_x, scaled_y, test_size=0.3
         )
 
         def get_model(m):
@@ -639,7 +645,13 @@ class dlmodels:
                     model.add(
                         tf.keras.layers.Bidirectional(
                             tf.keras.layers.GRU(
-                                units=hp.Int("neurons_gru", 4, 10, 1, default=7),
+                                units=hp.Int(
+                                    "neurons_gru",
+                                    self.lags,
+                                    (self.lags * 3),
+                                    1,
+                                    default=self.lags,
+                                ),
                                 return_sequences=True,
                             ),
                             input_shape=(self.lags, 1),
@@ -650,7 +662,13 @@ class dlmodels:
                     # GRU
                     model.add(
                         tf.keras.layers.GRU(
-                            units=hp.Int("neurons_gru", 4, 10, 1, default=7),
+                            units=hp.Int(
+                                "neurons_gru",
+                                self.lags,
+                                (self.lags * 3),
+                                1,
+                                default=self.lags,
+                            ),
                         ),
                     )
                     model.add(tf.keras.layers.BatchNormalization())
@@ -691,7 +709,13 @@ class dlmodels:
                     # GRU
                     model.add(
                         tf.keras.layers.GRU(
-                            units=hp.Int("neurons_gru", 4, 10, 1, default=7),
+                            units=hp.Int(
+                                "neurons_gru",
+                                self.lags,
+                                (self.lags * 3),
+                                1,
+                                default=self.lags,
+                            ),
                             input_shape=(self.lags, 1),
                             return_sequences=True,
                         ),
@@ -701,7 +725,13 @@ class dlmodels:
                     # GRU
                     model.add(
                         tf.keras.layers.GRU(
-                            units=hp.Int("neurons_gru", 4, 10, 1, default=7),
+                            units=hp.Int(
+                                "neurons_gru",
+                                self.lags,
+                                (self.lags * 3),
+                                1,
+                                default=self.lags,
+                            ),
                         ),
                     )
                     model.add(tf.keras.layers.BatchNormalization())
@@ -742,20 +772,19 @@ class dlmodels:
                     model.add(
                         tf.keras.layers.Bidirectional(
                             tf.keras.layers.GRU(
-                                units=hp.Int("neurons_gru", 4, 10, 1, default=7),
+                                units=hp.Int(
+                                    "neurons_gru",
+                                    self.lags,
+                                    (self.lags * 3),
+                                    1,
+                                    default=self.lags,
+                                ),
                             ),
                             input_shape=(self.lags, 1),
                         )
                     )
                     model.add(tf.keras.layers.BatchNormalization())
-                    # DENSE
-                    model.add(
-                        tf.keras.layers.Dense(
-                            units=hp.Int("neurons_dense", 4, 10, 1, default=7),
-                            activation="relu",
-                        )
-                    )
-                    model.add(tf.keras.layers.BatchNormalization())
+
                     model.add(tf.keras.layers.Dense(1))
                     model.compile(optimizer="adam", loss="mse", metrics=["mse"])
                     return model
@@ -791,19 +820,18 @@ class dlmodels:
                     # GRU
                     model.add(
                         tf.keras.layers.GRU(
-                            units=hp.Int("neurons_gru", 4, 10, 1, default=7),
+                            units=hp.Int(
+                                "neurons_gru",
+                                self.lags,
+                                (self.lags * 3),
+                                1,
+                                default=self.lags,
+                            ),
                             input_shape=(self.lags, 1),
                         ),
                     )
                     model.add(tf.keras.layers.BatchNormalization())
-                    # DENSE
-                    model.add(
-                        tf.keras.layers.Dense(
-                            units=hp.Int("neurons_dense", 4, 10, 1, default=7),
-                            activation="relu",
-                        )
-                    )
-                    model.add(tf.keras.layers.BatchNormalization())
+
                     model.add(tf.keras.layers.Dense(1))
                     model.compile(optimizer="adam", loss="mse", metrics=["mse"])
                     return model
@@ -977,8 +1005,10 @@ class ModelTuner(kt.Tuner):
             for batch in range(num_of_batches):
                 n = batch * batch_size
                 self.on_batch_begin(trial, model, batch, logs={})
+
                 batch_loss = run_train_step(
-                    x_train[n : n + batch_size], y_train[n : n + batch_size]
+                    tf.convert_to_tensor(x_train[n : n + batch_size]),
+                    tf.convert_to_tensor(y_train[n : n + batch_size]),
                 )
                 self.on_batch_end(trial, model, batch, logs={"loss": batch_loss})
 
