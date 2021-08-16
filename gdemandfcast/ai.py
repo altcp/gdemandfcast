@@ -408,6 +408,7 @@ class smmodels:
 
         if self.horizon == 1:
 
+            search.fit(self.y)
             e_mu = search.predict(n_periods=1)
             e_mu = e_mu[0]
 
@@ -416,8 +417,9 @@ class smmodels:
         else:
 
             df2 = pd.DataFrame()
+            search.fit(self.y)
             for i in range(1, (self.horizon + 1), 1):
-                e_mu = search.predict(n_periods=1)
+                e_mu = search.predict()
                 e_mu = e_mu[0]
                 df2.loc[(i - 1), "forecast"] = e_mu
                 search.update(e_mu)
