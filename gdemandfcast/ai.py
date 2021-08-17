@@ -13,7 +13,6 @@ import pandas as pd
 import pmdarima as pm
 import scipy.stats as sps
 import tensorflow as tf
-import tensorflow.experimental.numpy as tnp
 import tensorflow_probability as tfp
 from pmdarima.arima.auto import AutoARIMA
 from sklearn.gaussian_process import GaussianProcessRegressor
@@ -80,7 +79,6 @@ class distribution:
         self.y = y
 
     def aware(self):
-        tnp.experimental_enable_numpy_behavior()
         data = []
         data = self.y
         shapiro_test = sps.shapiro(data)
