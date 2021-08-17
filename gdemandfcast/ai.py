@@ -974,7 +974,7 @@ class ModelTuner(kt.Tuner):
                 d = q3 + (1.5 * iqr)
 
                 # Distribution Aware
-                dist = distribution(data).aware()
+                dist = distribution(data.numpy()).aware()
                 if dist == "norm":
                     mse = tf.keras.losses.MeanAbsoluteError()
                     loss = mse(real_y, pred_y).numpy()
