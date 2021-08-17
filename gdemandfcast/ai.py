@@ -82,10 +82,10 @@ class distribution:
         data = []
         data = self.y
         shapiro_test = sps.shapiro(data)
-        lilliefors_test = diagnostic.lilliefors(data)
+        ksstat, pvalue = diagnostic.lilliefors(data)
 
         if shapiro_test.pvalue > 0.05:
-            if lilliefors_test.pvalue < 0.05:
+            if pvalue < 0.05:
                 distribution = "alt"
             else:
                 distribution = "norm"
@@ -247,6 +247,7 @@ class compare:
 
     def compare_dl(self):
 
+        tf.config.run_functions_eagerly(True)
         m1 = dlmodels(1, self.train_X, self.train_y, self.speed).run()
         m2 = dlmodels(2, self.train_X, self.train_y, self.speed).run()
         m3 = dlmodels(3, self.train_X, self.train_y, self.speed).run()
@@ -938,7 +939,7 @@ class ModelTuner(kt.Tuner):
         model = self.hypermodel.build(trial.hyperparameters)
         epoch_loss_metric = tf.keras.metrics.Mean()
         optimizer = tf.keras.optimizers.Adam(
-            lr=hp.Float(
+            learning_rate=hp.Float(
                 "opt_learn_rate",
                 min_value=1e-4,
                 max_value=1e-2,
@@ -977,10 +978,10 @@ class ModelTuner(kt.Tuner):
                 dist = distribution(data.numpy()).aware()
                 if dist == "norm":
                     mse = tf.keras.losses.MeanAbsoluteError()
-                    loss = mse(real_y, pred_y).numpy()
+                    loss = mse(real_y, pred_y)
                 else:
                     huber = tf.keras.losses.Huber(delta=d)
-                    loss = huber(real_y, pred_y).numpy()
+                    loss = huber(real_y, pred_y)
 
             gradients = tape.gradient(loss, model.trainable_variables)
             optimizer.apply_gradients(zip(gradients, model.trainable_variables))

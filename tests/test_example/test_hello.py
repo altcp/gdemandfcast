@@ -71,8 +71,6 @@ def test_execute_one():
     assert not forecast.empty
 
 
-"""
-
 # Test Manual ML
 def test_execute_manualml():
 
@@ -111,8 +109,6 @@ def test_execute_automl():
         df = automate(train_X, train_y, test_X, test_y, "auto", "ml", "fast").run()
 
     assert not df.empty
-
-"""
 
 
 # Test Manual DL Standard
@@ -175,8 +171,6 @@ def test_execute_manualdl_slow():
     assert not df.empty
 
 
-"""
-
 # Test Auto DL Custom
 def test_execute_autodl():
 
@@ -195,5 +189,3 @@ def test_execute_autodl():
         df = automate(train_X, train_y, test_X, test_y, "auto", "dl", "slow").run()
 
     assert not df.empty
-
-"""
