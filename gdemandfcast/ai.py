@@ -968,7 +968,8 @@ class ModelTuner(kt.Tuner):
 
                 dev = []
                 dev = abs(data)
-                q3, q1 = np.percentile(dev, [75, 25])
+                q1 = tfp.stats.percentile(dev, q=25.0)
+                q3 = tfp.stats.percentile(dev, q=75.0)
                 iqr = q3 - q1
                 d = q3 + (1.5 * iqr)
 
