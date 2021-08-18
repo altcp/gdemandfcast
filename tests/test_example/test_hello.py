@@ -1,4 +1,4 @@
-""" Automated Tests """
+""" Automated Tests or Examples """
 
 import pandas as pd
 
@@ -66,6 +66,7 @@ def test_execute_one():
         df_train = data[[col]]
 
         mt = df_train
+        # MultiStep (e.g., 8), Single Step == 1
         forecast = smmodels(mt, False, 8, 232).arima()
 
     assert not forecast.empty
@@ -86,7 +87,7 @@ def test_execute_manualml():
         # print(train)
 
         train_X, train_y, test_X, test_y = execute(train, test, 3).get()
-        df = automate(train_X, train_y, test_X, test_y, "manual", "ml", "fast").run()
+        df = automate(train_X, train_y, test_X, test_y, "manual", "ml").run()
 
     assert not df.empty
 
@@ -106,47 +107,7 @@ def test_execute_automl():
         # print(train)
 
         train_X, train_y, test_X, test_y = execute(train, test, 3).get()
-        df = automate(train_X, train_y, test_X, test_y, "auto", "ml", "fast").run()
-
-    assert not df.empty
-
-
-# Test Manual DL Standard
-def test_execute_manualdl_fast():
-
-    train = "./gdemandfcast/data/Train Data.xlsx"
-    test = "./gdemandfcast/data/Test Data.xlsx"
-    df_train = pd.read_excel(train).fillna(0)
-    df_test = pd.read_excel(test).fillna(0)
-
-    for col in df_train.columns:
-
-        train = df_train[[col]].reset_index(drop=True)
-        test = df_test[[col]].reset_index(drop=True)
-        # print(train)
-
-        train_X, train_y, test_X, test_y = execute(train, test, 3).rescale()
-        df = automate(train_X, train_y, test_X, test_y, "manual", "dl", "fast").run()
-
-    assert not df.empty
-
-
-# Test Auto DL Standard
-def test_execute_autodl_fast():
-
-    train = "./gdemandfcast/data/Train Data.xlsx"
-    test = "./gdemandfcast/data/Test Data.xlsx"
-    df_train = pd.read_excel(train).fillna(0)
-    df_test = pd.read_excel(test).fillna(0)
-
-    for col in df_train.columns:
-
-        train = df_train[[col]].reset_index(drop=True)
-        test = df_test[[col]].reset_index(drop=True)
-        # print(train)
-
-        train_X, train_y, test_X, test_y = execute(train, test, 3).rescale()
-        df = automate(train_X, train_y, test_X, test_y, "auto", "dl", "fast").run()
+        df = automate(train_X, train_y, test_X, test_y, "auto", "ml").run()
 
     assert not df.empty
 
@@ -158,6 +119,7 @@ def test_execute_manualdl_slow():
     test = "./gdemandfcast/data/Test Data.xlsx"
     df_train = pd.read_excel(train).fillna(0)
     df_test = pd.read_excel(test).fillna(0)
+    lags = 3
 
     for col in df_train.columns:
 
@@ -165,8 +127,8 @@ def test_execute_manualdl_slow():
         test = df_test[[col]].reset_index(drop=True)
         # print(train)
 
-        train_X, train_y, test_X, test_y = execute(train, test, 3).rescale()
-        df = automate(train_X, train_y, test_X, test_y, "manual", "dl", "slow").run()
+        train_X, train_y, test_X, test_y = execute(train, test, lags).rescale()
+        df = automate(train_X, train_y, test_X, test_y, "manual", "dl", lags).run()
 
     assert not df.empty
 
@@ -178,6 +140,7 @@ def test_execute_autodl():
     test = "./gdemandfcast/data/Test Data.xlsx"
     df_train = pd.read_excel(train).fillna(0)
     df_test = pd.read_excel(test).fillna(0)
+    lags = 3
 
     for col in df_train.columns:
 
@@ -185,7 +148,26 @@ def test_execute_autodl():
         test = df_test[[col]].reset_index(drop=True)
         # print(train)
 
-        train_X, train_y, test_X, test_y = execute(train, test, 3).rescale()
-        df = automate(train_X, train_y, test_X, test_y, "auto", "dl", "slow").run()
+        train_X, train_y, test_X, test_y = execute(train, test, lags).rescale()
+        df = automate(train_X, train_y, test_X, test_y, "auto", "dl", lags).run()
 
     assert not df.empty
+
+
+# Validate DL Model Performance
+def test_execute_validate_one():
+
+    train = "./gdemandfcast/data/Train Data.xlsx"
+    test = "./gdemandfcast/data/Test Data.xlsx"
+    df_train = pd.read_excel(train).fillna(0)
+    df_test = pd.read_excel(test).fillna(0)
+    lags = 3
+
+    for col in df_train.columns:
+
+        train = df_train[[col]].reset_index(drop=True)
+        test = df_test[[col]].reset_index(drop=True)
+        # print(train)
+
+        train_X, train_y, test_X, test_y = execute(train, test, lags).rescale()
+        dlmodels(1, train_X, train_y, lags, True).run()

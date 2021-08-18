@@ -13,6 +13,10 @@ Generic Python Package for Time Series Forecasting that seeks to include the lat
 Thus, creating something that is current and stable for non-profit or social use.
 <p>&nbsp;</p>
 
+## Usage
+
+See -> ./tests/test_example/test_hello.py
+<p>&nbsp;</p>
 
 
 ## Features 
@@ -25,10 +29,9 @@ Thus, creating something that is current and stable for non-profit or social use
 </div>
 
 * Distribution Aware Auto Differentiation applied on Gradient Descent.
-* Preprocessing of Walk Forward Validation.
+* Single and Multi Step Time Series (Stats, ML, DL)
 * Preprocessing of Time Lags.
-* Frequency Aggregation.
-* Time Series Forecasting.
+* Preprocessing of Walk Forward Validation.
 <p>&nbsp;</p>
 
 

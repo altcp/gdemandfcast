@@ -148,14 +148,14 @@ class execute:
 
 
 class automate:
-    def __init__(self, train_X, train_y, test_X, test_y, gear, shift, speed):
+    def __init__(self, train_X, train_y, test_X, test_y, gear, shift, lags):
         self.train_X = train_X
         self.train_y = train_y
         self.test_X = test_X
         self.test_y = test_y
         self.gear = gear
         self.shift = shift
-        self.speed = speed
+        self.lags = lags
 
     def run(self):
 
@@ -167,13 +167,13 @@ class automate:
             if self.shift == "ml":
                 best_model = "GPR"
                 df = compare(
-                    self.train_X, self.train_y, self.test_X, self.test_y, self.speed
+                    self.train_X, self.train_y, self.test_X, self.test_y
                 ).compare_ml()
 
             else:
                 best_model = "GRU"
                 df = compare(
-                    self.train_X, self.train_y, self.test_X, self.test_y, self.speed
+                    self.train_X, self.train_y, self.test_X, self.test_y, self.lags
                 ).compare_dl()
 
             for col in df.columns:
@@ -193,20 +193,12 @@ class automate:
 
             if self.shift == "ml":
                 pred_df = compare(
-                    self.train_X,
-                    self.train_y,
-                    self.test_X,
-                    self.test_y,
-                    self.speed,
+                    self.train_X, self.train_y, self.test_X, self.test_y
                 ).compare_ml()
 
             else:
                 pred_df = compare(
-                    self.train_X,
-                    self.train_y,
-                    self.test_X,
-                    self.test_y,
-                    self.speed,
+                    self.train_X, self.train_y, self.test_X, self.test_y, self.lags
                 ).compare_dl()
 
             df1 = pred_df
@@ -217,21 +209,21 @@ class automate:
 
 
 class compare:
-    def __init__(self, train_X, train_y, test_X, test_y, speed):
+    def __init__(self, train_X, train_y, test_X, test_y, lags):
         self.train_X = train_X
         self.train_y = train_y
         self.test_X = test_X
         self.test_y = test_y
-        self.speed = speed
+        self.lags = lags
 
     def compare_ml(self):
 
         warnings.filterwarnings("ignore")
 
-        m1 = mlmodels(self.train_X, self.train_y, self.speed).gpr_model()
-        m2 = mlmodels(self.train_X, self.train_y, self.speed).knn_model()
-        m3 = mlmodels(self.train_X, self.train_y, self.speed).xgb_model()
-        m4 = mlmodels(self.train_X, self.train_y, self.speed).svr_model()
+        m1 = mlmodels(self.train_X, self.train_y).gpr_model()
+        m2 = mlmodels(self.train_X, self.train_y).knn_model()
+        m3 = mlmodels(self.train_X, self.train_y).xgb_model()
+        m4 = mlmodels(self.train_X, self.train_y).svr_model()
 
         column_names = ["Y", "GPR", "KNN", "XGB", "SVR"]
         df = pd.DataFrame(columns=column_names)
@@ -248,10 +240,10 @@ class compare:
     def compare_dl(self):
 
         tf.config.run_functions_eagerly(True)
-        m1 = dlmodels(1, self.train_X, self.train_y, self.speed).run()
-        m2 = dlmodels(2, self.train_X, self.train_y, self.speed).run()
-        m3 = dlmodels(3, self.train_X, self.train_y, self.speed).run()
-        m4 = dlmodels(4, self.train_X, self.train_y, self.speed).run()
+        m1 = dlmodels(1, self.train_X, self.train_y, self.lags).run()
+        m2 = dlmodels(2, self.train_X, self.train_y, self.lags).run()
+        m3 = dlmodels(3, self.train_X, self.train_y, self.lags).run()
+        m4 = dlmodels(4, self.train_X, self.train_y, self.lags).run()
 
         column_names = [
             "Y",
@@ -473,10 +465,9 @@ class smmodels:
 
 
 class mlmodels:
-    def __init__(self, train_X, train_y, speed):
+    def __init__(self, train_X, train_y):
         self.x = train_X
         self.y = train_y
-        self.speed = speed
 
         self.jobs = -1
         self.scoring = "r2"
@@ -501,35 +492,29 @@ class mlmodels:
                 ]
             )
 
-        if self.speed == "fast":
-            param_grid = {
-                "M__n_restarts_optimizer": [2, 4, 8],
-                "M__random_state": [232],
-            }
+        ker_rbf = ConstantKernel(1.0, constant_value_bounds="fixed") * RBF(
+            1.0, length_scale_bounds="fixed"
+        )
+        ker_rq = ConstantKernel(1.0, constant_value_bounds="fixed") * RationalQuadratic(
+            alpha=0.1, length_scale=1
+        )
+        ker_ess = ConstantKernel(1.0, constant_value_bounds="fixed") * ExpSineSquared(
+            1.0, 5.0, periodicity_bounds=(1e-2, 1e1)
+        )
+        ker_wk = DotProduct() + WhiteKernel()
+        kernel_list = [ker_rbf, ker_rq, ker_ess, ker_wk]
 
-        else:
-            ker_rbf = ConstantKernel(1.0, constant_value_bounds="fixed") * RBF(
-                1.0, length_scale_bounds="fixed"
-            )
-            ker_rq = ConstantKernel(
-                1.0, constant_value_bounds="fixed"
-            ) * RationalQuadratic(alpha=0.1, length_scale=1)
-            ker_ess = ConstantKernel(
-                1.0, constant_value_bounds="fixed"
-            ) * ExpSineSquared(1.0, 5.0, periodicity_bounds=(1e-2, 1e1))
-            ker_wk = DotProduct() + WhiteKernel()
-            kernel_list = [ker_rbf, ker_rq, ker_ess, ker_wk]
-
-            param_grid = {
-                "M__kernel": kernel_list,
-                "M__n_restarts_optimizer": [0, 2, 4, 8],
-                "M__alpha": [1e-10, 1e7, 1e-5, 1e-3],
-            }
+        param_grid = {
+            "M__kernel": kernel_list,
+            "M__n_restarts_optimizer": [0, 2, 4, 8],
+            "M__alpha": [1e-10, 1e7, 1e-5, 1e-3],
+        }
 
         search = GridSearchCV(
             pipe, param_grid, cv=5, scoring=self.scoring, n_jobs=self.jobs
         )
         search.fit(self.x, self.y)
+
         return search, "GPR"
 
     def knn_model(self):
@@ -541,15 +526,12 @@ class mlmodels:
             ]
         )
 
-        if self.speed == "fast":
-            param_grid = {"M__n_neighbors": [3, 6, 9]}
-        else:
-            param_grid = {"M__n_neighbors": [1, 3, 5, 7, 9]}
-
+        param_grid = {"M__n_neighbors": [1, 3, 5, 7, 9]}
         search = GridSearchCV(
             pipe, param_grid, cv=5, scoring=self.scoring, n_jobs=self.jobs
         )
         search.fit(self.x, self.y)
+
         return search, "KNN"
 
     def xgb_model(self):
@@ -561,20 +543,17 @@ class mlmodels:
             ]
         )
 
-        if self.speed == "fast":
-            param_grid = {"M__eta": [0.05, 0.1, 0.2, 0.3]}
-        else:
-            param_grid = {
-                "M__booster": ["gbtree", "gblinear"],
-                "M__eta": [0.05, 0.1, 0.2, 0.3],
-                "M__alpha": [0.1, 0.3, 0.5, 0.7],
-                "M__lambda": [1, 1.5, 3.0, 4.5],
-            }
-
+        param_grid = {
+            "M__booster": ["gbtree", "gblinear"],
+            "M__eta": [0.05, 0.1, 0.2, 0.3],
+            "M__alpha": [0.1, 0.3, 0.5, 0.7],
+            "M__lambda": [1, 1.5, 3.0, 4.5],
+        }
         search = GridSearchCV(
             pipe, param_grid, cv=5, scoring=self.scoring, n_jobs=self.jobs
         )
         search.fit(self.x, self.y)
+
         return search, "XGB"
 
     def svr_model(self):
@@ -586,15 +565,12 @@ class mlmodels:
             ]
         )
 
-        if self.speed == "fast":
-            param_grid = {"M__epsilon": [0.001, 0.003, 0.005, 0.01]}
-        else:
-            param_grid = {
-                "M__kernel": ["rbf", "poly"],
-                "M__C": [0.5, 1.0, 1.5, 2.0],
-                "M__degree": [0, 1, 2, 3],
-                "M__epsilon": [0.001, 0.003, 0.005, 0.007, 0.01],
-            }
+        param_grid = {
+            "M__kernel": ["rbf", "poly"],
+            "M__C": [0.5, 1.0, 1.5, 2.0],
+            "M__degree": [0, 1, 2, 3],
+            "M__epsilon": [0.001, 0.003, 0.005, 0.007, 0.01],
+        }
 
         search = GridSearchCV(
             pipe, param_grid, cv=5, scoring=self.scoring, n_jobs=self.jobs
@@ -605,11 +581,10 @@ class mlmodels:
 
 # %%
 class dlmodels:
-    def __init__(self, i, train_X, train_y, speed="fast", lags=3, validation=False):
+    def __init__(self, i, train_X, train_y, lags=3, validation=False):
         self.i = i
         self.X = train_X
         self.y = train_y
-        self.speed = speed
         self.lags = lags
         self.validation = validation
 
@@ -671,29 +646,15 @@ class dlmodels:
                     model.compile(optimizer="adam", loss="mse", metrics=["mse"])
                     return model
 
-                if self.speed == "fast":
-
-                    tuner = kt.Hyperband(
-                        bi_gru_gru,
-                        objective="mse",
-                        executions_per_trial=3,
-                        max_epochs=10,
-                        project_name="gdf_bi_gru_gru_fast",
-                    )
-                    tuner.search(self.X, self.y)
-                    tuned_model = tuner.get_best_models()[0]
-
-                else:
-
-                    tuner = ModelTuner(
-                        oracle=kt.oracles.BayesianOptimization(
-                            objective=kt.Objective("loss", "min"), max_trials=3
-                        ),
-                        hypermodel=bi_gru_gru,
-                        project_name="gdf_bi_gru_gru_slow",
-                    )
-                    tuner.search(self.X, self.y)
-                    tuned_model = tuner.get_best_models()[0]
+                tuner = ModelTuner(
+                    oracle=kt.oracles.BayesianOptimization(
+                        objective=kt.Objective("loss", "min"), max_trials=3
+                    ),
+                    hypermodel=bi_gru_gru,
+                    project_name="gdf_bi_gru_gru",
+                )
+                tuner.search(self.X, self.y)
+                tuned_model = tuner.get_best_models()[0]
 
             elif m == 2:
 
@@ -734,29 +695,15 @@ class dlmodels:
                     model.compile(optimizer="adam", loss="mse", metrics=["mse"])
                     return model
 
-                if self.speed == "fast":
-
-                    tuner = kt.Hyperband(
-                        gru_gru,
-                        objective="mse",
-                        executions_per_trial=3,
-                        max_epochs=10,
-                        project_name="gdf_gru_gru_fast",
-                    )
-                    tuner.search(self.X, self.y)
-                    tuned_model = tuner.get_best_models()[0]
-
-                else:
-
-                    tuner = ModelTuner(
-                        oracle=kt.oracles.BayesianOptimization(
-                            objective=kt.Objective("loss", "min"), max_trials=3
-                        ),
-                        hypermodel=gru_gru,
-                        project_name="gdf_gru_gru_slow",
-                    )
-                    tuner.search(self.X, self.y)
-                    tuned_model = tuner.get_best_models()[0]
+                tuner = ModelTuner(
+                    oracle=kt.oracles.BayesianOptimization(
+                        objective=kt.Objective("loss", "min"), max_trials=3
+                    ),
+                    hypermodel=gru_gru,
+                    project_name="gdf_gru_gru",
+                )
+                tuner.search(self.X, self.y)
+                tuned_model = tuner.get_best_models()[0]
 
             elif m == 3:
 
@@ -783,29 +730,15 @@ class dlmodels:
                     model.compile(optimizer="adam", loss="mse", metrics=["mse"])
                     return model
 
-                if self.speed == "fast":
-
-                    tuner = kt.Hyperband(
-                        bi_gru,
-                        objective="mse",
-                        executions_per_trial=3,
-                        max_epochs=10,
-                        project_name="gdf_bi_gru_fast",
-                    )
-                    tuner.search(self.X, self.y)
-                    tuned_model = tuner.get_best_models()[0]
-
-                else:
-
-                    tuner = ModelTuner(
-                        oracle=kt.oracles.BayesianOptimization(
-                            objective=kt.Objective("loss", "min"), max_trials=3
-                        ),
-                        hypermodel=bi_gru,
-                        project_name="gdf_bi_gru_slow",
-                    )
-                    tuner.search(self.X, self.y)
-                    tuned_model = tuner.get_best_models()[0]
+                tuner = ModelTuner(
+                    oracle=kt.oracles.BayesianOptimization(
+                        objective=kt.Objective("loss", "min"), max_trials=3
+                    ),
+                    hypermodel=bi_gru,
+                    project_name="gdf_bi_gru",
+                )
+                tuner.search(self.X, self.y)
+                tuned_model = tuner.get_best_models()[0]
 
             else:
 
@@ -830,29 +763,15 @@ class dlmodels:
                     model.compile(optimizer="adam", loss="mse", metrics=["mse"])
                     return model
 
-                if self.speed == "fast":
-
-                    tuner = kt.Hyperband(
-                        gru,
-                        objective="mse",
-                        executions_per_trial=3,
-                        max_epochs=10,
-                        project_name="gdf_gru_fast",
-                    )
-                    tuner.search(self.X, self.y)
-                    tuned_model = tuner.get_best_models()[0]
-
-                else:
-
-                    tuner = ModelTuner(
-                        oracle=kt.oracles.BayesianOptimization(
-                            objective=kt.Objective("loss", "min"), max_trials=3
-                        ),
-                        hypermodel=gru,
-                        project_name="gdf_gru_slow",
-                    )
-                    tuner.search(self.X, self.y)
-                    tuned_model = tuner.get_best_models()[0]
+                tuner = ModelTuner(
+                    oracle=kt.oracles.BayesianOptimization(
+                        objective=kt.Objective("loss", "min"), max_trials=3
+                    ),
+                    hypermodel=gru,
+                    project_name="gdf_gru",
+                )
+                tuner.search(self.X, self.y)
+                tuned_model = tuner.get_best_models()[0]
 
             return tuned_model
 
