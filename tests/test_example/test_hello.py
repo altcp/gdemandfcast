@@ -1,6 +1,4 @@
-""" Automated Tests or Examples """
-
-from os import lchflags
+""" Automated Tests and (or) Usage Examples """
 
 import pandas as pd
 
