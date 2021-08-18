@@ -148,7 +148,7 @@ class execute:
 
 
 class automate:
-    def __init__(self, train_X, train_y, test_X, test_y, gear, shift, lags=3):
+    def __init__(self, train_X, train_y, test_X, test_y, gear, shift, lags):
         self.train_X = train_X
         self.train_y = train_y
         self.test_X = test_X
@@ -193,7 +193,7 @@ class automate:
 
             if self.shift == "ml":
                 pred_df = compare(
-                    self.train_X, self.train_y, self.test_X, self.test_y
+                    self.train_X, self.train_y, self.test_X, self.test_y, self.lags
                 ).compare_ml()
 
             else:
