@@ -1,5 +1,7 @@
 """ Automated Tests or Examples """
 
+from os import lchflags
+
 import pandas as pd
 
 from gdemandfcast.ai import automate, dlmodels, execute, regress, smmodels
@@ -79,6 +81,7 @@ def test_execute_manualml():
     test = "./gdemandfcast/data/Test Data.xlsx"
     df_train = pd.read_excel(train).fillna(0)
     df_test = pd.read_excel(test).fillna(0)
+    lags = 3
 
     for col in df_train.columns:
 
@@ -86,8 +89,8 @@ def test_execute_manualml():
         test = df_test[[col]].reset_index(drop=True)
         # print(train)
 
-        train_X, train_y, test_X, test_y = execute(train, test, 3).get()
-        df = automate(train_X, train_y, test_X, test_y, "manual", "ml").run()
+        train_X, train_y, test_X, test_y = execute(train, test, lags).get()
+        df = automate(train_X, train_y, test_X, test_y, "manual", "ml", lags).run()
 
     assert not df.empty
 
@@ -99,6 +102,7 @@ def test_execute_automl():
     test = "./gdemandfcast/data/Test Data.xlsx"
     df_train = pd.read_excel(train).fillna(0)
     df_test = pd.read_excel(test).fillna(0)
+    lags = 3
 
     for col in df_train.columns:
 
@@ -106,8 +110,8 @@ def test_execute_automl():
         test = df_test[[col]].reset_index(drop=True)
         # print(train)
 
-        train_X, train_y, test_X, test_y = execute(train, test, 3).get()
-        df = automate(train_X, train_y, test_X, test_y, "auto", "ml").run()
+        train_X, train_y, test_X, test_y = execute(train, test, lags).get()
+        df = automate(train_X, train_y, test_X, test_y, "auto", "ml", lags).run()
 
     assert not df.empty
 

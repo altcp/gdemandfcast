@@ -581,7 +581,7 @@ class mlmodels:
 
 # %%
 class dlmodels:
-    def __init__(self, i, train_X, train_y, lags=3, validation=False):
+    def __init__(self, i, train_X, train_y, lags, validation=False):
         self.i = i
         self.X = train_X
         self.y = train_y
