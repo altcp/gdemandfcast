@@ -88,7 +88,7 @@ def test_execute_manualml():
         # print(train)
 
         train_X, train_y, test_X, test_y = execute(train, test, lags).get()
-        df = automate(train_X, train_y, test_X, test_y, "manual", "ml", lags).run()
+        df = automate(train_X, train_y, test_X, test_y, "manual", "ml").run()
 
     assert not df.empty
 
@@ -109,7 +109,7 @@ def test_execute_automl():
         # print(train)
 
         train_X, train_y, test_X, test_y = execute(train, test, lags).get()
-        df = automate(train_X, train_y, test_X, test_y, "auto", "ml", lags).run()
+        df = automate(train_X, train_y, test_X, test_y, "auto", "ml").run()
 
     assert not df.empty
 
