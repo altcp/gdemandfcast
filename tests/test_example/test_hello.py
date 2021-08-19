@@ -15,6 +15,8 @@ def get(train, test, lags):
     return train_X, train_y, test_X, test_y
 
 
+"""
+
 # Test Manual SM
 def test_execute_manualsm():
 
@@ -70,6 +72,7 @@ def test_execute_one():
 
     assert not forecast.empty
 
+"""
 
 # Test Manual ML
 def test_execute_manualml():
@@ -112,6 +115,27 @@ def test_execute_automl():
 
     assert not df.empty
 
+
+# Test Forecast ML
+def test_execute_one_ml():
+
+    train = "./gdemandfcast/data/Train Data.xlsx"
+    test = "./gdemandfcast/data/Test Data.xlsx"
+    df_train = pd.read_excel(train).fillna(0)
+    df_test = pd.read_excel(test).fillna(0)
+    lags = 3
+    horizon = 8
+
+    for col in df_train.columns:
+
+        train = df_train[[col]].reset_index(drop=True)
+        test = df_test[[col]].reset_index(drop=True)
+        forecast = forecast(train, test, col, lags, horizon).forecast_ml()
+
+    assert not forecast.empty
+
+
+"""
 
 # Test Manual DL Custom
 def test_execute_manualdl_slow():
@@ -172,3 +196,6 @@ def test_execute_validate_one():
 
         train_X, train_y, test_X, test_y = execute(train, test, lags).rescale()
         dlmodels(1, train_X, train_y, lags, True).run()
+
+
+"""
