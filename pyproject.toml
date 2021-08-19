@@ -1,0 +1,121 @@
+# Poetry pyproject.toml: https://python-poetry.org/docs/pyproject/
+[build-system]
+requires = ["poetry_core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "gdemandfcast"
+version = "0.6.41"
+description = "Generic Python Package for Time Series Forecasting."
+readme = "README.md"
+authors = ["altcp <colab.tcp@gmail.com>"]
+license = "GNU GPL v3.0"
+repository = "https://github.com/altcp/gdemandfcast"
+homepage = "https://github.com/altcp/gdemandfcast"
+
+# Keywords description https://python-poetry.org/docs/pyproject/#keywords
+keywords = []  #! Update me
+
+# Pypi classifiers: https://pypi.org/classifiers/
+classifiers = [  #! Update me
+  "Operating System :: OS Independent",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+  "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+]
+
+[tool.poetry.scripts]
+# Entry points for the package https://python-poetry.org/docs/pyproject/#scripts
+"gdemandfcast" = "gdemandfcast.__main__:app"
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.10"
+
+typer = {extras = ["all"], version = "^0.3.2"}
+rich = "^10.6.0"
+numpy = "1.19.5"
+keras-tuner = "^1.0.3"
+matplotlib = "^3.4.3"
+pandas = "^1.3.2"
+pmdarima = "^1.8.2"
+scipy = "^1.7.1"
+tensorflow = "^2.6.0"
+tensorflow-probability = "^0.13.0"
+scikit-learn = "^0.24.2"
+xgboost = "^1.4.2"
+
+[tool.poetry.dev-dependencies]
+bandit = "^1.7.0"
+black = {version = "^21.7b0", allow-prereleases = true}
+darglint = "^1.8.0"
+isort = {extras = ["colors"], version = "^5.9.3"}
+mypy = "^0.910"
+mypy-extensions = "^0.4.3"
+pre-commit = "^2.13.0"
+pydocstyle = "^6.1.1"
+pylint = "^2.9.6"
+pytest = "^6.2.4"
+pyupgrade = "^2.23.1"
+safety = "^1.10.3"
+
+[tool.black]
+# https://github.com/psf/black
+target-version = ["py38"]
+line-length = 88
+color = true
+
+exclude = '''
+/(
+    \.git
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+    | env
+    | venv
+)/
+'''
+
+[tool.isort]
+# https://github.com/timothycrosley/isort/
+py_version = 38
+line_length = 88
+
+known_typing = ["typing", "types", "typing_extensions", "mypy", "mypy_extensions"]
+sections = ["FUTURE", "TYPING", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+include_trailing_comma = true
+profile = "black"
+multi_line_output = 3
+indent = 4
+color_output = true
+
+[tool.mypy]
+# mypy configurations: https://mypy.readthedocs.io/en/latest/config_file.html#using-a-pyproject-toml-file
+python_version = 3.8
+pretty = true
+show_traceback = true
+color_output = true
+
+allow_redefinition = false
+check_untyped_defs = true
+disallow_any_generics = true
+disallow_incomplete_defs = true
+ignore_missing_imports = true
+implicit_reexport = false
+no_implicit_optional = true
+show_column_numbers = true
+show_error_codes = true
+show_error_context = true
+strict_equality = true
+strict_optional = true
+warn_no_return = true
+warn_redundant_casts = true
+warn_return_any = true
+warn_unreachable = true
+warn_unused_configs = true
+warn_unused_ignores = true
