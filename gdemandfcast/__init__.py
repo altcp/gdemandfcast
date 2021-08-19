@@ -1,4 +1,5 @@
-"""Top-level package for gdemandfcast."""
+# type: ignore[attr-defined]
+"""Generic Python Package for Time Series Forecasting."""
 
 import sys
 

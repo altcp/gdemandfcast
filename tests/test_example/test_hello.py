@@ -1,8 +1,7 @@
 """ Automated Tests and (or) Usage Examples """
-
 import pandas as pd
 
-from gdemandfcast.ai import automate, dlmodels, execute, regress, smmodels
+from gdemandfcast.ai import automate, dlmodels, execute, forecast, regress, smmodels
 
 
 # Get

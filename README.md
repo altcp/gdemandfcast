@@ -4,7 +4,10 @@
 
 [![Build status](https://github.com/altcp/gexecute/workflows/build/badge.svg?branch=master&event=push)](https://github.com/altcp/gdemandfcast/actions?query=workflow%3Abuild)
 [![Dependencies Status](https://img.shields.io/badge/dependencies-up%20to%20date-brightgreen.svg)](https://github.com/altcp/gdemandfcast/pulls?utf8=%E2%9C%93&q=is%3Apr%20author%3Aapp%2Fdependabot)
+<<<<<<< HEAD
 [![Security: bandit](https://img.shields.io/badge/security-bandit-green.svg)](https://github.com/PyCQA/bandit)
+=======
+>>>>>>> main
 [![pypi](https://img.shields.io/pypi/v/gdemandfcast.svg)](https://pypi.python.org/pypi/gdemandfcast)
 
 </div>

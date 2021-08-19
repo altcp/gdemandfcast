@@ -144,6 +144,82 @@ class execute:
         return train_X, train_y, test_X, test_y
 
 
+class forecast:
+    def __init__(self, train, test, col, lags, horizon):
+        self.train = train
+        self.test = test
+        self.col = col
+        self.lags = lags
+        self.horizon = horizon
+
+    def forecast_ml(self):
+
+        data = pd.concat([self.train, self.test], ignore_index=True)
+        df_forecast = pd.DataFrame()
+
+        # Model Selection
+        train_X, train_y, test_X, test_y = execute(
+            self.train, self.test, self.lags
+        ).get()
+        df = automate(train_X, train_y, test_X, test_y, "auto", "ml", self.lags).run()
+
+        selected_model = df.columns[1]
+
+        # Forecast
+        df_all = data[[self.col]]
+        test_features = (
+            preprocessing(df_all, self.col, self.lags, True)
+            .run_univariate()
+            .dropna()
+            .reset_index(drop=True)
+        )
+
+        train_df = (
+            preprocessing(df_all, self.col, self.lags, False)
+            .run_univariate()
+            .dropna()
+            .reset_index(drop=True)
+        )
+
+        y_train = train_df["Y"]
+        x_train = train_df.loc[:, train_df.columns != "Y"]
+
+        for i in range(0, (self.horizon + 1)):
+
+            if selected_model == "GPR":
+                model = mlmodels(x_train, y_train).gpr_model()
+            elif selected_model == "KNN":
+                model = mlmodels(x_train, y_train).knn_model()
+            elif selected_model == "XGB":
+                model = mlmodels(x_train, y_train).xgb_model()
+            else:
+                model = mlmodels(x_train, y_train).svr_model()
+
+            mf = model.predict(test_features)
+            forecast = mf[-1]
+            df_forecast.at[i, self.col] = forecast
+            df_all.append(forecast)
+
+            test_features = (
+                preprocessing(df_all, self.col, self.lags, True)
+                .run_univariate()
+                .dropna()
+                .reset_index(drop=True)
+            )
+
+            train_df = (
+                preprocessing(df_all, self.col, self.lags, False)
+                .run_univariate()
+                .dropna()
+                .reset_index(drop=True)
+            )
+
+            y_train = train_df["Y"]
+            x_train = train_df.loc[:, train_df.columns != "Y"]
+
+        return df_forecast
+
+
 # %%
 
 
@@ -161,7 +237,7 @@ class automate:
 
         if self.gear == "auto":
 
-            best_rmse = 100000
+            best_rmse = 100000.0
             df = pd.DataFrame()
 
             if self.shift == "ml":
@@ -309,7 +385,7 @@ class regress:
 
     def auto_sm(self):
 
-        best_rmse = 100000
+        best_rmse = 100000.0
         best_model = "SARIMA"
 
         df = self.manual_sm()
@@ -465,9 +541,10 @@ class smmodels:
 
 
 class mlmodels:
-    def __init__(self, train_X, train_y):
+    def __init__(self, train_X, train_y, horizon=0):
         self.x = train_X
         self.y = train_y
+        self.horizon = horizon
 
         self.jobs = -1
         self.scoring = "r2"
