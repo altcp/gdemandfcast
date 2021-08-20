@@ -127,15 +127,17 @@ def test_execute_one_ml():
     df_test = pd.read_excel(test).fillna(0)
     lags = 3
     horizon = 8
-    forecast = pd.DataFrame()
+    forecast_df = pd.DataFrame()
 
     for col in df_train.columns:
 
         train = df_train[[col]].reset_index(drop=True)
         test = df_test[[col]].reset_index(drop=True)
-        forecast = forecast(forecast, train, test, col, lags, horizon).forecast_ml()
+        forecast_df = forecast(
+            forecast_df, train, test, col, lags, horizon
+        ).forecast_ml()
 
-    assert not forecast.empty
+    assert not forecast_df.empty
 
 
 """
