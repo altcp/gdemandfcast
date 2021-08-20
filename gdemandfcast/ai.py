@@ -199,7 +199,8 @@ class forecast:
             mf = model.predict(test_features)
             forecast = mf[-1].tolist()
             df_forecast.at[i, self.col] = forecast
-            df_all.append(forecast)
+            df_length = len(df_all)
+            df_all.loc[df_length] = forecast
 
             test_features = (
                 preprocessing(df_all, self.col, self.lags, True)
