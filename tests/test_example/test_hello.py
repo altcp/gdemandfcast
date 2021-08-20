@@ -72,7 +72,6 @@ def test_execute_one():
 
     assert not forecast.empty
 
-"""
 
 # Test Manual ML
 def test_execute_manualml():
@@ -114,6 +113,9 @@ def test_execute_automl():
         df = automate(train_X, train_y, test_X, test_y, "auto", "ml", lags).run()
 
     assert not df.empty
+
+
+"""
 
 
 # Test Forecast ML
