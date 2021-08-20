@@ -197,7 +197,7 @@ class forecast:
                 model, name = mlmodels(x_train, y_train).svr_model()
 
             mf = model.predict(test_features)
-            forecast = mf[-1]
+            forecast = mf[-1].tolist()
             df_forecast.at[i, self.col] = forecast
             df_all.append(forecast)
 
