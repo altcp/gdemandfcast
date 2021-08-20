@@ -145,24 +145,25 @@ class execute:
 
 
 class forecast:
-    def __init__(self, train, test, col, lags, horizon):
+    def __init__(self, forecast, train, test, col, lags, horizon):
         self.train = train
         self.test = test
         self.col = col
         self.lags = lags
         self.horizon = horizon
+        self.forecast = forecast
 
     def forecast_ml(self):
 
+        df_forecast = self.forecast
         data = pd.concat([self.train, self.test], ignore_index=True)
-        df_forecast = pd.DataFrame()
 
         # Model Selection
         train_X, train_y, test_X, test_y = execute(
             self.train, self.test, self.lags
         ).get()
-        df = automate(train_X, train_y, test_X, test_y, "auto", "ml", self.lags).run()
 
+        df = automate(train_X, train_y, test_X, test_y, "auto", "ml", self.lags).run()
         selected_model = df.columns[1]
 
         # Forecast
