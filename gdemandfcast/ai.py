@@ -188,13 +188,13 @@ class forecast:
         for i in range(0, (self.horizon + 1)):
 
             if selected_model == "GPR":
-                model = mlmodels(x_train, y_train).gpr_model()
+                model, name = mlmodels(x_train, y_train).gpr_model()
             elif selected_model == "KNN":
-                model = mlmodels(x_train, y_train).knn_model()
+                model, name = mlmodels(x_train, y_train).knn_model()
             elif selected_model == "XGB":
-                model = mlmodels(x_train, y_train).xgb_model()
+                model, name = mlmodels(x_train, y_train).xgb_model()
             else:
-                model = mlmodels(x_train, y_train).svr_model()
+                model, name = mlmodels(x_train, y_train).svr_model()
 
             mf = model.predict(test_features)
             forecast = mf[-1]
