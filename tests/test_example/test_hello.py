@@ -15,8 +15,6 @@ def get(train, test, lags):
     return train_X, train_y, test_X, test_y
 
 
-"""
-
 # Test Manual SM
 def test_execute_manualsm():
 
@@ -115,9 +113,6 @@ def test_execute_automl():
     assert not df.empty
 
 
-"""
-
-
 # Test Forecast ML
 def test_execute_one_ml():
 
@@ -139,8 +134,6 @@ def test_execute_one_ml():
 
     assert not forecast_df.empty
 
-
-"""
 
 # Test Manual DL Custom
 def test_execute_manualdl_slow():
@@ -201,6 +194,3 @@ def test_execute_validate_one():
 
         train_X, train_y, test_X, test_y = execute(train, test, lags).rescale()
         dlmodels(1, train_X, train_y, lags, True).run()
-
-
-"""
