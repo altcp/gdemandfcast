@@ -3,7 +3,6 @@ import pandas as pd
 
 from gdemandfcast.ai import automate, dlmodels, execute, forecast, regress, smmodels
 
-"""
 
 # Get
 def get(train, test, lags):
@@ -195,8 +194,6 @@ def test_validate_one():
 
         train_X, train_y, test_X, test_y = execute(train, test, lags).rescale()
         dlmodels(1, train_X, train_y, lags, True).run()
-
-"""
 
 
 # Test Forecast DL
