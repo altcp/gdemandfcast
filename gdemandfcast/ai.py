@@ -910,6 +910,7 @@ class dlmodels:
                 validation_data=(test_X, test_y),
                 callbacks=call_back,
                 verbose=0,
+                epochs=300,
                 use_multiprocessing=False,
             )
 
@@ -940,6 +941,7 @@ class dlmodels:
                 train_y,
                 callbacks=call_back,
                 verbose=0,
+                epochs=300,
                 use_multiprocessing=False,
             )
 
