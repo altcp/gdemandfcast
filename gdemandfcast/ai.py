@@ -715,6 +715,8 @@ class dlmodels:
     def run(self):
 
         # Callbacks
+        tf.data.experimental.enable_debug_mode()
+
         call_back = [
             tf.keras.callbacks.ReduceLROnPlateau(
                 monitor="loss", factor=0.5, patience=3, verbose=0
