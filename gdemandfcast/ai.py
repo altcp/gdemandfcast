@@ -779,7 +779,7 @@ class dlmodels:
                     hypermodel=bi_gru_gru,
                     project_name="gdf_bi_gru_gru",
                 )
-                tuner.search(self.X, self.y)
+                tuner.search(self.X, self.y, epochs=300, callbacks=call_back, verbose=0)
                 tuned_model = tuner.get_best_models()[0]
 
             elif m == 2:
@@ -828,7 +828,7 @@ class dlmodels:
                     hypermodel=gru_gru,
                     project_name="gdf_gru_gru",
                 )
-                tuner.search(self.X, self.y)
+                tuner.search(self.X, self.y, epochs=300, callbacks=call_back, verbose=0)
                 tuned_model = tuner.get_best_models()[0]
 
             elif m == 3:
@@ -863,7 +863,7 @@ class dlmodels:
                     hypermodel=bi_gru,
                     project_name="gdf_bi_gru",
                 )
-                tuner.search(self.X, self.y)
+                tuner.search(self.X, self.y, epochs=300, callbacks=call_back, verbose=0)
                 tuned_model = tuner.get_best_models()[0]
 
             else:
@@ -896,7 +896,7 @@ class dlmodels:
                     hypermodel=gru,
                     project_name="gdf_gru",
                 )
-                tuner.search(self.X, self.y)
+                tuner.search(self.X, self.y, epochs=300, callbacks=call_back, verbose=0)
                 tuned_model = tuner.get_best_models()[0]
 
             return tuned_model
