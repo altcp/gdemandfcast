@@ -244,16 +244,18 @@ class forecast:
         for i in range(0, (self.horizon + 1)):
 
             if selected_model == "BI_GRU_GRU":
-                model = dlmodels(1, x_train, y_train, self.lags).run()
+                model, name = dlmodels(1, x_train, y_train, self.lags).run()
             elif selected_model == "GRU_GRU":
-                model = dlmodels(2, x_train, y_train, self.lags).run()
+                model, name = dlmodels(2, x_train, y_train, self.lags).run()
             elif selected_model == "BI_GRU":
-                model = dlmodels(3, x_train, y_train, self.lags).run()
+                model, name = dlmodels(3, x_train, y_train, self.lags).run()
             else:
-                model = dlmodels(4, x_train, y_train, self.lags).run()
+                model, name = dlmodels(4, x_train, y_train, self.lags).run()
 
-            mf = model.predict(test_features)
-            forecast = mf[-1].tolist()
+            mf = model.predict(test_features, verbose=0)
+            mf2 = mf.ravel()
+            forecast = mf2[-1].tolist()
+
             df_forecast.at[i, self.col] = forecast
             df_length = len(df_all)
             df_all.loc[df_length] = forecast
