@@ -3,6 +3,7 @@ import pandas as pd
 
 from gdemandfcast.ai import automate, dlmodels, execute, forecast, regress, smmodels
 
+"""
 
 # Get
 def get(train, test, lags):
@@ -136,7 +137,7 @@ def test_execute_one_ml():
 
 
 # Test Manual DL Custom
-def test_execute_manualdl_slow():
+def test_execute_manualdl():
 
     train = "./gdemandfcast/data/Train Data.xlsx"
     test = "./gdemandfcast/data/Test Data.xlsx"
@@ -178,7 +179,7 @@ def test_execute_autodl():
 
 
 # Validate DL Model Performance
-def test_execute_validate_one():
+def test_validate_one():
 
     train = "./gdemandfcast/data/Train Data.xlsx"
     test = "./gdemandfcast/data/Test Data.xlsx"
@@ -194,3 +195,27 @@ def test_execute_validate_one():
 
         train_X, train_y, test_X, test_y = execute(train, test, lags).rescale()
         dlmodels(1, train_X, train_y, lags, True).run()
+
+"""
+
+
+# Test Forecast DL
+def test_execute_one_dl():
+
+    train = "./gdemandfcast/data/Train Data.xlsx"
+    test = "./gdemandfcast/data/Test Data.xlsx"
+    df_train = pd.read_excel(train).fillna(0)
+    df_test = pd.read_excel(test).fillna(0)
+    lags = 3
+    horizon = 8
+    forecast_df = pd.DataFrame()
+
+    for col in df_train.columns:
+
+        train = df_train[[col]].reset_index(drop=True)
+        test = df_test[[col]].reset_index(drop=True)
+        forecast_df = forecast(
+            forecast_df, train, test, col, lags, horizon
+        ).forecast_dl()
+
+    assert not forecast_df.empty

@@ -221,6 +221,49 @@ class forecast:
 
         return df_forecast
 
+    def forecast_dl(self):
+
+        tf.config.run_functions_eagerly(True)
+        df_forecast = self.forecast
+        data = pd.concat([self.train, self.test], ignore_index=True)
+
+        # Model Selection
+        train_X, train_y, test_X, test_y = execute(
+            self.train, self.test, self.lags
+        ).rescale()
+
+        df = automate(train_X, train_y, test_X, test_y, "auto", "dl", self.lags).run()
+        selected_model = df.columns[1]
+
+        # Forecast
+        df_all = data[[self.col]]
+        x_train, y_train, test_features, test_outcomes = execute(
+            df_all, df_all, self.lags
+        ).rescale()
+
+        for i in range(0, (self.horizon + 1)):
+
+            if selected_model == "BI_GRU_GRU":
+                model = dlmodels(1, x_train, y_train, self.lags).run()
+            elif selected_model == "GRU_GRU":
+                model = dlmodels(2, x_train, y_train, self.lags).run()
+            elif selected_model == "BI_GRU":
+                model = dlmodels(3, x_train, y_train, self.lags).run()
+            else:
+                model = dlmodels(4, x_train, y_train, self.lags).run()
+
+            mf = model.predict(test_features)
+            forecast = mf[-1].tolist()
+            df_forecast.at[i, self.col] = forecast
+            df_length = len(df_all)
+            df_all.loc[df_length] = forecast
+
+            x_train, y_train, test_features, test_outcomes = execute(
+                df_all, df_all, self.lags
+            ).rescale()
+
+        return df_forecast
+
 
 # %%
 
