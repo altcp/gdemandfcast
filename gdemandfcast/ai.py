@@ -716,7 +716,6 @@ class dlmodels:
 
         # Callbacks
         tf.data.experimental.enable_debug_mode()
-
         call_back = [
             tf.keras.callbacks.ReduceLROnPlateau(
                 monitor="loss", factor=0.5, patience=3, verbose=0
@@ -779,7 +778,7 @@ class dlmodels:
                     hypermodel=bi_gru_gru,
                     project_name="gdf_bi_gru_gru",
                 )
-                tuner.search(self.X, self.y, epochs=300, callbacks=call_back, verbose=0)
+                tuner.search(self.X, self.y, callbacks=call_back, verbose=0)
                 tuned_model = tuner.get_best_models()[0]
 
             elif m == 2:
@@ -828,7 +827,7 @@ class dlmodels:
                     hypermodel=gru_gru,
                     project_name="gdf_gru_gru",
                 )
-                tuner.search(self.X, self.y, epochs=300, callbacks=call_back, verbose=0)
+                tuner.search(self.X, self.y, callbacks=call_back, verbose=0)
                 tuned_model = tuner.get_best_models()[0]
 
             elif m == 3:
@@ -863,7 +862,7 @@ class dlmodels:
                     hypermodel=bi_gru,
                     project_name="gdf_bi_gru",
                 )
-                tuner.search(self.X, self.y, epochs=300, callbacks=call_back, verbose=0)
+                tuner.search(self.X, self.y, callbacks=call_back, verbose=0)
                 tuned_model = tuner.get_best_models()[0]
 
             else:
@@ -896,7 +895,7 @@ class dlmodels:
                     hypermodel=gru,
                     project_name="gdf_gru",
                 )
-                tuner.search(self.X, self.y, epochs=300, callbacks=call_back, verbose=0)
+                tuner.search(self.X, self.y, callbacks=call_back, verbose=0)
                 tuned_model = tuner.get_best_models()[0]
 
             return tuned_model
@@ -1001,6 +1000,12 @@ class ModelTuner(kt.Tuner):
             ),
         )
 
+        # Calculate number of batches and define number of epochs per Trial
+        batch_size = 4
+        num_of_batches = math.floor(len(x_train) / batch_size)
+        epochs = 300
+
+        # Record the Performance for Auto Differniation
         @tf.function
         def run_train_step(real_x, real_y):
 
@@ -1035,11 +1040,6 @@ class ModelTuner(kt.Tuner):
             epoch_loss_metric.update_state(loss)
 
             return loss
-
-        # Calculate number of batches and define number of epochs per Trial
-        batch_size = 4
-        num_of_batches = math.floor(len(x_train) / batch_size)
-        epochs = 10
 
         # Run the Trial
         for epoch in range(epochs):
