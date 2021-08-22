@@ -5,7 +5,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "gdemandfcast"
-version = "0.6.45"
+version = "0.6.46"
 description = "Generic Python Package for Time Series Forecasting."
 readme = "README.md"
 authors = ["altcp <colab.tcp@gmail.com>"]
