@@ -911,7 +911,7 @@ class dlmodels:
                 validation_data=(test_X, test_y),
                 callbacks=call_back,
                 verbose=0,
-                epochs=300,
+                epochs=30,
                 use_multiprocessing=False,
             )
 
@@ -942,7 +942,7 @@ class dlmodels:
                 train_y,
                 callbacks=call_back,
                 verbose=0,
-                epochs=300,
+                epochs=30,
                 use_multiprocessing=False,
             )
 
@@ -1003,7 +1003,7 @@ class ModelTuner(kt.Tuner):
         # Calculate number of batches and define number of epochs per Trial
         batch_size = 4
         num_of_batches = math.floor(len(x_train) / batch_size)
-        epochs = 300
+        epochs = 30
 
         # Record the Performance for Auto Differniation
         @tf.function
