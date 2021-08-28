@@ -1059,8 +1059,10 @@ class ModelTuner(kt.Tuner):
                 self.on_batch_end(trial, model, batch, logs={"loss": batch_loss})
                 batch_total_loss = batch_total_loss + batch_loss
 
-            if epoch_loss < ((batch_total_loss / num_of_batches)):
-                epoch_loss = (batch_total_loss / num_of_batches)
+            mean_batch_loss = batch_total_loss / num_of_batches
+            
+            if epoch_loss < mean_batch_loss:
+                epoch_loss = mean_batch_loss
             else:
                 patience = patience + 1
 
