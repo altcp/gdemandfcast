@@ -911,7 +911,7 @@ class dlmodels:
                 validation_data=(test_X, test_y),
                 callbacks=call_back,
                 verbose=0,
-                epochs=30,
+                epochs=300,
                 use_multiprocessing=False,
             )
 
@@ -942,7 +942,7 @@ class dlmodels:
                 train_y,
                 callbacks=call_back,
                 verbose=0,
-                epochs=30,
+                epochs=300,
                 use_multiprocessing=False,
             )
 
@@ -983,7 +983,7 @@ class ModelTuner(kt.Tuner):
 
         hp = trial.hyperparameters
         model = self.hypermodel.build(trial.hyperparameters)
-        epoch_loss_metric = tf.keras.metrics.Mean()
+
         optimizer = tf.keras.optimizers.Adam(
             learning_rate=hp.Float(
                 "opt_learn_rate",
@@ -1003,7 +1003,7 @@ class ModelTuner(kt.Tuner):
         # Calculate number of batches and define number of epochs per Trial
         batch_size = 4
         num_of_batches = math.floor(len(x_train) / batch_size)
-        epochs = 30
+        epochs = 300
 
         # Record the Performance for Auto Differniation
         @tf.function
@@ -1037,13 +1037,17 @@ class ModelTuner(kt.Tuner):
 
             gradients = tape.gradient(loss, model.trainable_variables)
             optimizer.apply_gradients(zip(gradients, model.trainable_variables))
-            epoch_loss_metric.update_state(loss)
 
             return loss
 
         # Run the Trial
+        patience = 0
+        epoch_loss = 10000
+
         for epoch in range(epochs):
+
             self.on_epoch_begin(trial, model, epoch, logs={})
+
             for batch in range(num_of_batches):
                 n = batch * batch_size
                 self.on_batch_begin(trial, model, batch, logs={})
@@ -1053,10 +1057,21 @@ class ModelTuner(kt.Tuner):
                     tf.convert_to_tensor(y_train[n : n + batch_size]),
                 )
                 self.on_batch_end(trial, model, batch, logs={"loss": batch_loss})
+                batch_total_loss = batch_total_loss + batch_loss
 
-            epoch_loss = epoch_loss_metric.result().numpy()
-            self.on_epoch_end(trial, model, epoch, logs={"loss": epoch_loss})
-            epoch_loss_metric.reset_states()
+            if epoch_loss < ((batch_total_loss / num_of_batches)):
+                epoch_loss = (batch_total_loss / num_of_batches)
+            else:
+                patience = patience + 1
+
+            if patience > 6:
+                break
+            else:
+                batch_total_loss = 0
+                self.on_epoch_end(trial, model, epoch, logs={"loss": epoch_loss})
+                continue
+
+
 
 
 # %%
