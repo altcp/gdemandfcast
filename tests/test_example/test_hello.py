@@ -3,7 +3,7 @@ import pandas as pd
 
 from gdemandfcast.ai import automate, dlmodels, execute, forecast, regress, smmodels
 
-
+"""
 # Get
 def get(train, test, lags):
     train1 = pd.read_excel(train)
@@ -134,6 +134,7 @@ def test_execute_one_ml():
 
     assert not forecast_df.empty
 
+"""
 
 # Test Manual DL Custom
 def test_execute_manualdl():
