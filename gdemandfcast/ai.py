@@ -1047,7 +1047,7 @@ class ModelTuner(kt.Tuner):
         for epoch in range(epochs):
 
             self.on_epoch_begin(trial, model, epoch, logs={})
-
+            batch_total_loss = 0
             for batch in range(num_of_batches):
                 n = batch * batch_size
                 self.on_batch_begin(trial, model, batch, logs={})
@@ -1069,7 +1069,6 @@ class ModelTuner(kt.Tuner):
             if patience > 6:
                 break
             else:
-                batch_total_loss = 0
                 self.on_epoch_end(trial, model, epoch, logs={"loss": epoch_loss})
                 continue
 
