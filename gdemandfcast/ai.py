@@ -984,22 +984,6 @@ class ModelTuner(kt.Tuner):
         hp = trial.hyperparameters
         model = self.hypermodel.build(trial.hyperparameters)
 
-        optimizer = tf.keras.optimizers.Adam(
-            learning_rate=hp.Float(
-                "opt_learn_rate",
-                min_value=1e-4,
-                max_value=1e-2,
-                sampling="LOG",
-                default=1e-3,
-            ),
-            clipnorm=hp.Float(
-                "opt_clipnorm", min_value=0.001, max_value=1.11, step=0.10, default=1.0
-            ),
-            clipvalue=hp.Float(
-                "opt_clipvalue", min_value=1, max_value=5.50, step=0.25, default=5.0
-            ),
-        )
-
         # Calculate number of batches and define number of epochs per Trial
         batch_size = 4
         num_of_batches = math.floor(len(x_train) / batch_size)
@@ -1043,11 +1027,24 @@ class ModelTuner(kt.Tuner):
         # Run the Trial
         patience = 0
         epoch_loss = 10000
+        lr = 0.1
 
         for epoch in range(epochs):
 
+            optimizer = tf.keras.optimizers.Adam(
+                learning_rate=lr,
+                clipnorm=hp.Float(
+                    "opt_clipnorm",
+                    min_value=0.0001,
+                    max_value=1.0,
+                    step=0.10,
+                    default=0.001,
+                ),
+            )
+
             self.on_epoch_begin(trial, model, epoch, logs={})
             batch_total_loss = 0
+
             for batch in range(num_of_batches):
                 n = batch * batch_size
                 self.on_batch_begin(trial, model, batch, logs={})
@@ -1068,6 +1065,11 @@ class ModelTuner(kt.Tuner):
 
             if patience > 6:
                 break
+            elif patience > 2:
+                lr = lr * 0.1
+                lr = max(lr, 0.0000001)
+                self.on_epoch_end(trial, model, epoch, logs={"loss": epoch_loss})
+                continue
             else:
                 self.on_epoch_end(trial, model, epoch, logs={"loss": epoch_loss})
                 continue
