@@ -718,9 +718,9 @@ class dlmodels:
         tf.data.experimental.enable_debug_mode()
         call_back = [
             tf.keras.callbacks.ReduceLROnPlateau(
-                monitor="loss", factor=0.5, patience=3, verbose=0
+                monitor="loss", factor=0.1, patience=3, verbose=0
             ),
-            tf.keras.callbacks.EarlyStopping(monitor="loss", patience=3, verbose=0),
+            tf.keras.callbacks.EarlyStopping(monitor="loss", patience=7, verbose=0),
         ]
 
         # Splits
@@ -1035,7 +1035,7 @@ class ModelTuner(kt.Tuner):
                 learning_rate=lr,
                 clipnorm=hp.Float(
                     "opt_clipnorm",
-                    min_value=0.0001,
+                    min_value=0.00001,
                     max_value=1.0,
                     step=0.10,
                     default=0.001,
@@ -1067,7 +1067,7 @@ class ModelTuner(kt.Tuner):
                 break
             elif patience > 2:
                 lr = lr * 0.1
-                lr = max(lr, 0.0000001)
+                lr = max(lr, 0.000001)
                 self.on_epoch_end(trial, model, epoch, logs={"loss": epoch_loss})
                 continue
             else:
