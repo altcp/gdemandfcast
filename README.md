@@ -80,7 +80,7 @@ This project is licensed under the terms of the `GNU GPL v3.0` license.
   year = {2021},
   publisher = {GitHub},
   journal = {GitHub repository},
-  howpublished = {https://github.com/altcp/gdemandfcast}}
+  howpublished = {https://github.com/altcp/gdemandfcast}
 }
 ```
 <p>&nbsp;</p>
