@@ -5,7 +5,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "gdemandfcast"
-version = "0.6.55"
+version = "0.6.56"
 description = "Generic Python Package for Time Series Forecasting."
 readme = "README.md"
 authors = ["altcp <colab.tcp@gmail.com>"]
@@ -14,7 +14,7 @@ repository = "https://github.com/altcp/gdemandfcast"
 homepage = "https://github.com/altcp/gdemandfcast"
 
 # Keywords description https://python-poetry.org/docs/pyproject/#keywords
-keywords = [Time Series, Deep Learning, Machine Learning] 
+keywords = ["Time Series", "Deep Learning", "Machine Learning"] 
 
 # Pypi classifiers: https://pypi.org/classifiers/
 classifiers = [ 
