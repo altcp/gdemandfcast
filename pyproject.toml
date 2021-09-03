@@ -14,11 +14,11 @@ repository = "https://github.com/altcp/gdemandfcast"
 homepage = "https://github.com/altcp/gdemandfcast"
 
 # Keywords description https://python-poetry.org/docs/pyproject/#keywords
-keywords = []  #! Update me
+keywords = [Time Series, Deep Learning, Machine Learning] 
 
 # Pypi classifiers: https://pypi.org/classifiers/
-classifiers = [  #! Update me
-  "Development Status :: 3 - Alpha",
+classifiers = [ 
+  "Development Status :: 4 - Beta",
   "Intended Audience :: Developers",
   "Operating System :: OS Independent",
   "Topic :: Software Development :: Libraries :: Python Modules",
