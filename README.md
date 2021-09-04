@@ -24,6 +24,7 @@ See -> ./tests/test_example/test_hello.py
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) 
 [![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/altcp/gdemandfcast/blob/master/.pre-commit-config.yaml)
+[![Upload Python Package](https://github.com/altcp/gdemandfcast/actions/workflows/python-publish.yml/badge.svg)](https://github.com/altcp/gdemandfcast/actions/workflows/python-publish.yml)
 
 </div>
 
