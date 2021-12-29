@@ -5,7 +5,7 @@ argon2-cffi==20.1.0; python_version >= "3.6"
 astor==0.8.1; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.6"
 astunparse==1.6.3
 async-generator==1.10; python_full_version >= "3.6.1" and python_version >= "3.7"
-attrs==21.2.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6"
+attrs==21.4.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6"
 backcall==0.2.0; python_version >= "3.7"
 base58==2.1.0; python_version >= "3.6"
 bleach==3.3.1; python_version >= "3.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.7"
