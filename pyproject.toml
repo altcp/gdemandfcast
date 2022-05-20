@@ -32,7 +32,7 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.11"
-scikit-learn = "^0.24.2"
+scikit-learn = ">=0.24.2,<1.2.0"
 keras-tuner = "^1.0.3"
 pmdarima = "^1.8.2"
 matplotlib = "^3.4.2"
