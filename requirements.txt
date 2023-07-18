@@ -14,7 +14,7 @@ cachetools==4.2.2; python_version >= "3.6" and python_version < "4.0" and (pytho
 certifi==2021.5.30; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
 cffi==1.14.6; python_full_version >= "3.6.1" and python_version >= "3.7" and implementation_name == "pypy"
 charset-normalizer==2.0.4; python_full_version >= "3.6.0" and python_version >= "3"
-click==7.1.2; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6"
+click==8.1.6; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6"
 colorama==0.4.4; python_version >= "3.7" and python_full_version < "3.0.0" and sys_platform == "win32" or sys_platform == "win32" and python_version >= "3.7" and python_full_version >= "3.5.0"
 cycler==0.10.0; python_version >= "3.7"
 cython==0.29.24; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.3.0" and python_version >= "3.6"
